@@ -67,13 +67,7 @@ dependencies {
 
     // Glide
     implementation(libs.glide)
-    annotationProcessor(libs.glide.compiler)
-//    implementation(libs.glide)
-//    kapt(libs.glide.compiler)
-//    implementation("com.github.bumptech.glide:glide:4.16.1")
-//    kapt("com.github.bumptech.glide:compiler:4.16.1") //
-//    implementation("com.github.bumptech.glide:glide:4.16.1")
-//    annotationProcessor("com.github.bumptech.glide:compiler:4.16.1")
+    kapt(libs.glide.compiler)
 
     // Coroutines
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.1")
