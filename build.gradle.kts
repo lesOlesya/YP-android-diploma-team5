@@ -6,5 +6,5 @@ plugins {
     id("com.android.application") version "8.4.1" apply false
     id("org.jetbrains.kotlin.android") version "1.9.21" apply false
     id("convention.detekt")
-    id("org.jetbrains.kotlin.kapt") version "1.8.22"
+    kotlin("kapt") version "1.9.22" apply false
 }
