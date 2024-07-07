@@ -1,5 +1,5 @@
 [versions]
-glideVersion = "5.2.0"
+glideVersion = "4.16.1"
 java = "VERSION_1_8"
 
 # Build constants
