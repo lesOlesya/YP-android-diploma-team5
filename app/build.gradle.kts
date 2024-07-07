@@ -70,8 +70,8 @@ dependencies {
     implementation("androidx.room:room-ktx:2.5.2")
 
     // Glide
-    implementation(libs.glide)
-    kapt(libs.glide.compiler)
+    implementation("com.github.bumptech.glide:glide:4.15.1")
+    annotationProcessor("com.github.bumptech.glide:glide:4.15.1")
 
     // Coroutines
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.1")
