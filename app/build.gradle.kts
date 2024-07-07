@@ -66,8 +66,10 @@ dependencies {
     implementation("androidx.room:room-ktx:2.5.2")
 
     // Glide
-    implementation("com.github.bumptech.glide:glide:4.16.1")
-    kapt("com.github.bumptech.glide:compiler:4.16.1") //
+    implementation(libs.glide)
+    kapt(libs.glide.compiler)
+//    implementation("com.github.bumptech.glide:glide:4.16.1")
+//    kapt("com.github.bumptech.glide:compiler:4.16.1") //
 //    implementation("com.github.bumptech.glide:glide:4.16.1")
 //    annotationProcessor("com.github.bumptech.glide:compiler:4.16.1")
 
