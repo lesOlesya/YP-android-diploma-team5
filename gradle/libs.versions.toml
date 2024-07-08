@@ -1,5 +1,5 @@
 [versions]
-
+glideVersion = "4.16.1"
 java = "VERSION_1_8"
 
 # Build constants
@@ -12,6 +12,9 @@ detekt = "1.23.3"
 detektTwitterComposeRules ="0.0.26"
 
 [libraries]
+
+glide = { group = "com.github.bumptech.glide", name = "glide", version.ref = "glideVersion" }
+glide-compiler = { group = "com.github.bumptech.glide", name = "compiler", version.ref = "glideVersion" }
 
 # Detekt
 staticAnalysis-detektPlugin = { module = "io.gitlab.arturbosch.detekt:detekt-gradle-plugin", version.ref = "detekt" }
