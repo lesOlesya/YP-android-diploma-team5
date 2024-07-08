@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import ru.practicum.android.diploma.databinding.FavouriteFragmentBinding
 
-class FavouriteFragment: Fragment() {
+class FavouriteFragment : Fragment() {
     private var _binding: FavouriteFragmentBinding? = null
     private val binding get() = _binding!!
 
