@@ -1,9 +1,24 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
     <!-- Base application theme. -->
     <style name="Base.Theme.PracticumAndroidDiploma" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <!-- Primary brand color. -->
+        <item name="colorPrimaryVariant">@color/blue</item>
+        <!-- Secondary brand color. -->
+        <item name="colorSecondaryVariant">@color/red</item>
+        <!-- Color for search only. -->
+        <item name="colorAccent">@color/blue</item>
+        <item name="textColorSearchUrl">@color/black_universal</item>
+        <!-- Color for BottomMenu only. -->
+        <item name="colorTertiary">@color/gray</item>
+        <item name="colorOnTertiary">@color/light_gray</item>
     </style>
 
-    <style name="Theme.PracticumAndroidDiploma" parent="Base.Theme.PracticumAndroidDiploma" />
+    <style name="Theme.PracticumAndroidDiploma" parent="Base.Theme.PracticumAndroidDiploma">
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/white_universal</item>
+        <item name="colorOnPrimary">@color/black_universal</item>
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@color/light_gray</item>
+        <item name="colorOnSecondary">@color/gray</item>
+    </style>
 </resources>
