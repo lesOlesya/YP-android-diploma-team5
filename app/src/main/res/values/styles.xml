@@ -32,7 +32,19 @@
     </style>
 
     <style name="ToolbarStyle">
-        <item name="android:textAppearance">@style/TextMedium22</item>
+        <item name="android:titleTextAppearance">@style/TextMedium22</item>
         <item name="theme">@style/Theme.PracticumAndroidDiploma</item>
+        <item name="titleTextColor">?attr/team_text_color</item>
+    </style>
+
+    <style name="TeamBigTextStyle">
+        <item name="android:textAppearance">@style/TextBold32</item>
+        <item name="android:textColor">?attr/team_text_color</item>
+        <item name="android:layout_marginStart">@dimen/dp_16</item>
+    </style>
+
+    <style name="TeamNormalTextStyle" parent="TeamBigTextStyle">
+        <item name="android:textAppearance">@style/TextMedium16</item>
+        <item name="android:layout_marginTop">@dimen/dp_16</item>
     </style>
 </resources>

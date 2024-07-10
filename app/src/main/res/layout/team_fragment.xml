@@ -1,20 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".team.ui.TeamFragment"
-    android:theme="@style/Theme.PracticumAndroidDiploma">
+    android:orientation="vertical"
+    android:theme="@style/Theme.PracticumAndroidDiploma"
+    tools:context=".team.ui.TeamFragment">
 
     <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
+        android:id="@+id/toolbar_team"
+        style="@style/ToolbarStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:minHeight="?attr/actionBarSize"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:title="@string/team_headline"
-        />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        app:title="@string/team_headline" />
+
+    <TextView
+        android:id="@+id/developers"
+        style="@style/TeamBigTextStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_24"
+        android:layout_marginBottom="@dimen/dp_16"
+        android:text="@string/developers" />
+
+    <TextView
+        style="@style/TeamNormalTextStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/olesya_dubentseva" />
+
+    <TextView
+        style="@style/TeamNormalTextStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/vyacheslav_verman" />
+
+    <TextView
+        style="@style/TeamNormalTextStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/alexey_usevich" />
+
+    <TextView
+        style="@style/TeamNormalTextStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/anton_iushin" />
+</LinearLayout>

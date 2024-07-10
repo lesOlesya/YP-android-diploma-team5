@@ -44,9 +44,9 @@
     <string name="skills_vacancy_title">Ключевые навыки</string>
     <!-- Team texts. -->
     <string name="developers">Над приложением работали</string>
-    <string name="alexey_usevich">Усевич Алексей</string>
-    <string name="olesya_dubentseva">Дубенцева Олеся</string>
-    <string name="anton_sapegin">Сапегин Антон</string>
+    <string name="alexey_usevich">Усевич Алексей Разработчик</string>
+    <string name="olesya_dubentseva">Дубенцева Олеся Тимлид</string>
+    <string name="anton_iushin">Юшин Антон Разработчик</string>
     <string name="vyacheslav_verman">Верман Вячеслав</string>
 
     <plurals name="vacancyCount">
