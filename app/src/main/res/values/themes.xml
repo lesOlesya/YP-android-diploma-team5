@@ -1,5 +1,4 @@
 <resources>
-    <attr name="team_text_color"/>
     <!-- Base application theme. -->
     <style name="Base.Theme.PracticumAndroidDiploma" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Primary brand color. -->
@@ -21,7 +20,5 @@
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/light_gray</item>
         <item name="colorOnSecondary">@color/gray</item>
-        
-        <item name="team_text_color">@color/black_universal</item>
     </style>
 </resources>
