@@ -24,10 +24,8 @@ class RootActivity : AppCompatActivity() {
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
-                R.id.filterFragment, R.id.vacancyFragment -> {
-                    binding.bottomNavigation.isVisible = false
-                    binding.divider.isVisible = false
-                }
+                R.id.filterFragment, R.id.vacancyFragment -> binding.bottomNavigation.isVisible = false
+                else -> binding.bottomNavigation.isVisible = true
             }
         }
 
