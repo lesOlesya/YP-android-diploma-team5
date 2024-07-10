@@ -47,7 +47,7 @@
     <string name="alexey_usevich">Усевич Алексей Разработчик</string>
     <string name="olesya_dubentseva">Дубенцева Олеся Тимлид</string>
     <string name="anton_iushin">Юшин Антон Разработчик</string>
-    <string name="vyacheslav_verman">Верман Вячеслав</string>
+    <string name="vyacheslav_verman">Верман Вячеслав Разработчик</string>
 
     <plurals name="vacancyCount">
         <item quantity="one">%1$d vacancy was found</item>
