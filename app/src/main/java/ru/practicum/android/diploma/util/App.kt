@@ -7,7 +7,6 @@ import org.koin.core.context.startKoin
 import org.koin.core.logger.Level
 import ru.practicum.android.diploma.di.dataModule
 import ru.practicum.android.diploma.di.interactorModule
-import ru.practicum.android.diploma.di.remoteModule
 import ru.practicum.android.diploma.di.repositoryModule
 import ru.practicum.android.diploma.di.viewModelModule
 
@@ -18,7 +17,7 @@ class App : Application() {
         startKoin {
             androidLogger(Level.NONE)
             androidContext(this@App)
-            modules(dataModule, repositoryModule, interactorModule, viewModelModule, remoteModule)
+            modules(dataModule, repositoryModule, interactorModule, viewModelModule)
         }
     }
 
