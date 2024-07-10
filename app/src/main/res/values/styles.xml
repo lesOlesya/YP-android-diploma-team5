@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <style name="TextBold32">
         <item name="fontFamily">@font/ys_display_bold</item>
         <item name="android:textSize">@dimen/font_32</item>
@@ -28,5 +29,10 @@
         <item name="fontFamily">@font/ys_display_regular</item>
         <item name="android:textSize">@dimen/font_12</item>
         <item name="android:textAllCaps">false</item>
+    </style>
+
+    <style name="ToolbarStyle">
+        <item name="android:textAppearance">@style/TextMedium22</item>
+        <item name="theme">@style/Theme.PracticumAndroidDiploma</item>
     </style>
 </resources>
