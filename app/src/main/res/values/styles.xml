@@ -45,4 +45,12 @@
     <style name="TeamNormalTextStyle" parent="TeamBigTextStyle">
         <item name="android:textAppearance">@style/TextMedium16</item>
     </style>
+
+    <style name="BottomNavStyle" parent="Widget.Design.BottomNavigationView">
+        <item name="itemTextColor">@drawable/icon_color_bn</item>
+        <item name="itemIconTint">@drawable/icon_color_bn</item>
+        <item name="itemTextAppearanceActive">@style/TextRegular12</item>
+        <item name="itemTextAppearanceInactive">@style/TextRegular12</item>
+        <item name="theme">@style/Theme.PracticumAndroidDiploma</item>
+    </style>
 </resources>
