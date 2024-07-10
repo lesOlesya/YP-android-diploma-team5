@@ -1,5 +1,4 @@
 <resources>
-    <attr name="team_text_color"/>
 
     <style name="Theme.PracticumAndroidDiploma" parent="Base.Theme.PracticumAndroidDiploma">
         <!-- Primary brand color. -->
@@ -8,7 +7,5 @@
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/gray</item>
         <item name="colorOnSecondary">@color/white_universal</item>
-
-        <item name="team_text_color">@color/white_universal</item>
     </style>
 </resources>
