@@ -31,10 +31,10 @@ val dataModule = module {
         RetrofitNetworkClient(get())
     }
 
-   single {
-       Room.databaseBuilder(androidContext(), AppDatabase::class.java, "database.db")
-           .fallbackToDestructiveMigration()
-           .build()
+    single {
+        Room.databaseBuilder(androidContext(), AppDatabase::class.java, "database.db")
+            .fallbackToDestructiveMigration()
+            .build()
     }
 
     factory { Gson() }
