@@ -53,6 +53,9 @@
         <item quantity="one">%1$d vacancy was found</item>
         <item quantity="other">%1$d vacancies were found</item>
     </plurals>
+
+    <string name="vacancy_name_with_region">%1$s, %2$s</string>
+
     <!-- Для strings/ru на будущее. -->
     <!--    <plurals name="vacancyCount">-->
     <!--        <item quantity="one">Найдена %1$d вакансия</item>-->
