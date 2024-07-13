@@ -1,9 +1,6 @@
-package ru.practicum.android.diploma.domain.db
+package ru.practicum.android.diploma.favourite.data.db
 
 import kotlinx.coroutines.flow.Flow
-import ru.practicum.android.diploma.favourite.data.db.FavoriteVacanciesIdState
-import ru.practicum.android.diploma.favourite.data.db.FavoriteVacanciesRepository
-import ru.practicum.android.diploma.favourite.data.db.FavoriteVacancyState
 import ru.practicum.android.diploma.favourite.domain.models.VacancyDetails
 
 class FavoriteVacanciesInteractorImpl(private val favoriteVacanciesRepository: FavoriteVacanciesRepository) :

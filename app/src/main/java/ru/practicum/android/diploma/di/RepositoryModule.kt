@@ -9,7 +9,4 @@ val repositoryModule = module {
     single<FavoriteVacanciesRepository> {
         FavoriteVacanciesRepositoryImpl(get(), get())
     }
-
-
-
 }
