@@ -11,7 +11,8 @@ class VacancyViewHolder(private val binding: ItemVacancyBinding) :
     RecyclerView.ViewHolder(binding.root) {
 
     fun bind(model: Vacancy) {
-        binding.tvVacancyName.text = binding.root.context.getString(R.string.vacancy_name_with_region, model.vacancyName, model.areaRegion)
+        binding.tvVacancyName.text = binding.root.context.getString(
+            R.string.vacancy_name_with_region, model.vacancyName, model.areaRegion)
         binding.tvEmployer.text = model.employer
         binding.tvVacancySalary.text = model.salary // Здесь можно добавить форматирование зарплаты
 
@@ -24,8 +25,3 @@ class VacancyViewHolder(private val binding: ItemVacancyBinding) :
             .into(binding.ivLogo)
     }
 }
-
-
-
-
-
