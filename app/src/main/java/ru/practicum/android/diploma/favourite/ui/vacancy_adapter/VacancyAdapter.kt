@@ -1,4 +1,4 @@
-package ru.practicum.android.diploma.favourite.ui
+package ru.practicum.android.diploma.favourite.ui.vacancy_adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

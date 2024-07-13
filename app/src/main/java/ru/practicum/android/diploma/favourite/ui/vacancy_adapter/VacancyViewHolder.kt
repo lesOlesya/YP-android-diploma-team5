@@ -1,10 +1,11 @@
-package ru.practicum.android.diploma.favourite.ui
+package ru.practicum.android.diploma.favourite.ui.vacancy_adapter
 
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.ItemVacancyBinding
+import ru.practicum.android.diploma.util.px
 import ru.practicum.android.diploma.vacancy.domain.models.Vacancy
 
 class VacancyViewHolder(private val binding: ItemVacancyBinding) :
@@ -21,7 +22,7 @@ class VacancyViewHolder(private val binding: ItemVacancyBinding) :
             .placeholder(R.drawable.logo_plug)
             // .error(R.drawable.error_image) // Добавить бы обработчик ошибок, была б подходящая картинка
             .centerCrop()
-            .transform(RoundedCorners(binding.root.resources.getDimensionPixelSize(R.dimen.dp_12)))
+            .transform(RoundedCorners(12.px))
             .into(binding.ivLogo)
     }
 }
