@@ -1,4 +1,4 @@
-package ru.practicum.android.diploma.favourite.ui.vacancy_adapter
+package ru.practicum.android.diploma.favourite.ui.adapter
 
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
