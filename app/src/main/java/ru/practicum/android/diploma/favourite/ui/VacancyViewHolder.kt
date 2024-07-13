@@ -19,7 +19,7 @@ class VacancyViewHolder(private val binding: ItemVacancyBinding) :
         Glide.with(binding.root)
             .load(model.artworkUrl)
             .placeholder(R.drawable.logo_plug)
-            // .error(R.drawable.error_image) // Добавьте обработчик ошибок, если есть подходящая картинка
+            // .error(R.drawable.error_image) // Добавить бы обработчик ошибок, была б подходящая картинка
             .centerCrop()
             .transform(RoundedCorners(binding.root.resources.getDimensionPixelSize(R.dimen.dp_12)))
             .into(binding.ivLogo)
