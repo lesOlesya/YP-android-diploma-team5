@@ -48,6 +48,9 @@
     <string name="olesya_dubentseva">Дубенцева Олеся Тимлид</string>
     <string name="anton_iushin">Юшин Антон Разработчик</string>
     <string name="vyacheslav_verman">Верман Вячеслав Разработчик</string>
+    <string name="empty_list">Список пуст</string>
+    <string name="not_found">Не удалось получить список вакансий</string>
+    <string name="favorites">Избранное</string>
 
     <plurals name="vacancyCount">
         <item quantity="one">%1$d vacancy was found</item>
