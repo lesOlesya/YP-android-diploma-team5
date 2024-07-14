@@ -44,10 +44,12 @@
     <!-- Vacancy title texts. -->
     <string name="experience_vacancy_title">Требуемый опыт</string>
     <string name="description_vacancy_title">Описание вакансии</string>
-    <string name="responsibilities_vacancy_title">Обязанности</string>
-    <string name="requirements_vacancy_title">Требования</string>
-    <string name="conditions_vacancy_title">Условия</string>
     <string name="skills_vacancy_title">Ключевые навыки</string>
+    <string name="contacts_title">Контакты</string>
+    <string name="contact_person_title">Контактное лицо</string>
+    <string name="contact_email_title">E-mail</string>
+    <string name="contact_phone_title">Телефон</string>
+    <string name="comment_title">Комментарий</string>
 
     <!-- Team texts. -->
     <string name="developers">Над приложением работали</string>
@@ -56,38 +58,14 @@
     <string name="anton_iushin">Юшин Антон Разработчик</string>
     <string name="vyacheslav_verman">Верман Вячеслав Разработчик</string>
 
+    <!-- Long tools text -->
+    <string name="description_vacancy" translatable="false"><b>Подробное описание, которое приходит в html формате. Никогда не null</b>\n\n•  Разрабатывать новую функциональность приложения\n•  Помогать с интеграцией нашего SDK в другие приложения\n•  Проектировать большие новые модули\n•  Писать UI- и unit-тесты\n•  Следить за работоспособностью сервиса и устранять технический долг</string>
+    <string name="key_kills_description" translatable="false"><b>Ключевые навыки. Приходят в виде Array of objects</b>\n\n•  Знание классических алгоритмов и структуры данных\n•  Программирование для Android больше одного года\n•  Знание WebRTC</string>
+
     <plurals name="vacancyCount">
         <item quantity="one">%1$d vacancy was found</item>
         <item quantity="other">%1$d vacancies were found</item>
     </plurals>
-
-    <!-- Экран "Детали вакансии" -->
-    <string name="vacancy_title_android_developers">Android-разработчик</string>
-    <string name="salary_range">от 100 000 ₽</string>
-    <string name="company_name">Еда</string>
-    <string name="city">Москва</string>
-    <string name="required_experience">Требуемый опыт</string>
-    <string name="experience">От 1 года до 3 лет</string>
-    <string name="type_of_employment">Полная занятость, Удаленная работа</string>
-    <string name="vacancy_description">Описание вакансии</string>
-    <string name="responsibilities_value">•  Разрабатывать новую функциональность приложения\n•  Помогать с интеграцией нашего SDK в другие приложения\n•  Проектировать большие новые модули\n•  Писать UI- и unit-тесты\n•  Следить за работоспособностью сервиса и устранять технический долг</string>
-    <string name="key_skills">Ключевые навыки</string>
-    <string name="key_kills_description">•  Знание классических алгоритмов и структуры данных\n•  Программирование для Android больше одного года\n•  Знание WebRTC</string>
-    <string name="contact">Контакты</string>
-    <string name="contact_person">Контактное лицо</string>
-    <string name="contact_person_value">Ирина</string>
-    <string name="contact_email">E-mail</string>
-    <string name="email_value">i.lozgkina@yandex.ru</string>
-    <string name="contact_phone">Телефон</string>
-    <string name="phone_value">+7 (904) 329-27-71</string>
-    <string name="comment">Комментарий</string>
-    <string name="contact_comment_value">Заполнить анкету по форме можно на нашем сайте</string>
-
-
-
-
-
-
 
     <!-- Для strings/ru на будущее. -->
     <!--    <plurals name="vacancyCount">-->
