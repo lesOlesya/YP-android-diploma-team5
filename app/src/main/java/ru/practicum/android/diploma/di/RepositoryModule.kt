@@ -14,7 +14,7 @@ val repositoryModule = module {
     }
 
     single<VacancyDetailsRepository> {
-        VacancyDetailsRepositoryImpl(get(), get())
+        VacancyDetailsRepositoryImpl(get())
     }
 
     factory { FavoriteVacancyDbConverter(get()) }

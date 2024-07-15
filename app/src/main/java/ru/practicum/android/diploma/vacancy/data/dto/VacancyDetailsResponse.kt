@@ -2,6 +2,7 @@ package ru.practicum.android.diploma.vacancy.data.dto
 
 import ru.practicum.android.diploma.search.data.dto.Response
 
+@Suppress("detekt.LongParameterList")
 class VacancyDetailsResponse(
     val id: String, // ID вакансии
     val name: String, // Название вакансии
