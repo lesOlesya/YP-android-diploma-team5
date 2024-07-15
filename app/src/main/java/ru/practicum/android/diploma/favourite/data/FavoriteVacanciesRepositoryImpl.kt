@@ -31,7 +31,7 @@ class FavoriteVacanciesRepositoryImpl(
     override fun getFavoriteVacancy(vacancyId: String): Flow<VacancyDetails?> = flow {
         val favoriteVacancyFromDataBase = appDatabase.favoriteVacanciesDao().getFavoriteVacancy(vacancyId)
 
-        var convertedFavoriteVacancy : VacancyDetails? = null
+        var convertedFavoriteVacancy: VacancyDetails? = null
         favoriteVacancyFromDataBase?.let {
             convertedFavoriteVacancy = favoriteVacancyDbConverter.map(it)
         }
