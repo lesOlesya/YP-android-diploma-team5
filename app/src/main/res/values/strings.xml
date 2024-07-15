@@ -55,6 +55,9 @@
     </plurals>
 
     <string name="vacancy_name_with_region">%1$s, %2$s</string>
+    <string name="salary_is_empty">Зарплата не указана</string>
+    <string name="from">от %1$d </string>
+    <string name="to">до %1$d </string>
 
     <!-- Для strings/ru на будущее. -->
     <!--    <plurals name="vacancyCount">-->
