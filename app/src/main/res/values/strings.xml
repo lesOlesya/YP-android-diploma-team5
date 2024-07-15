@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name" translatable="false">Jobka</string>
+
     <!-- Headline texts. -->
     <string name="search_headline">Поиск вакансий</string>
     <string name="filter_headline">Настройки фильтрации</string>
@@ -11,18 +12,22 @@
     <string name="favourite_headline">Избранное</string>
     <string name="team_headline">Команда</string>
     <string name="main_headline_bottom_menu">Главная</string>
+
     <!-- Error texts. -->
     <string name="no_internet_error">Нет интернета</string>
     <string name="server_error">Ошибка сервера</string>
     <string name="vacancy_error">Вакансия не найдена или удалена</string>
     <string name="vacancy_list_error">Не удалось получить список вакансий</string>
     <string name="list_error">Не удалось получить список</string>
+
     <!-- Empty texts. -->
     <string name="region_list_empty_error">Такого региона нет</string>
     <string name="list_empty">Список пуст</string>
+
     <!-- Search texts. -->
     <string name="enter_request_hint">Введите запрос</string>
     <string name="vacancy_list_empty_label">Таких вакансий нет</string>
+
     <!-- Filter texts. -->
     <string name="place_of_work_hint">Место работы</string>
     <string name="country_hint">Страна</string>
@@ -35,13 +40,12 @@
     <string name="hide_without_salary_switch_text">Не показывать без зарплаты</string>
     <string name="choose_button_label">Выбрать</string>
     <string name="reset_button_label">Сбросить</string>
+
     <!-- Vacancy title texts. -->
     <string name="experience_vacancy_title">Требуемый опыт</string>
     <string name="description_vacancy_title">Описание вакансии</string>
-    <string name="responsibilities_vacancy_title">Обязанности</string>
-    <string name="requirements_vacancy_title">Требования</string>
-    <string name="conditions_vacancy_title">Условия</string>
     <string name="skills_vacancy_title">Ключевые навыки</string>
+
     <!-- Team texts. -->
     <string name="developers">Над приложением работали</string>
     <string name="alexey_usevich">Усевич Алексей Разработчик</string>
@@ -49,12 +53,17 @@
     <string name="anton_iushin">Юшин Антон Разработчик</string>
     <string name="vyacheslav_verman">Верман Вячеслав Разработчик</string>
 
+    <!-- Long tools text -->
+    <string name="description_vacancy" translatable="false"><b>Подробное описание, которое приходит в html формате. Никогда не null</b>\n\n•  Разрабатывать новую функциональность приложения\n•  Помогать с интеграцией нашего SDK в другие приложения\n•  Проектировать большие новые модули\n•  Писать UI- и unit-тесты\n•  Следить за работоспособностью сервиса и устранять технический долг</string>
+    <string name="key_kills_description" translatable="false"><b>Ключевые навыки. Приходят в виде Array of objects</b>\n\n•  Знание классических алгоритмов и структуры данных\n•  Программирование для Android больше одного года\n•  Знание WebRTC</string>
+
     <plurals name="vacancyCount">
         <item quantity="one">%1$d vacancy was found</item>
         <item quantity="other">%1$d vacancies were found</item>
     </plurals>
 
     <string name="vacancy_name_with_region">%1$s, %2$s</string>
+    <string name="employment_with_schedule">%1$s, %2$s</string>
     <string name="salary_is_empty">Зарплата не указана</string>
     <string name="from">от %1$d </string>
     <string name="to">до %1$d </string>
