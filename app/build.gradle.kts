@@ -62,35 +62,35 @@ dependencies {
     androidTestImplementation(libs.uiTests.espressoCore)
     // endregion
     // Retrofit
-    implementation("com.squareup.retrofit2:retrofit:2.9.0")
-    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+    implementation(libs.retrofit)
+    implementation(libs.converter.gson)
 
     // Room
-    implementation("androidx.room:room-runtime:2.5.2")
-    kapt("androidx.room:room-compiler:2.5.2")
-    implementation("androidx.room:room-ktx:2.5.2")
+    implementation(libs.room.runtime)
+    kapt(libs.room.compiler)
+    implementation(libs.room.ktx)
 
     // Glide
-    implementation("com.github.bumptech.glide:glide:4.15.1")
-    annotationProcessor("com.github.bumptech.glide:glide:4.15.1")
+    implementation(libs.glide.v4151)
+    annotationProcessor(libs.glide.v4151)
 
     // Coroutines
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.1")
+    implementation(libs.kotlinx.coroutines.android)
 
     // Koin
-    implementation("io.insert-koin:koin-android:3.4.2")
+    implementation(libs.koin.android)
 
     // Gson
-    implementation("com.google.code.gson:gson:2.10.1")
+    implementation(libs.gson)
 
     // Material
-    implementation("com.google.android.material:material:1.9.0")
+    implementation(libs.material.v190)
 
     // Fragment
-    implementation("androidx.fragment:fragment-ktx:1.6.2")
+    implementation(libs.fragment.ktx)
 
     // Navigation
-    implementation("androidx.navigation:navigation-fragment-ktx:2.7.2")
-    implementation("androidx.navigation:navigation-ui-ktx:2.7.2")
+    implementation(libs.navigation.fragment.ktx)
+    implementation(libs.navigation.ui.ktx)
 
 }

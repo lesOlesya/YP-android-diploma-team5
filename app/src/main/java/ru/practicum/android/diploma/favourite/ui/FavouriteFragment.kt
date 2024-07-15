@@ -15,4 +15,9 @@ class FavouriteFragment : Fragment() {
         _binding = FavouriteFragmentBinding.inflate(layoutInflater, container, false)
         return binding.root
     }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
 }
