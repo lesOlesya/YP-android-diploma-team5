@@ -22,31 +22,27 @@ val dataModule = module {
             .getSharedPreferences("YP_HH_preferences", Context.MODE_PRIVATE)
     }
 
-    single<OkHttpClient> {
-        OkHttpClient.Builder()
-            .callTimeout(30, TimeUnit.SECONDS)
-            .readTimeout(30, TimeUnit.SECONDS)
-            .build()
+    single {
+        androidContext()
+            .getSharedPreferences("YP_HH_preferences", Context.MODE_PRIVATE)
     }
 
-    single<Retrofit> {
+    single<HeadHunterApi> {
         Retrofit.Builder()
-            .baseUrl(ApiConstants.BASE_URL)
-            .addConverterFactory(get<GsonConverterFactory>())
-            .client(get<OkHttpClient>())
+            .baseUrl("https://api.hh.ru")
+            .addConverterFactory(GsonConverterFactory.create())
             .build()
-    }
-
-    single<GsonConverterFactory> {
-        GsonConverterFactory.create()
+            .create(HeadHunterApi::class.java)
     }
 
     single<NetworkClient> {
         RetrofitNetworkClient(get(), get())
     }
 
-    single<HeadHunterApi> {
-        get<Retrofit>().create(HeadHunterApi::class.java)
+    factory { Gson() }
+
+    single<GsonConverterFactory> {
+        GsonConverterFactory.create()
     }
 
     single {
