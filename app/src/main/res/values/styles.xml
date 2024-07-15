@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="TextBold32">
+        <item name="fontFamily">@font/ys_display_bold</item>
+        <item name="android:textSize">@dimen/font_32</item>
+        <item name="android:textAllCaps">false</item>
+    </style>
+
+    <style name="TextMedium22">
+        <item name="fontFamily">@font/ys_display_medium</item>
+        <item name="android:textSize">@dimen/font_22</item>
+        <item name="android:textAllCaps">false</item>
+    </style>
+
+    <style name="TextMedium16">
+        <item name="fontFamily">@font/ys_display_medium</item>
+        <item name="android:textSize">@dimen/font_16</item>
+        <item name="android:textAllCaps">false</item>
+    </style>
+
+    <style name="TextRegular16">
+        <item name="fontFamily">@font/ys_display_regular</item>
+        <item name="android:textSize">@dimen/font_16</item>
+        <item name="android:textAllCaps">false</item>
+    </style>
+
+    <style name="TextRegular12">
+        <item name="fontFamily">@font/ys_display_regular</item>
+        <item name="android:textSize">@dimen/font_12</item>
+        <item name="android:textAllCaps">false</item>
+    </style>
+
+    <style name="ToolbarStyle">
+        <item name="android:titleTextAppearance">@style/TextMedium22</item>
+        <item name="theme">@style/Theme.PracticumAndroidDiploma</item>
+        <item name="titleTextColor">?attr/colorOnPrimary</item>
+    </style>
+
+    <style name="TeamBigTextStyle">
+        <item name="android:textAppearance">@style/TextBold32</item>
+        <item name="android:textColor">?attr/colorOnPrimary</item>
+    </style>
+
+    <style name="TeamNormalTextStyle" parent="TeamBigTextStyle">
+        <item name="android:textAppearance">@style/TextMedium16</item>
+    </style>
+
+    <style name="BottomNavStyle" parent="Widget.Design.BottomNavigationView">
+        <item name="itemTextColor">@drawable/icon_color_bn</item>
+        <item name="itemIconTint">@drawable/icon_color_bn</item>
+        <item name="itemTextAppearanceActive">@style/TextRegular12</item>
+        <item name="itemTextAppearanceInactive">@style/TextRegular12</item>
+        <item name="theme">@style/Theme.PracticumAndroidDiploma</item>
+    </style>
+</resources>
