@@ -13,8 +13,10 @@ interface HeadHunterApi {
     suspend fun search(@Query("text") text: String): VacancySearchResponse
 
     // не уверена, правильно или нет
-    @Headers("Authorization: Bearer {token}",
-        "HH-User-Agent: Jobka (olesyad285@gmail.com)")
+    @Headers(
+        "Authorization: Bearer {token}",
+        "HH-User-Agent: Jobka (olesyad285@gmail.com)"
+    )
     @GET("/vacancies/{vacancy_id}")
     suspend fun getVacancyDetails(
         @Path("token") token: String = BuildConfig.HH_ACCESS_TOKEN,
