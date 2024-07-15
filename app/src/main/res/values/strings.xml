@@ -45,11 +45,6 @@
     <string name="experience_vacancy_title">Требуемый опыт</string>
     <string name="description_vacancy_title">Описание вакансии</string>
     <string name="skills_vacancy_title">Ключевые навыки</string>
-    <string name="contacts_title">Контакты</string>
-    <string name="contact_person_title">Контактное лицо</string>
-    <string name="contact_email_title">E-mail</string>
-    <string name="contact_phone_title">Телефон</string>
-    <string name="comment_title">Комментарий</string>
 
     <!-- Team texts. -->
     <string name="developers">Над приложением работали</string>
@@ -68,6 +63,7 @@
     </plurals>
 
     <string name="vacancy_name_with_region">%1$s, %2$s</string>
+    <string name="employment_with_schedule">%1$s, %2$s</string>
     <string name="salary_is_empty">Зарплата не указана</string>
     <string name="from">от %1$d </string>
     <string name="to">до %1$d </string>
