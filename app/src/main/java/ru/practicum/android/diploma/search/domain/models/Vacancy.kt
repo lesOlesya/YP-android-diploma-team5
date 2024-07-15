@@ -7,7 +7,7 @@ data class Vacancy(
     val employerName: String?, // Работодатель
     val area: String, // Регион
     val artworkUrl: String?, // Логотип компании
-    //данные для деталей
+    // данные для деталей
     val vacancyIdInDatabase: Long = 0L, // ID вакансии в БД
     val experience: String? = null, // Опыт работы
     val employment: String? = null, // Тип занятости

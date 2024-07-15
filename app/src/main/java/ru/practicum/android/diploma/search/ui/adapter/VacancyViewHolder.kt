@@ -5,8 +5,8 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.ItemVacancyBinding
-import ru.practicum.android.diploma.util.px
 import ru.practicum.android.diploma.search.domain.models.Vacancy
+import ru.practicum.android.diploma.util.px
 import ru.practicum.android.diploma.util.salaryFormat
 
 class VacancyViewHolder(private val binding: ItemVacancyBinding) :
