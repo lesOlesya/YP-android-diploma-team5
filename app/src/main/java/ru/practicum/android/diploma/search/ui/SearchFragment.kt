@@ -15,4 +15,9 @@ class SearchFragment : Fragment() {
         _binding = SearchFragmentBinding.inflate(layoutInflater, container, false)
         return binding.root
     }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
 }
