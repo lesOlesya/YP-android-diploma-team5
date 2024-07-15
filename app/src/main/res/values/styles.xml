@@ -32,7 +32,7 @@
     </style>
 
     <style name="ToolbarStyle">
-        <item name="android:titleTextAppearance">@style/TextMedium22</item>
+        <item name="titleTextAppearance">@style/TextMedium22</item>
         <item name="theme">@style/Theme.PracticumAndroidDiploma</item>
         <item name="titleTextColor">?attr/colorOnPrimary</item>
     </style>
@@ -51,6 +51,56 @@
         <item name="itemIconTint">@drawable/icon_color_bn</item>
         <item name="itemTextAppearanceActive">@style/TextRegular12</item>
         <item name="itemTextAppearanceInactive">@style/TextRegular12</item>
+        <item name="android:background">?attr/colorPrimary</item>
         <item name="theme">@style/Theme.PracticumAndroidDiploma</item>
     </style>
+
+    <style name="EditTextStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/dp_56</item>
+        <item name="android:paddingStart">@dimen/dp_16</item>
+        <item name="android:paddingEnd">@dimen/dp_64</item>
+        <item name="android:layout_marginHorizontal">@dimen/dp_16</item>
+        <item name="android:layout_marginVertical">@dimen/dp_8</item>
+        <item name="android:hint">@string/enter_request_hint</item>
+        <item name="android:background">@drawable/rounded_search_edit_text</item>
+        <item name="android:inputType">text</item>
+        <item name="android:textColor">?attr/textColorSearchUrl</item>
+        <item name="android:textColorHint">?attr/colorOnSecondary</item>
+        <item name="android:textAppearance">@style/TextRegular16</item>
+        <item name="android:imeOptions">actionDone|flagNoExtractUi</item>
+        <item name="android:singleLine">true</item>
+    </style>
+
+    <style name="IconEditTextStyle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginHorizontal">@dimen/dp_16</item>
+        <item name="android:layout_marginVertical">@dimen/dp_8</item>
+        <item name="android:padding">@dimen/dp_4</item>
+        <item name="android:layout_gravity">end</item>
+    </style>
+
+    <style name="PlaceholderMessage">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">?attr/colorOnPrimary</item>
+        <item name="android:textAppearance">@style/TextMedium22</item>
+        <item name="android:padding">@dimen/dp_44</item>
+        <item name="android:drawablePadding">@dimen/dp_16</item>
+        <item name="android:textAlignment">center</item>
+    </style>
+
+    <style name="ChipMessage">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textAppearance">@style/TextRegular16</item>
+        <item name="chipBackgroundColor">?attr/colorPrimaryVariant</item>
+        <item name="chipStrokeColor">?attr/colorPrimaryVariant</item>
+        <item name="rippleColor">?attr/colorPrimaryVariant</item>
+        <item name="chipCornerRadius">@dimen/dp_12</item>
+    </style>
+
 </resources>

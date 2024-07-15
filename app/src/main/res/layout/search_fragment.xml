@@ -4,13 +4,151 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".search.ui.SearchFragment">
+    android:background="?attr/colorPrimary"
+    tools:context="search.ui.SearchFragment">
 
-    <TextView
-        android:id="@+id/search_headline"
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/leftBorder"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/search_headline"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="@dimen/dp_16" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/rightBorder"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_end="@dimen/dp_16" />
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar_search"
+        style="@style/ToolbarStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:minHeight="?attr/actionBarSize"
+        app:title="@string/search_headline" >
+
+        <ImageView
+            android:id="@+id/ivFilter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/dp_8"
+            android:layout_gravity="end"
+            android:foreground="?attr/selectableItemBackground"
+            android:src="@drawable/ic_filter_off"/>
+
+    </androidx.appcompat.widget.Toolbar>
+
+    <FrameLayout
+        android:id="@+id/fl_search_et"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toStartOf="@id/rightBorder"
+        app:layout_constraintStart_toEndOf="@id/leftBorder"
+        app:layout_constraintTop_toBottomOf="@id/toolbar_search">
+
+        <EditText
+            android:id="@+id/edit_text_search"
+            style="@style/EditTextStyle"
+            tools:text="Разработчик"/>
+
+        <ImageView
+            android:id="@+id/iv_icon_search"
+            style="@style/IconEditTextStyle"
+            android:visibility="gone"
+            android:src="@drawable/ic_search"/>
+
+        <ImageView
+            android:id="@+id/iv_icon_clear"
+            style="@style/IconEditTextStyle"
+            android:src="@drawable/ic_clear"/>
+    </FrameLayout>
+
+    <LinearLayout
+        android:id="@+id/fl_vacancy_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+        android:visibility="visible"
+        app:layout_constraintEnd_toStartOf="@id/rightBorder"
+        app:layout_constraintStart_toEndOf="@id/leftBorder"
+        app:layout_constraintTop_toBottomOf="@id/fl_search_et" >
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chip_vacancies"
+            style="@style/ChipMessage"
+            android:text="@string/vacancy_list_empty_label"
+            tools:text="Найдено 286 вакансий"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvVacancyList"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:animationCache="true"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:listitem="@layout/item_vacancy"/>
+    </LinearLayout>
+
+    <ProgressBar
+        android:id="@+id/progress_bar_search"
+        android:layout_width="@dimen/dp_48"
+        android:layout_height="@dimen/dp_48"
+        android:layout_gravity="center"
+        android:indeterminateTint="?attr/colorPrimaryVariant"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/rightBorder"
+        app:layout_constraintStart_toEndOf="@id/leftBorder"
+        app:layout_constraintTop_toBottomOf="@id/fl_search_et" />
+
+    <ImageView
+        android:id="@+id/ivSearchPlaceholder"
+        android:layout_width="@dimen/dp_0"
+        android:layout_height="@dimen/dp_0"
+        android:src="@drawable/placeholder_search"
+        android:visibility="gone"
+        app:layout_constraintDimensionRatio="h,328:223"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/rightBorder"
+        app:layout_constraintStart_toEndOf="@id/leftBorder"
+        app:layout_constraintTop_toBottomOf="@id/fl_search_et" />
+
+    <TextView
+        android:id="@+id/tvNoInternetPlaceholder"
+        style="@style/PlaceholderMessage"
+        android:text="@string/no_internet_error"
+        android:visibility="gone"
+        app:drawableTopCompat="@drawable/placeholder_no_internet"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/rightBorder"
+        app:layout_constraintStart_toEndOf="@id/leftBorder"
+        app:layout_constraintTop_toBottomOf="@id/fl_search_et" />
+
+    <TextView
+        android:id="@+id/tvServerErrorPlaceholder"
+        style="@style/PlaceholderMessage"
+        android:text="@string/server_error"
+        android:visibility="gone"
+        app:drawableTopCompat="@drawable/placeholder_server_error"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/rightBorder"
+        app:layout_constraintStart_toEndOf="@id/leftBorder"
+        app:layout_constraintTop_toBottomOf="@id/fl_search_et" />
+
+    <TextView
+        android:id="@+id/tvFailedRequestPlaceholder"
+        style="@style/PlaceholderMessage"
+        android:text="@string/vacancy_list_error"
+        android:visibility="gone"
+        app:drawableTopCompat="@drawable/placeholder_failed_request"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/rightBorder"
+        app:layout_constraintStart_toEndOf="@id/leftBorder"
+        app:layout_constraintTop_toBottomOf="@id/fl_search_et" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
+
