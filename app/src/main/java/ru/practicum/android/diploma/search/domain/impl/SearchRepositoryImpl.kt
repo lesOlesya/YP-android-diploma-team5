@@ -16,10 +16,10 @@ class SearchRepositoryImpl(private val retrofitService: HeadHunterApi) : SearchR
     override suspend fun search(term: String): Flow<Resource<VacancySearchResponse>> = flow {
         val response: VacancySearchResponse = retrofitService.search(term)
         when (response.resultCode) {
-            ErrorMessageConstants.NETWORK_ERROR  -> {
+            ErrorMessageConstants.NETWORK_ERROR -> {
                 emit(Resource.Error<VacancySearchResponse>(R.string.no_internet_error))
             }
-            ErrorMessageConstants.SUCCESS  -> {
+            ErrorMessageConstants.SUCCESS -> {
                 with(response) {
                     val data = results.map {
                         Vacancy(
