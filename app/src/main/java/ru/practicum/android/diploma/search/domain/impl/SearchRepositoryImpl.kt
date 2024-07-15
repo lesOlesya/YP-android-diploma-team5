@@ -13,11 +13,11 @@ import ru.practicum.android.diploma.search.domain.models.Vacancy
 import ru.practicum.android.diploma.util.Resource
 
 class SearchRepositoryImpl(private val retrofitService: HeadHunterApi) : SearchRepository {
-    override suspend fun search(term: String): Flow<Resource<VacancySearchResponse>> = flow {
+    override suspend fun search(term: String): Flow<Resource<List<Vacancy>>> = flow {
         val response: VacancySearchResponse = retrofitService.search(term)
         when (response.resultCode) {
             ErrorMessageConstants.NETWORK_ERROR -> {
-                emit(Resource.Error<VacancySearchResponse>(R.string.no_internet_error))
+                emit(Resource.Error(R.string.no_internet_error))
             }
             ErrorMessageConstants.SUCCESS -> {
                 with(response) {
