@@ -203,129 +203,6 @@
             app:layout_constraintTop_toBottomOf="@id/tvKeySkillsTitle"
             tools:text="@string/key_kills_description"/>
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/ContactBox"
-            android:layout_width="@dimen/dp_0"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dp_24"
-            app:layout_constraintEnd_toStartOf="@id/rightBorder"
-            app:layout_constraintStart_toEndOf="@id/leftBorder"
-            app:layout_constraintTop_toBottomOf="@id/tvKeySkills">
-
-            <TextView
-                android:id="@+id/tvContact"
-                style="@style/VacancyTitleTextStyle"
-                android:text="@string/contacts_title"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <androidx.constraintlayout.widget.Group
-                android:id="@+id/groupContactPerson"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:visibility="visible"
-                app:constraint_referenced_ids="tvContactPersonTitle, tvContactPersonValue"/>
-
-            <TextView
-                android:id="@+id/tvContactPersonTitle"
-                style="@style/VacancyDetailsCategoryTextStyle"
-                android:layout_marginTop="@dimen/dp_16"
-                android:text="@string/contact_person_title"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tvContact" />
-
-            <TextView
-                android:id="@+id/tvContactPersonValue"
-                style="@style/VacancyDetailsTextStyle"
-                android:layout_marginTop="@dimen/dp_4"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tvContactPersonTitle"
-                tools:text="Ирина" />
-
-            <androidx.constraintlayout.widget.Group
-                android:id="@+id/groupContactEmail"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:visibility="visible"
-                app:constraint_referenced_ids="tvContactEmailTitle, tvContactEmailValue"/>
-
-            <TextView
-                android:id="@+id/tvContactEmailTitle"
-                style="@style/VacancyDetailsCategoryTextStyle"
-                android:layout_marginTop="@dimen/dp_8"
-                android:text="@string/contact_email_title"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tvContactPersonValue" />
-
-            <TextView
-                android:id="@+id/tvContactEmailValue"
-                style="@style/VacancyDetailsTextStyle"
-                android:layout_marginTop="@dimen/dp_4"
-                android:textColor="?attr/colorPrimaryVariant"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tvContactEmailTitle"
-                tools:text="i.lozgkina@yandex.ru" />
-
-            <androidx.constraintlayout.widget.Group
-                android:id="@+id/groupContactPhone"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:visibility="visible"
-                app:constraint_referenced_ids="tvContactPhoneTitle, tvContactPhoneValue"/>
-
-            <TextView
-                android:id="@+id/tvContactPhoneTitle"
-                style="@style/VacancyDetailsCategoryTextStyle"
-                android:layout_marginTop="@dimen/dp_8"
-                android:text="@string/contact_phone_title"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tvContactEmailValue" />
-
-            <TextView
-                android:id="@+id/tvContactPhoneValue"
-                style="@style/VacancyDetailsTextStyle"
-                android:layout_marginTop="@dimen/dp_4"
-                android:textColor="?attr/colorPrimaryVariant"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tvContactPhoneTitle"
-                tools:text="+79505529558" />
-
-            <androidx.constraintlayout.widget.Group
-                android:id="@+id/groupComment"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:visibility="visible"
-                app:constraint_referenced_ids="tvCommentTitle, tvCommentValue"/>
-
-            <TextView
-                android:id="@+id/tvCommentTitle"
-                style="@style/VacancyDetailsCategoryTextStyle"
-                android:layout_marginTop="@dimen/dp_8"
-                android:text="@string/comment_title"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tvContactPhoneValue" />
-
-            <TextView
-                android:id="@+id/tvCommentValue"
-                style="@style/VacancyDetailsTextStyle"
-                android:layout_marginTop="@dimen/dp_4"
-                android:layout_marginBottom="@dimen/dp_24"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tvCommentTitle"
-                tools:text="Заполнить анкету по форме можно на нашем сайте" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
         <ProgressBar
             android:id="@+id/pbVacancy"
             android:layout_width="@dimen/dp_48"
@@ -352,7 +229,7 @@
             android:id="@+id/tvServerErrorVacancyPlaceholder"
             style="@style/PlaceholderMessage"
             android:text="@string/server_error"
-            android:visibility="gone"
+            android:visibility="visible"
             app:drawableTopCompat="@drawable/placeholder_server_error_vacancy"
             app:layout_constraintEnd_toStartOf="@id/rightBorder"
             app:layout_constraintStart_toEndOf="@id/leftBorder"
