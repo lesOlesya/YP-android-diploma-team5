@@ -37,7 +37,7 @@ val dataModule = module {
             .build()
     }
 
-    single<GsonConverterFactory>{
+    single<GsonConverterFactory> {
         GsonConverterFactory.create()
     }
 
