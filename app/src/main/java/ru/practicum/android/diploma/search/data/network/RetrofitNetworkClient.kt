@@ -14,7 +14,7 @@ class RetrofitNetworkClient(
     private val context: Context,
 ) : NetworkClient {
 
-    @Suppress("detekt.TooGenericExceptionCaught", "detekt.SwallowedException", "detekt.ReturnCount")
+    @Suppress("detekt.ReturnCount")
     override suspend fun doRequest(dto: Any): Response {
         if (isOnline(context) == false) {
             return Response().apply { resultCode = ErrorMessageConstants.NETWORK_ERROR }
@@ -27,6 +27,7 @@ class RetrofitNetworkClient(
         return requestWithContext(dto)
     }
 
+    @Suppress("detekt.TooGenericExceptionCaught", "detekt.SwallowedException")
     private suspend fun requestWithContext(dto: Any): Response {
         return withContext(Dispatchers.IO) {
             try {
