@@ -14,33 +14,26 @@ class RetrofitNetworkClient(
     private val context: Context,
 ) : NetworkClient {
 
+    @Suppress("detekt.TooGenericExceptionCaught", "detekt.SwallowedException")
     override suspend fun doRequest(dto: Any): Response {
         if (isOnline(context) == false) {
-            return Response().apply { resultCode = NETWORK_ERROR }
+            return Response().apply { resultCode = ErrorMessageConstants.NETWORK_ERROR }
         }
 
         if ((dto !is VacancySearchRequest) && (dto !is VacancyDetailsRequest)) {
-            return Response().apply { resultCode = REQUEST_ERROR }
+            return Response().apply { resultCode = ErrorMessageConstants.REQUEST_ERROR }
         }
 
-        @Suppress("detekt.Throwable")
         return withContext(Dispatchers.IO) {
             try {
                 val response = when (dto) {
                     is VacancySearchRequest -> headHunterService.search(dto.expression)
                     else -> headHunterService.getVacancyDetails(vacancyId = (dto as VacancyDetailsRequest).vacancyId)
                 }
-                response.apply { resultCode = SUCCESS }
+                response.apply { resultCode = ErrorMessageConstants.SUCCESS }
             } catch (e: Throwable) {
-                Response().apply { resultCode = SERVER_ERROR }
+                Response().apply { resultCode = ErrorMessageConstants.SERVER_ERROR }
             }
         }
-    }
-
-    companion object {
-        private const val NETWORK_ERROR = -1
-        private const val REQUEST_ERROR = 400
-        private const val SERVER_ERROR = 500
-        private const val SUCCESS = 200
     }
 }
