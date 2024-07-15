@@ -6,6 +6,5 @@ import ru.practicum.android.diploma.search.data.dto.VacancySearchResponse
 import ru.practicum.android.diploma.util.Resource
 
 interface SearchRepository {
-
-    suspend fun search(text: String): Flow<Resource<VacancySearchResponse>>
+    suspend fun search(text: String) : Flow<Resource<VacancySearchResponse>>
 }
