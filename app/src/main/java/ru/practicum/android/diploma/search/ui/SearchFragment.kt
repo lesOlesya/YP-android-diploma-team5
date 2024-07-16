@@ -9,27 +9,25 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.widget.EditText
+import android.widget.LinearLayout
 import android.widget.ProgressBar
-import androidx.constraintlayout.widget.Group
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import org.koin.core.parameter.parametersOf
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.SearchFragmentBinding
 import ru.practicum.android.diploma.search.domain.models.Vacancy
 import ru.practicum.android.diploma.search.presentation.SearchViewModel
 import ru.practicum.android.diploma.search.presentation.VacanciesState
 import ru.practicum.android.diploma.search.ui.adapter.VacancyAdapter
-import ru.practicum.android.diploma.vacancy.ui.VacancyFragment
 
 class SearchFragment : Fragment(), VacancyAdapter.VacancyClickListener {
     private var _binding: SearchFragmentBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var viewModel : SearchViewModel
+    private lateinit var viewModel: SearchViewModel
 
     private val adapter = VacancyAdapter(this)
     private lateinit var rvVacancies: RecyclerView
@@ -38,7 +36,7 @@ class SearchFragment : Fragment(), VacancyAdapter.VacancyClickListener {
 
     private lateinit var editText: EditText
     private lateinit var progressBar: ProgressBar
-    private lateinit var groupPlaceholders: Group
+    private lateinit var rvWithChip: LinearLayout
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = SearchFragmentBinding.inflate(layoutInflater, container, false)
@@ -54,9 +52,13 @@ class SearchFragment : Fragment(), VacancyAdapter.VacancyClickListener {
         rvVacancies.adapter = adapter
 
         editText = binding.editTextSearch
+        rvWithChip = binding.llRvAndChip
         progressBar = binding.progressBarSearch
-        groupPlaceholders = binding.groupPlaceholders
         val clearButton = binding.ivIconClear
+
+        binding.ivFilter.setOnClickListener {
+            findNavController().navigate(R.id.action_searchFragment_to_filterFragment)
+        }
 
         clearButton.setOnClickListener {
             editText.setText("")
@@ -69,8 +71,10 @@ class SearchFragment : Fragment(), VacancyAdapter.VacancyClickListener {
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 clearButton.isVisible = !s.isNullOrEmpty()
+                binding.ivIconSearch.isVisible = s.isNullOrEmpty()
                 if (editText.text.isEmpty()) {
-                    rvVacancies.isVisible = false
+                    rvWithChip.isVisible = false
+                    binding.ivSearchPlaceholder.isVisible = true
                 }
                 viewModel.searchDebounce(
                     changedText = s?.toString() ?: ""
@@ -97,11 +101,6 @@ class SearchFragment : Fragment(), VacancyAdapter.VacancyClickListener {
         }
     }
 
-    override fun onStart() {
-        super.onStart()
-        editText.requestFocus()
-    }
-
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
@@ -111,30 +110,31 @@ class SearchFragment : Fragment(), VacancyAdapter.VacancyClickListener {
     private fun render(state: VacanciesState) {
         when (state) {
             is VacanciesState.Loading -> showLoading()
-            is VacanciesState.Content -> showContent(state.vacancies)
+            is VacanciesState.Content -> showContent(state.vacancies, state.count)
             is VacanciesState.Error -> showError(state.errorCode)
             is VacanciesState.Empty -> showError(state.code)
         }
     }
 
     private fun showLoading() {
-        rvVacancies.isVisible = false
-        groupPlaceholders.isVisible = false
         progressBar.isVisible = true
+        rvWithChip.isVisible = false
+        binding.ivSearchPlaceholder.isVisible = false
     }
 
-    private fun showError(errorCode: Int) {
-        rvVacancies.isVisible = false
-        progressBar.isVisible = false
-
-        groupPlaceholders.isVisible = true
+    private fun showError(code: Int) {
+        TODO()
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    private fun showContent(vacancies: List<Vacancy>) {
-        rvVacancies.isVisible = editText.text.isNotEmpty()
-        groupPlaceholders.isVisible = false
+    private fun showContent(vacancies: List<Vacancy>, count: Int) {
         progressBar.isVisible = false
+        rvWithChip.isVisible = true
+        binding.ivSearchPlaceholder.isVisible = false
+        binding.chipVacancies.text = requireContext().resources.getQuantityString(
+            R.plurals.vacancyCount,
+            count, count
+        )
 
         adapter.vacancies.clear()
         adapter.vacancies.addAll(vacancies)

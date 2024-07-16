@@ -52,28 +52,27 @@
 
         <EditText
             android:id="@+id/edit_text_search"
-            style="@style/EditTextStyle"
-            tools:text="Разработчик" />
+            style="@style/EditTextStyle"/>
 
         <ImageView
             android:id="@+id/iv_icon_search"
             style="@style/IconEditTextStyle"
-            android:src="@drawable/ic_search"
-            android:visibility="gone" />
+            android:src="@drawable/ic_search" />
 
         <ImageView
             android:id="@+id/iv_icon_clear"
             style="@style/IconEditTextStyle"
-            android:src="@drawable/ic_clear" />
+            android:src="@drawable/ic_clear"
+            android:visibility="gone"/>
     </FrameLayout>
 
     <LinearLayout
-        android:id="@+id/fl_vacancy_list"
+        android:id="@+id/ll_rv_and_chip"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
         android:orientation="vertical"
-        android:visibility="visible"
+        android:visibility="gone"
         app:layout_constraintEnd_toStartOf="@id/rightBorder"
         app:layout_constraintStart_toEndOf="@id/leftBorder"
         app:layout_constraintTop_toBottomOf="@id/fl_search_et">
@@ -105,20 +104,20 @@
         app:layout_constraintStart_toEndOf="@id/leftBorder"
         app:layout_constraintTop_toBottomOf="@id/fl_search_et" />
 
-    <androidx.constraintlayout.widget.Group
-        android:id="@+id/groupPlaceholders"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-        app:constraint_referenced_ids="ivSearchPlaceholder, tvNoInternetPlaceholder,
-        tvServerErrorPlaceholder, tvFailedRequestPlaceholder" />
+<!--    <androidx.constraintlayout.widget.Group-->
+<!--        android:id="@+id/groupPlaceholders"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:visibility="visible"-->
+<!--        app:constraint_referenced_ids="ivSearchPlaceholder, tvNoInternetPlaceholder,-->
+<!--        tvServerErrorPlaceholder, tvFailedRequestPlaceholder" />-->
 
     <ImageView
         android:id="@+id/ivSearchPlaceholder"
         android:layout_width="@dimen/dp_0"
         android:layout_height="@dimen/dp_0"
         android:src="@drawable/placeholder_search"
-        android:visibility="gone"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintDimensionRatio="h,328:223"
         app:layout_constraintEnd_toStartOf="@id/rightBorder"

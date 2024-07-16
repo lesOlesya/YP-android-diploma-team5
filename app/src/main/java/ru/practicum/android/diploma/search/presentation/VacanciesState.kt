@@ -7,7 +7,8 @@ interface VacanciesState  {
     object Loading : VacanciesState
 
     data class Content(
-        val vacancies: List<Vacancy>
+        val vacancies: List<Vacancy>,
+        val count: Int
     ) : VacanciesState
 
     data class Error(

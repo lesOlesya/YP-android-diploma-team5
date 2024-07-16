@@ -5,10 +5,14 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
+import ru.practicum.android.diploma.search.data.network.ErrorMessageConstants
+import ru.practicum.android.diploma.search.domain.api.SearchInteractor
 import ru.practicum.android.diploma.search.domain.models.Vacancy
+import ru.practicum.android.diploma.search.domain.models.VacancyPagination
+import ru.practicum.android.diploma.util.debounce
 
 class SearchViewModel(
-    private val vacanciesInteractor: VacanciesInteractor,
+    private val searchInteractor: SearchInteractor,
 ) : ViewModel() {
 
     private val vacancies = ArrayList<Vacancy>()
@@ -34,8 +38,8 @@ class SearchViewModel(
         if (query.isNotEmpty()) {
             renderState(VacanciesState.Loading)
             viewModelScope.launch {
-                vacanciesInteractor
-                    .searchVacancies(query)
+                searchInteractor
+                    .search(query)
                     .collect { pair ->
                         processResult(pair.first, pair.second)
                     }
@@ -43,10 +47,10 @@ class SearchViewModel(
         }
     }
 
-    private fun processResult(foundVacancies: List<Vacancy>?, errorCode: Int?) {
-        if (foundVacancies != null) {
+    private fun processResult(vacancyPagination: VacancyPagination?, errorCode: Int?) {
+        if (vacancyPagination != null) {
             vacancies.clear()
-            vacancies.addAll(foundVacancies)
+            vacancies.addAll(vacancyPagination.vacancyList)
         }
         when {
             errorCode != null -> {
@@ -54,11 +58,11 @@ class SearchViewModel(
             }
 
             vacancies.isEmpty() -> {
-                renderState(VacanciesState.Empty(0))
+                renderState(VacanciesState.Empty(ErrorMessageConstants.NOTHING_FOUND))
             }
 
             else -> {
-                renderState(VacanciesState.Content(vacancies))
+                renderState(VacanciesState.Content(vacancies, vacancyPagination?.foundVacancies ?: 0))
             }
         }
     }

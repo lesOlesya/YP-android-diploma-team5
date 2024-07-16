@@ -4,11 +4,11 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import ru.practicum.android.diploma.search.domain.api.SearchInteractor
 import ru.practicum.android.diploma.search.domain.api.SearchRepository
-import ru.practicum.android.diploma.search.domain.models.Vacancy
+import ru.practicum.android.diploma.search.domain.models.VacancyPagination
 import ru.practicum.android.diploma.util.Resource
 
 class SearchInteractorImpl(private val repository: SearchRepository) : SearchInteractor {
-    override fun search(text: String): Flow<Pair<List<Vacancy>?, Int?>> {
+    override fun search(text: String): Flow<Pair<VacancyPagination?, Int?>> {
         return repository.search(text).map { result ->
             when (result) {
                 is Resource.Success -> {

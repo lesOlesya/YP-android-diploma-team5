@@ -1,5 +1,4 @@
 <resources>
-    <string name="app_name" translatable="false">Jobka</string>
     <!-- Headline texts. -->
     <string name="search_headline">Поиск вакансий</string>
     <string name="filter_headline">Настройки фильтрации</string>
@@ -51,16 +50,10 @@
     <string name="to">до %1$s \u0020</string>
 
     <plurals name="vacancyCount">
-        <item quantity="one">%1$d vacancy was found</item>
-        <item quantity="other">%1$d vacancies were found</item>
+        <item quantity="one">Найдена %1$d вакансия</item>
+        <item quantity="few">Найдено %1$d вакансии</item>
+        <item quantity="many">Найдено %1$d вакансий</item>
+        <item quantity="other">Найдено %1$d вакансий</item>
     </plurals>
-
-    <!--                                              Untranslatable                                                -->
-    <!-- Long tools text. -->
-    <string name="description_vacancy" translatable="false"><b>Подробное описание, которое приходит в html формате. Никогда не null</b>\n\n•  Разрабатывать новую функциональность приложения\n•  Помогать с интеграцией нашего SDK в другие приложения\n•  Проектировать большие новые модули\n•  Писать UI- и unit-тесты\n•  Следить за работоспособностью сервиса и устранять технический долг</string>
-    <string name="key_kills_description" translatable="false"><b>Ключевые навыки. Приходят в виде Array of objects</b>\n\n•  Знание классических алгоритмов и структуры данных\n•  Программирование для Android больше одного года\n•  Знание WebRTC</string>
-    <!-- Comma-separated. -->
-    <string name="vacancy_name_with_region" translatable="false">%1$s, %2$s</string>
-    <string name="employment_with_schedule" translatable="false">%1$s, %2$s</string>
 
 </resources>
