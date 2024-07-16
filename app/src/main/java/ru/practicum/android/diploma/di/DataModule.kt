@@ -19,11 +19,6 @@ val dataModule = module {
             .getSharedPreferences("YP_HH_preferences", Context.MODE_PRIVATE)
     }
 
-    single {
-        androidContext()
-            .getSharedPreferences("YP_HH_preferences", Context.MODE_PRIVATE)
-    }
-
     single<HeadHunterApi> {
         Retrofit.Builder()
             .baseUrl("https://api.hh.ru")
@@ -36,17 +31,12 @@ val dataModule = module {
         RetrofitNetworkClient(get(), get())
     }
 
-    factory { Gson() }
-
-    single<GsonConverterFactory> {
-        GsonConverterFactory.create()
-    }
-
     single {
         Room.databaseBuilder(androidContext(), AppDatabase::class.java, "database.db")
             .fallbackToDestructiveMigration()
             .build()
     }
 
+    factory { Gson() }
 
 }
