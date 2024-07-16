@@ -13,15 +13,16 @@ class FavoritesViewModel(private val interactor: FavoriteVacanciesInteractor) : 
 
     init {
         viewModelScope.launch {
-            interactor
-                .getFavoriteVacancies()
-                .collect { result ->
-                    if (result.isEmpty()) {
-                        _stateLiveData.value = FavoritesState.Error
-                    } else {
+            try {
+                interactor
+                    .getFavoriteVacancies()
+                    .collect { result ->
                         _stateLiveData.value = FavoritesState.Ready(result)
                     }
-                }
+            } catch (e: Exception) {
+                _stateLiveData.value = FavoritesState.Error
+            }
+
         }
     }
 }

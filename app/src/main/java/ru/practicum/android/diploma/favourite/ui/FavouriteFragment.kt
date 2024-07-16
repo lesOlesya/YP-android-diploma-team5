@@ -40,15 +40,18 @@ class FavouriteFragment : Fragment() {
         viewModel.stateLiveData.observe(viewLifecycleOwner) { stateLiveData ->
             when (stateLiveData) {
                 is FavoritesState.Ready -> {
-                    binding.elPlaceholder.root.visibility = View.GONE
                     vacancyAdapter.vacancies = stateLiveData.favoritesList as ArrayList<Vacancy>
-                    vacancyAdapter.notifyDataSetChanged()
+                    if (vacancyAdapter.vacancies.isEmpty())
+                        binding.elPlaceholder.root.visibility = View.VISIBLE
+                    else {
+                        binding.elPlaceholder.root.visibility = View.GONE
+                        binding.nfPlaceholder.root.visibility = View.GONE
+                        vacancyAdapter.notifyDataSetChanged()
+                    }
                 }
 
                 FavoritesState.Error -> {
-                    vacancyAdapter.vacancies = arrayListOf()
-                    vacancyAdapter.notifyDataSetChanged()
-                    binding.elPlaceholder.root.visibility = View.VISIBLE
+                    binding.nfPlaceholder.root.visibility = View.VISIBLE
                 }
 
                 FavoritesState.Loading -> {}
