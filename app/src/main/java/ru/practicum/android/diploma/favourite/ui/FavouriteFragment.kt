@@ -15,8 +15,8 @@ class FavouriteFragment : Fragment() {
     private var _binding: FavouriteFragmentBinding? = null
     private val binding get() = _binding!!
     private val viewModel: FavoritesViewModel by viewModel()
-    private val vacancyAdapter = VacancyAdapter { vacancy ->
-       // Add onClick
+    private val vacancyAdapter = VacancyAdapter {
+        vacancy -> // Add onClick
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -40,7 +40,7 @@ class FavouriteFragment : Fragment() {
     private fun setupObserver() {
         viewModel.stateLiveData.observe(viewLifecycleOwner) { stateLiveData ->
             when (stateLiveData) {
-                is FavoritesState.Ready-> {
+                is FavoritesState.Ready -> {
                     binding.elPlaceholder.root.visibility = View.GONE
                     vacancyAdapter.vacancies = stateLiveData.favoritesList as ArrayList<Vacancy>
                     vacancyAdapter.notifyDataSetChanged()

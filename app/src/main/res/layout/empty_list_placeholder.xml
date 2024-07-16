@@ -16,6 +16,6 @@
     <TextView
         style="@style/PlaceHolderText"
         android:layout_height="wrap_content"
-        android:text="@string/empty_list" />
+        android:text="@string/list_empty" />
 
 </LinearLayout>

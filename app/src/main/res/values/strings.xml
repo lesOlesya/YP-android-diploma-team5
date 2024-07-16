@@ -52,9 +52,6 @@
     <string name="olesya_dubentseva">Дубенцева Олеся Тимлид</string>
     <string name="anton_iushin">Юшин Антон Разработчик</string>
     <string name="vyacheslav_verman">Верман Вячеслав Разработчик</string>
-    <string name="empty_list">Список пуст</string>
-    <string name="not_found">Не удалось получить список вакансий</string>
-    <string name="favorites">Избранное</string>
 
     <!-- Long tools text -->
     <string name="description_vacancy" translatable="false"><b>Подробное описание, которое приходит в html формате. Никогда не null</b>\n\n•  Разрабатывать новую функциональность приложения\n•  Помогать с интеграцией нашего SDK в другие приложения\n•  Проектировать большие новые модули\n•  Писать UI- и unit-тесты\n•  Следить за работоспособностью сервиса и устранять технический долг</string>

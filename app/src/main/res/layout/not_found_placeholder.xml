@@ -16,6 +16,6 @@
     <TextView
         style="@style/PlaceHolderText"
         android:layout_height="wrap_content"
-        android:text="@string/not_found" />
+        android:text="@string/vacancy_list_error" />
 
 </LinearLayout>

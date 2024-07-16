@@ -15,7 +15,7 @@
         app:layout_constraintTop_toTopOf="parent"
         style="@style/ToolbarStyle"
         app:navigationIconTint="?android:colorSecondary"
-        app:title="@string/favorites" />
+        app:title="@string/favourite_headline" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/track_recycler"
