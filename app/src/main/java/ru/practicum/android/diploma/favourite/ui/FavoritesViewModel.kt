@@ -12,6 +12,11 @@ class FavoritesViewModel(private val interactor: FavoriteVacanciesInteractor) : 
     val stateLiveData: LiveData<FavoritesState> = _stateLiveData
 
     init {
+        getVacancies()
+    }
+
+    @Suppress("detekt.TooGenericExceptionCaught", "detekt.SwallowedException")
+    private fun getVacancies() {
         viewModelScope.launch {
             try {
                 interactor

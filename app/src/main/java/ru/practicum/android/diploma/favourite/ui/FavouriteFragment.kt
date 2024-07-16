@@ -41,8 +41,9 @@ class FavouriteFragment : Fragment() {
             when (stateLiveData) {
                 is FavoritesState.Ready -> {
                     vacancyAdapter.vacancies = stateLiveData.favoritesList as ArrayList<Vacancy>
-                    if (vacancyAdapter.vacancies.isEmpty())
+                    if (vacancyAdapter.vacancies.isEmpty()) {
                         binding.elPlaceholder.root.visibility = View.VISIBLE
+                    }
                     else {
                         binding.elPlaceholder.root.visibility = View.GONE
                         binding.nfPlaceholder.root.visibility = View.GONE
