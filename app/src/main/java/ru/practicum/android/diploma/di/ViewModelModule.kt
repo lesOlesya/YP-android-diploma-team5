@@ -7,6 +7,6 @@ import ru.practicum.android.diploma.favourite.ui.FavoritesViewModel
 val viewModelModule = module {
 
     viewModel<FavoritesViewModel> {
-        FavoritesViewModel()
+        FavoritesViewModel(get())
     }
 }

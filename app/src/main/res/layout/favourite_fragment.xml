@@ -13,6 +13,7 @@
         android:layout_width="match_parent"
         app:titleMarginBottom="@dimen/dp_16"
         app:layout_constraintTop_toTopOf="parent"
+        style="@style/ToolbarStyle"
         app:navigationIconTint="?android:colorSecondary"
         app:title="@string/favorites" />
 
@@ -30,23 +31,21 @@
 
     <include
         android:id="@+id/el_placeholder"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/toolbar"
-        android:layout_marginTop="@dimen/dp_64"
+        app:layout_constraintBottom_toBottomOf="parent"
+        style="@style/PlaceholderMessage"
         android:visibility="gone"
         layout="@layout/empty_list_placeholder"/>
 
     <include
         android:id="@+id/nf_placeholder"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/toolbar"
-        android:layout_marginTop="@dimen/dp_64"
+        app:layout_constraintBottom_toBottomOf="parent"
+        style="@style/PlaceholderMessage"
         android:visibility="gone"
         layout="@layout/not_found_placeholder"/>
 
