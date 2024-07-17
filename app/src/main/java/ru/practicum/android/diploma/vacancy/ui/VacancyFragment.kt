@@ -23,7 +23,6 @@ import ru.practicum.android.diploma.util.salaryFormat
 import ru.practicum.android.diploma.vacancy.presentation.VacancyViewModel
 
 class VacancyFragment : Fragment() {
-
     private var _binding: VacancyFragmentBinding? = null
     private val binding get() = _binding!!
 
@@ -48,9 +47,10 @@ class VacancyFragment : Fragment() {
         } else {
             showProgressBar(true)
             viewModel.getVacancy(vacancyID)
+            viewModel.isVacancyFavorite(vacancyID)
         }
 
-        viewModel.observeState().observe(viewLifecycleOwner) { state ->
+        viewModel.observeVacancyState().observe(viewLifecycleOwner) { state ->
             showProgressBar(false)
             when (state) {
                 is Resource.Error -> showError(state.message!!)
@@ -58,10 +58,19 @@ class VacancyFragment : Fragment() {
             }
         }
 
+        viewModel.observeFavoriteState().observe(viewLifecycleOwner) { isFavorite ->
+            if (isFavorite) {
+                binding.ivFavorites.setImageResource(R.drawable.ic_favorites_on)
+            } else {
+                binding.ivFavorites.setImageResource(R.drawable.ic_favorites_off)
+            }
+        }
+
         requireActivity().onBackPressedDispatcher.addCallback(
             viewLifecycleOwner,
             object : OnBackPressedCallback(true) {
                 override fun handleOnBackPressed() {
+                    viewModel.reloadUpdate()
                     findNavController().navigateUp()
                 }
             }
@@ -72,7 +81,7 @@ class VacancyFragment : Fragment() {
         }
 
         binding.ivShare.setOnClickListener {
-            val state = viewModel.getState()
+            val state = viewModel.getVacancyState()
             if (state is Resource.Success<Vacancy> && state.data?.vacancyUrlHh != null) {
                 val intent = Intent(Intent.ACTION_SEND)
                 intent.type = "text/plain"
@@ -80,6 +89,10 @@ class VacancyFragment : Fragment() {
                 intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK + Intent.FLAG_ACTIVITY_CLEAR_TASK
                 requireContext().startActivity(intent)
             }
+        }
+
+        binding.ivFavorites.setOnClickListener {
+            viewModel.favoriteClicked()
         }
     }
 

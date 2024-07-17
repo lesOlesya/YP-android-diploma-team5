@@ -14,6 +14,7 @@ import ru.practicum.android.diploma.favourite.presentation.FavoritesState
 import ru.practicum.android.diploma.favourite.presentation.FavoritesViewModel
 import ru.practicum.android.diploma.search.domain.models.Vacancy
 import ru.practicum.android.diploma.search.ui.adapter.VacancyAdapter
+import ru.practicum.android.diploma.vacancy.ui.VacancyFragment
 
 class FavouriteFragment : Fragment(), VacancyAdapter.VacancyClickListener {
     private var _binding: FavouriteFragmentBinding? = null
@@ -32,6 +33,11 @@ class FavouriteFragment : Fragment(), VacancyAdapter.VacancyClickListener {
         setupObserver()
     }
 
+    override fun onResume() {
+        super.onResume()
+        viewModel.checkFavorites()
+    }
+
     private fun setUpAdapter() {
         binding.trackRecycler.apply {
             adapter = vacancyAdapter
@@ -46,6 +52,7 @@ class FavouriteFragment : Fragment(), VacancyAdapter.VacancyClickListener {
                     vacancyAdapter.vacancies = stateLiveData.favoritesList as ArrayList<Vacancy>
                     if (vacancyAdapter.vacancies.isEmpty()) {
                         binding.elPlaceholder.visibility = View.VISIBLE
+                        vacancyAdapter.notifyDataSetChanged()
                     } else {
                         binding.elPlaceholder.visibility = View.GONE
                         binding.nfPlaceholder.visibility = View.GONE
@@ -71,7 +78,7 @@ class FavouriteFragment : Fragment(), VacancyAdapter.VacancyClickListener {
     override fun onVacancyClick(vacancy: Vacancy) {
         findNavController().navigate(
             R.id.action_favouriteFragment_to_vacancyFragment,
-//            VacancyFragment.createArgs(vacancy.vacancyId)
+            VacancyFragment.createArgs(vacancy.vacancyId)
         )
     }
 }
