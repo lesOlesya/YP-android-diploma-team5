@@ -8,8 +8,8 @@ import ru.practicum.android.diploma.search.domain.models.VacancyPagination
 import ru.practicum.android.diploma.util.Resource
 
 class SearchInteractorImpl(private val repository: SearchRepository) : SearchInteractor {
-    override fun search(text: String): Flow<Pair<VacancyPagination?, Int?>> {
-        return repository.search(text).map { result ->
+    override fun search(text: String, perPage: Int): Flow<Pair<VacancyPagination?, Int?>> {
+        return repository.search(text, perPage).map { result ->
             when (result) {
                 is Resource.Success -> {
                     Pair(result.data, null)

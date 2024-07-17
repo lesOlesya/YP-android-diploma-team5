@@ -51,6 +51,17 @@ class VacancyViewModel(private val interactor: VacancyDetailsInteractor) : ViewM
         }
     }
 
+    fun isVacancyFavorite(vacancyID: String) {
+        viewModelScope.launch {
+            val isFavorite = interactor.checkIsVacancyFavorite(vacancyID)
+            if (isFavorite && needUpdate) {
+                updateVacancy()
+                needUpdate = false
+            }
+            setFavoriteState(isFavorite)
+        }
+    }
+
     fun getVacancyFromDB(vacancyID: String) {
         viewModelScope.launch {
             interactor.getVacancyDetailsFromDB(vacancyID).collect { vacancy ->
