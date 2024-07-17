@@ -22,6 +22,7 @@ import ru.practicum.android.diploma.search.domain.models.Vacancy
 import ru.practicum.android.diploma.search.presentation.SearchViewModel
 import ru.practicum.android.diploma.search.presentation.VacanciesState
 import ru.practicum.android.diploma.search.ui.adapter.VacancyAdapter
+import ru.practicum.android.diploma.vacancy.ui.VacancyFragment
 
 class SearchFragment : Fragment(), VacancyAdapter.VacancyClickListener {
     private var _binding: SearchFragmentBinding? = null
@@ -151,7 +152,7 @@ class SearchFragment : Fragment(), VacancyAdapter.VacancyClickListener {
     override fun onVacancyClick(vacancy: Vacancy) {
         findNavController().navigate(
             R.id.action_searchFragment_to_vacancyFragment,
-//            VacancyFragment.createArgs(vacancy.vacancyId)
+            VacancyFragment.createArgs(vacancy.vacancyId)
         )
     }
 }

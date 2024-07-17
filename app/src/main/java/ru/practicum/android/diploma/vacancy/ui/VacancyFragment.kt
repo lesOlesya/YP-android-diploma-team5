@@ -16,13 +16,10 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.VacancyFragmentBinding
-import ru.practicum.android.diploma.search.domain.models.Salary
 import ru.practicum.android.diploma.search.domain.models.Vacancy
 import ru.practicum.android.diploma.util.Resource
-import ru.practicum.android.diploma.vacancy.presentation.viewModel.VacancyViewModel
-import java.text.DecimalFormat
-import java.text.DecimalFormatSymbols
-import java.util.Currency
+import ru.practicum.android.diploma.util.salaryFormat
+import ru.practicum.android.diploma.vacancy.presentation.VacancyViewModel
 
 class VacancyFragment : Fragment() {
 
@@ -87,7 +84,7 @@ class VacancyFragment : Fragment() {
     }
 
     private fun showError(error: Int) {
-
+        TODO()
     }
 
     private fun showVacancy(vacancy: Vacancy) {
@@ -95,11 +92,12 @@ class VacancyFragment : Fragment() {
             tvVacancyName.text = vacancy.vacancyName
             tvTypeOfEmployment.text = vacancy.employment
             tvDescription.text = Html.fromHtml(vacancy.description, Html.FROM_HTML_MODE_LEGACY)
+            tvSalary.text =
+                vacancy.salary?.salaryFormat(requireContext()) ?: getString(R.string.salary_is_empty)
         }
         showExperience(vacancy.experience)
         showCompany(vacancy.employerName, vacancy.area, vacancy.artworkUrl)
         showKeySkills(vacancy.keySkills)
-        showSalary(vacancy.salary)
     }
 
     private fun showExperience(experience: String?) {
@@ -110,7 +108,7 @@ class VacancyFragment : Fragment() {
         }
     }
 
-    private fun showCompany(companyName: String?, companyArea: String, companyLogo: String?) {
+    private fun showCompany(companyName: String?, companyArea: String?, companyLogo: String?) {
         binding.tvCompanyName.text = companyName
         binding.tvCity.text = companyArea
 
@@ -130,39 +128,6 @@ class VacancyFragment : Fragment() {
                 keySkillsText += "• $it\n"
             }
             binding.tvKeySkills.text = keySkillsText
-        }
-    }
-
-    private fun showSalary(salary: Salary?) {
-        if (salary == null || (salary.from == null && salary.to == null)) {
-            binding.tvSalary.setText(R.string.salary_is_empty)
-        } else {
-            val formatter = DecimalFormat()
-            val separator = DecimalFormatSymbols()
-            separator.groupingSeparator = ' '
-            formatter.decimalFormatSymbols = separator
-
-            val currencySymbol = if (salary.currency == null) {
-                ""
-            } else {
-                val currency: Currency = when (salary.currency) {
-                    "RUR" -> Currency.getInstance("RUB")
-                    else -> Currency.getInstance(salary.currency)
-                }
-                currency.symbol
-            }
-
-            binding.tvSalary.text = if (salary.from != null && salary.to != null) {
-                val from = formatter.format(salary.from)
-                val to = formatter.format(salary.to)
-                "${getString(R.string.from, from)} ${getString(R.string.to, to)} $currencySymbol"
-            } else if (salary.from != null){
-                val from = formatter.format(salary.from)
-                "${getString(R.string.from, from)}$currencySymbol"
-            } else {
-                val to = formatter.format(salary.to)
-                "${getString(R.string.to, to)}$currencySymbol"
-            }
         }
     }
 
