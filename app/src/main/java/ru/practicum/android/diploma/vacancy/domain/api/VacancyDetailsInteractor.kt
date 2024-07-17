@@ -13,4 +13,6 @@ interface VacancyDetailsInteractor {
     suspend fun addVacancyToFavorite(vacancy: Vacancy)
 
     suspend fun deleteVacancyFromFavorite(vacancyId: String)
+
+    suspend fun updateVacancy(vacancy: Vacancy)
 }

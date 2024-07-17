@@ -22,11 +22,12 @@ import ru.practicum.android.diploma.util.salaryFormat
 import ru.practicum.android.diploma.vacancy.presentation.VacancyViewModel
 
 class VacancyFragment : Fragment() {
-
     private var _binding: VacancyFragmentBinding? = null
     private val binding get() = _binding!!
 
     private val viewModel by viewModel<VacancyViewModel>()
+
+    private var needUpdate = true
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = VacancyFragmentBinding.inflate(layoutInflater, container, false)
@@ -61,6 +62,10 @@ class VacancyFragment : Fragment() {
         viewModel.observeFavoriteState().observe(viewLifecycleOwner) { isFavorite ->
             if (isFavorite) {
                 binding.ivFavorites.setImageResource(R.drawable.ic_favorites_on)
+                if (needUpdate) {
+                    viewModel.updateVacancy()
+                    needUpdate = false
+                }
             } else {
                 binding.ivFavorites.setImageResource(R.drawable.ic_favorites_off)
             }

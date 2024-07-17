@@ -4,12 +4,13 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.search.domain.models.Vacancy
 import ru.practicum.android.diploma.util.Resource
 import ru.practicum.android.diploma.vacancy.domain.api.VacancyDetailsInteractor
 
-class VacancyViewModel(private val repository: VacancyDetailsInteractor) : ViewModel() {
+class VacancyViewModel(private val interactor: VacancyDetailsInteractor) : ViewModel() {
 
     private val vacancyState = MutableLiveData<Resource<Vacancy>>()
 
@@ -33,7 +34,7 @@ class VacancyViewModel(private val repository: VacancyDetailsInteractor) : ViewM
 
     fun getVacancy(vacancyID: String) {
         viewModelScope.launch {
-            repository.getVacancyDetails(vacancyID).collect { resource ->
+            interactor.getVacancyDetails(vacancyID).collect { resource ->
                 setVacancyState(resource)
             }
         }
@@ -41,7 +42,7 @@ class VacancyViewModel(private val repository: VacancyDetailsInteractor) : ViewM
 
     fun isVacancyFavorite(vacancyID: String) {
         viewModelScope.launch {
-            setFavoriteState(repository.checkIsVacancyFavorite(vacancyID))
+            setFavoriteState(interactor.checkIsVacancyFavorite(vacancyID))
         }
     }
 
@@ -49,11 +50,18 @@ class VacancyViewModel(private val repository: VacancyDetailsInteractor) : ViewM
         viewModelScope.launch {
             val vacancyID = getVacancyState()?.data?.vacancyId!!
             if (getFavoriteState()) {
-                repository.deleteVacancyFromFavorite(vacancyID)
+                interactor.deleteVacancyFromFavorite(vacancyID)
             } else {
-                repository.addVacancyToFavorite(getVacancyState()?.data!!)
+                interactor.addVacancyToFavorite(getVacancyState()?.data!!)
             }
             isVacancyFavorite(vacancyID)
+        }
+    }
+
+    fun updateVacancy() {
+        viewModelScope.launch {
+            delay(500)
+            interactor.updateVacancy(getVacancyState()?.data!!)
         }
     }
 }

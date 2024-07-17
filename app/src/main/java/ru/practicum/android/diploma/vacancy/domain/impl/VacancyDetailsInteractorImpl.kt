@@ -31,4 +31,8 @@ class VacancyDetailsInteractorImpl(
     override suspend fun deleteVacancyFromFavorite(vacancyId: String) {
         vacancyFavorite.deleteFavoriteVacancy(vacancyId)
     }
+
+    override suspend fun updateVacancy(vacancy: Vacancy) {
+        vacancyFavorite.updateFavoriteVacancy(vacancy)
+    }
 }
