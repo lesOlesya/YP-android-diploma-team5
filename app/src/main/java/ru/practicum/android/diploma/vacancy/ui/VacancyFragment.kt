@@ -27,8 +27,6 @@ class VacancyFragment : Fragment() {
 
     private val viewModel by viewModel<VacancyViewModel>()
 
-    private var needUpdate = true
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = VacancyFragmentBinding.inflate(layoutInflater, container, false)
         return binding.root
@@ -62,10 +60,6 @@ class VacancyFragment : Fragment() {
         viewModel.observeFavoriteState().observe(viewLifecycleOwner) { isFavorite ->
             if (isFavorite) {
                 binding.ivFavorites.setImageResource(R.drawable.ic_favorites_on)
-                if (needUpdate) {
-                    viewModel.updateVacancy()
-                    needUpdate = false
-                }
             } else {
                 binding.ivFavorites.setImageResource(R.drawable.ic_favorites_off)
             }
@@ -75,6 +69,7 @@ class VacancyFragment : Fragment() {
             viewLifecycleOwner,
             object : OnBackPressedCallback(true) {
                 override fun handleOnBackPressed() {
+                    viewModel.reloadUpdate()
                     findNavController().navigateUp()
                 }
             }

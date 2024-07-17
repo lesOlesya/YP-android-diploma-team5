@@ -11,6 +11,7 @@ import ru.practicum.android.diploma.util.Resource
 import ru.practicum.android.diploma.vacancy.domain.api.VacancyDetailsInteractor
 
 class VacancyViewModel(private val interactor: VacancyDetailsInteractor) : ViewModel() {
+    private var needUpdate = true
 
     private val vacancyState = MutableLiveData<Resource<Vacancy>>()
 
@@ -42,7 +43,12 @@ class VacancyViewModel(private val interactor: VacancyDetailsInteractor) : ViewM
 
     fun isVacancyFavorite(vacancyID: String) {
         viewModelScope.launch {
-            setFavoriteState(interactor.checkIsVacancyFavorite(vacancyID))
+            val isFavorite = interactor.checkIsVacancyFavorite(vacancyID)
+            if (isFavorite && needUpdate) {
+                updateVacancy()
+                needUpdate = false
+            }
+            setFavoriteState(isFavorite)
         }
     }
 
@@ -60,8 +66,16 @@ class VacancyViewModel(private val interactor: VacancyDetailsInteractor) : ViewM
 
     fun updateVacancy() {
         viewModelScope.launch {
-            delay(500)
+            delay(DELAY)
             interactor.updateVacancy(getVacancyState()?.data!!)
         }
+    }
+
+    fun reloadUpdate() {
+        needUpdate = true
+    }
+
+    companion object {
+        const val DELAY = 500L
     }
 }
