@@ -23,7 +23,7 @@ class FavoriteVacancyDbConverter(private val gson: Gson) {
             vacancyUrlHh = vacancy.vacancyUrlHh ?: "",
             salary = gson.toJson(vacancy.salary), // from Salary to String
             keySkills = gson.toJson(vacancy.keySkills), // from List<String> to String
-            area = vacancy.area,
+            area = vacancy.area ?: "",
             description = vacancy.description ?: "",
             artworkUrl = vacancy.artworkUrl
         )

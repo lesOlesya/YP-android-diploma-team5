@@ -1,5 +1,6 @@
 package ru.practicum.android.diploma.search.data.dto
 
 class VacancySearchResponse(
-    val results: List<VacancyDto>
+    val items: List<VacancyDto>,
+    val found: Int
 ) : Response()
