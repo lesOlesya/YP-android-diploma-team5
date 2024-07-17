@@ -6,7 +6,6 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.ItemVacancyBinding
 import ru.practicum.android.diploma.search.domain.models.Vacancy
-import ru.practicum.android.diploma.util.px
 import ru.practicum.android.diploma.util.salaryFormat
 
 class VacancyViewHolder(private val binding: ItemVacancyBinding) :
@@ -14,7 +13,8 @@ class VacancyViewHolder(private val binding: ItemVacancyBinding) :
 
     fun bind(vacancy: Vacancy) {
         binding.tvVacancyName.text = itemView.context.getString(
-            R.string.vacancy_name_with_region, vacancy.vacancyName, vacancy.area)
+            R.string.vacancy_name_with_region, vacancy.vacancyName, vacancy.area
+        )
         binding.tvEmployer.text = vacancy.employerName
         binding.tvVacancySalary.text = vacancy.salary?.salaryFormat(itemView.context)
             ?: itemView.context.getString(R.string.salary_is_empty)
@@ -23,7 +23,7 @@ class VacancyViewHolder(private val binding: ItemVacancyBinding) :
             .load(vacancy.artworkUrl)
             .placeholder(R.drawable.logo_plug)
             .centerCrop()
-            .transform(RoundedCorners(12.px))
+            .transform(RoundedCorners(itemView.resources.getDimensionPixelSize(R.dimen.dp_12)))
             .into(binding.ivLogo)
     }
 

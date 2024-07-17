@@ -89,7 +89,8 @@ class VacancyFragment : Fragment() {
     private fun showVacancy(vacancy: Vacancy) {
         with(binding) {
             tvVacancyName.text = vacancy.vacancyName
-            tvTypeOfEmployment.text = vacancy.employment
+            tvTypeOfEmploymentAndSchedule.text = requireContext()
+                .getString(R.string.employment_with_schedule, vacancy.employment, vacancy.schedule)
             tvDescription.text = Html.fromHtml(vacancy.description, Html.FROM_HTML_MODE_LEGACY)
             tvSalary.text =
                 vacancy.salary?.salaryFormat(requireContext()) ?: getString(R.string.salary_is_empty)
@@ -137,7 +138,7 @@ class VacancyFragment : Fragment() {
             tvSalary.isVisible = !needShow
             VacancyCard.isVisible = !needShow
             groupExperience.isVisible = !needShow
-            tvTypeOfEmployment.isVisible = !needShow
+            tvTypeOfEmploymentAndSchedule.isVisible = !needShow
             groupDescriptionVacancy.isVisible = !needShow
             groupKeySkills.isVisible = !needShow
         }
