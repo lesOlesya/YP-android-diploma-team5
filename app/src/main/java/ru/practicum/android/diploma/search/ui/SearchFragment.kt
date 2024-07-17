@@ -27,17 +27,16 @@ class SearchFragment : Fragment(), VacancyAdapter.VacancyClickListener {
     private var _binding: SearchFragmentBinding? = null
     private val binding get() = _binding!!
 
-    private var _viewModel: SearchViewModel? = null
-    private val viewModel get() = _viewModel!!
+    private val viewModel by viewModel<SearchViewModel>()
 
     private val adapter = VacancyAdapter(this)
-    private val rvVacancies: RecyclerView by lazy { binding.rvVacancyList }
+    private var rvVacancies: RecyclerView? = null
 
     private var textWatcher: TextWatcher? = null
 
-    private val editText: EditText by lazy { binding.editTextSearch }
-    private val progressBar: ProgressBar by lazy { binding.progressBarSearch }
-    private val rvWithChip: LinearLayout by lazy { binding.llRvAndChip }
+    private var editText: EditText? = null
+    private var progressBar: ProgressBar? = null
+    private var rvWithChip: LinearLayout? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = SearchFragmentBinding.inflate(layoutInflater, container, false)
@@ -48,10 +47,12 @@ class SearchFragment : Fragment(), VacancyAdapter.VacancyClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        _viewModel = viewModel<SearchViewModel>().value
+        rvVacancies = binding.rvVacancyList
+        rvVacancies?.adapter = adapter
 
-        rvVacancies.adapter = adapter
-
+        editText = binding.editTextSearch
+        progressBar = binding.progressBarSearch
+        rvWithChip = binding.llRvAndChip
         val clearButton = binding.ivIconClear
 
         binding.ivFilter.setOnClickListener {
@@ -59,11 +60,10 @@ class SearchFragment : Fragment(), VacancyAdapter.VacancyClickListener {
         }
 
         clearButton.setOnClickListener {
-            editText.setText("")
+            editText?.setText("")
             adapter.notifyDataSetChanged()
         }
 
-        @SuppressLint("detekt.EmptyFunctionBlock")
         textWatcher = object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
                 // detekt
@@ -72,8 +72,8 @@ class SearchFragment : Fragment(), VacancyAdapter.VacancyClickListener {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 clearButton.isVisible = !s.isNullOrEmpty()
                 binding.ivIconSearch.isVisible = s.isNullOrEmpty()
-                if (editText.text.isEmpty()) {
-                    rvWithChip.isVisible = false
+                if (editText?.text?.isEmpty() == true) {
+                    rvWithChip?.isVisible = false
                     binding.ivSearchPlaceholder.isVisible = true
                 }
                 viewModel.searchDebounce(
@@ -85,12 +85,12 @@ class SearchFragment : Fragment(), VacancyAdapter.VacancyClickListener {
                 // detekt
             }
         }
-        textWatcher?.let { editText.addTextChangedListener(it) }
+        textWatcher?.let { editText?.addTextChangedListener(it) }
 
-        editText.setOnEditorActionListener { _, actionId, _ -> // enter на клаве
+        editText?.setOnEditorActionListener { _, actionId, _ -> // enter на клаве
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 viewModel.searchDebounce(
-                    changedText = editText.text.toString()
+                    changedText = editText?.text.toString()
                 )
                 true
             }
@@ -105,7 +105,7 @@ class SearchFragment : Fragment(), VacancyAdapter.VacancyClickListener {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-        textWatcher?.let { editText.removeTextChangedListener(it) }
+        textWatcher?.let { editText?.removeTextChangedListener(it) }
     }
 
     private fun render(state: VacanciesState) {
@@ -118,8 +118,8 @@ class SearchFragment : Fragment(), VacancyAdapter.VacancyClickListener {
     }
 
     private fun showLoading() {
-        progressBar.isVisible = true
-        rvWithChip.isVisible = false
+        progressBar?.isVisible = true
+        rvWithChip?.isVisible = false
         binding.ivSearchPlaceholder.isVisible = false
     }
 
@@ -129,8 +129,8 @@ class SearchFragment : Fragment(), VacancyAdapter.VacancyClickListener {
 
     @SuppressLint("NotifyDataSetChanged")
     private fun showContent(vacancies: List<Vacancy>, count: Int) {
-        progressBar.isVisible = false
-        rvWithChip.isVisible = true
+        progressBar?.isVisible = false
+        rvWithChip?.isVisible = true
         binding.ivSearchPlaceholder.isVisible = false
         binding.chipVacancies.text = requireContext().resources.getQuantityString(
             R.plurals.vacancyCount,
