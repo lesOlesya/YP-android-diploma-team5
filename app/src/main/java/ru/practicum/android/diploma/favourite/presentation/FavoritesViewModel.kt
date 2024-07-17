@@ -15,6 +15,10 @@ class FavoritesViewModel(private val interactor: FavoriteVacanciesInteractor) : 
         getVacancies()
     }
 
+    fun checkFavorites(){
+        getVacancies()
+    }
+
     @Suppress("detekt.TooGenericExceptionCaught", "detekt.SwallowedException")
     private fun getVacancies() {
         viewModelScope.launch {

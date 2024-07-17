@@ -9,11 +9,11 @@ import ru.practicum.android.diploma.search.domain.models.Vacancy
 import ru.practicum.android.diploma.util.Resource
 import ru.practicum.android.diploma.vacancy.data.dto.VacancyDetailsRequest
 import ru.practicum.android.diploma.vacancy.data.dto.VacancyDetailsResponse
-import ru.practicum.android.diploma.vacancy.domain.api.VacancyDetailsRepository
+import ru.practicum.android.diploma.vacancy.domain.api.VacancyDetailsByIDRepository
 
-class VacancyDetailsRepositoryImpl(
+class VacancyDetailsByIDRepositoryImpl(
     private val networkClient: NetworkClient
-) : VacancyDetailsRepository {
+) : VacancyDetailsByIDRepository {
 
     override fun getVacancyDetails(vacancyId: String): Flow<Resource<Vacancy>> = flow {
         val response = networkClient.doRequest(VacancyDetailsRequest(vacancyId))

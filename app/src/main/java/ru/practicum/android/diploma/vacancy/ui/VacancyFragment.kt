@@ -47,13 +47,22 @@ class VacancyFragment : Fragment() {
         } else {
             showProgressBar(true)
             viewModel.getVacancy(vacancyID)
+            viewModel.isVacancyFavorite(vacancyID)
         }
 
-        viewModel.observeState().observe(viewLifecycleOwner) { state ->
+        viewModel.observeVacancyState().observe(viewLifecycleOwner) { state ->
             showProgressBar(false)
             when (state) {
                 is Resource.Error -> showError(state.message!!)
                 is Resource.Success -> showVacancy(state.data!!)
+            }
+        }
+
+        viewModel.observeFavoriteState().observe(viewLifecycleOwner) { isFavorite ->
+            if (isFavorite) {
+                binding.ivFavorites.setImageResource(R.drawable.ic_favorites_on)
+            } else {
+                binding.ivFavorites.setImageResource(R.drawable.ic_favorites_off)
             }
         }
 
@@ -71,7 +80,7 @@ class VacancyFragment : Fragment() {
         }
 
         binding.ivShare.setOnClickListener {
-            val state = viewModel.getState()
+            val state = viewModel.getVacancyState()
             if (state is Resource.Success<Vacancy> && state.data?.vacancyUrlHh != null) {
                 val intent = Intent(Intent.ACTION_SEND)
                 intent.type = "text/plain"
@@ -79,6 +88,10 @@ class VacancyFragment : Fragment() {
                 intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK + Intent.FLAG_ACTIVITY_CLEAR_TASK
                 requireContext().startActivity(intent)
             }
+        }
+
+        binding.ivFavorites.setOnClickListener {
+            viewModel.favoriteClicked()
         }
     }
 
@@ -124,7 +137,7 @@ class VacancyFragment : Fragment() {
         } else {
             var keySkillsText = ""
             keySkills.forEach {
-                keySkillsText += "• $it\n"
+                keySkillsText += "   •   $it\n"
             }
             binding.tvKeySkills.text = keySkillsText
         }
