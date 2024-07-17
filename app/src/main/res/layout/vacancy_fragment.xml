@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/scrollView"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:background="?attr/colorPrimary"
     tools:context="ru.practicum.android.diploma.vacancy.ui.VacancyFragment">
 
@@ -145,7 +145,7 @@
             tools:text="От 1 года до 3 лет" />
 
         <TextView
-            android:id="@+id/tvTypeOfEmployment"
+            android:id="@+id/tvTypeOfEmploymentAndSchedule"
             style="@style/VacancyDetailsTextStyle"
             android:layout_marginTop="@dimen/dp_8"
             app:layout_constraintEnd_toStartOf="@id/rightBorder"
@@ -167,7 +167,7 @@
             android:text="@string/description_vacancy_title"
             app:layout_constraintEnd_toStartOf="@id/rightBorder"
             app:layout_constraintStart_toEndOf="@id/leftBorder"
-            app:layout_constraintTop_toBottomOf="@id/tvTypeOfEmployment"/>
+            app:layout_constraintTop_toBottomOf="@id/tvTypeOfEmploymentAndSchedule"/>
 
         <TextView
             android:id="@+id/tvDescription"
@@ -188,7 +188,6 @@
         <TextView
             android:id="@+id/tvKeySkillsTitle"
             style="@style/VacancyTitleTextStyle"
-            android:layout_marginTop="@dimen/dp_24"
             android:text="@string/skills_vacancy_title"
             app:layout_constraintEnd_toStartOf="@id/rightBorder"
             app:layout_constraintStart_toEndOf="@id/leftBorder"
@@ -229,7 +228,7 @@
             android:id="@+id/tvServerErrorVacancyPlaceholder"
             style="@style/PlaceholderMessage"
             android:text="@string/server_error"
-            android:visibility="visible"
+            android:visibility="gone"
             app:drawableTopCompat="@drawable/placeholder_server_error_vacancy"
             app:layout_constraintEnd_toStartOf="@id/rightBorder"
             app:layout_constraintStart_toEndOf="@id/leftBorder"
