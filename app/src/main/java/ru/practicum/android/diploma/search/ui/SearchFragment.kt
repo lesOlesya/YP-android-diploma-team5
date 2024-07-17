@@ -31,14 +31,13 @@ class SearchFragment : Fragment(), VacancyAdapter.VacancyClickListener {
     private val viewModel get() = _viewModel!!
 
     private val adapter = VacancyAdapter(this)
-    private var _rvVacancies: RecyclerView? = null
-    private val rvVacancies get() = _rvVacancies!!
+    private val rvVacancies: RecyclerView by lazy { binding.rvVacancyList }
 
     private var textWatcher: TextWatcher? = null
 
-    private lateinit var editText: EditText
-    private lateinit var progressBar: ProgressBar
-    private lateinit var rvWithChip: LinearLayout
+    private val editText: EditText by lazy { binding.editTextSearch }
+    private val progressBar: ProgressBar by lazy { binding.progressBarSearch }
+    private val rvWithChip: LinearLayout by lazy { binding.llRvAndChip }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = SearchFragmentBinding.inflate(layoutInflater, container, false)
@@ -51,12 +50,8 @@ class SearchFragment : Fragment(), VacancyAdapter.VacancyClickListener {
 
         _viewModel = viewModel<SearchViewModel>().value
 
-        _rvVacancies = binding.rvVacancyList
         rvVacancies.adapter = adapter
 
-        editText = binding.editTextSearch
-        rvWithChip = binding.llRvAndChip
-        progressBar = binding.progressBarSearch
         val clearButton = binding.ivIconClear
 
         binding.ivFilter.setOnClickListener {
