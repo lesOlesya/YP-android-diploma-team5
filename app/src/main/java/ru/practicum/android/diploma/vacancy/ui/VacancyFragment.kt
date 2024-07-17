@@ -18,6 +18,7 @@ import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.VacancyFragmentBinding
 import ru.practicum.android.diploma.search.data.network.ErrorMessageConstants
 import ru.practicum.android.diploma.search.domain.models.Vacancy
+import ru.practicum.android.diploma.util.NetworkHelper
 import ru.practicum.android.diploma.util.Resource
 import ru.practicum.android.diploma.util.salaryFormat
 import ru.practicum.android.diploma.vacancy.presentation.VacancyViewModel
@@ -47,13 +48,23 @@ class VacancyFragment : Fragment() {
         } else {
             showProgressBar(true)
             viewModel.getVacancy(vacancyID)
-            viewModel.isVacancyFavorite(vacancyID)
+            viewModel.isVacancyFavorite(vacancyID,NetworkHelper.isOnline(requireContext()))
         }
 
         viewModel.observeVacancyState().observe(viewLifecycleOwner) { state ->
             showProgressBar(false)
             when (state) {
-                is Resource.Error -> showError(state.message!!)
+                is Resource.Error -> {
+                    if (vacancyID != null) {
+                        viewModel.getVacancyFromDB(vacancyID)
+                    }
+                    viewModel.observeVacancyDBState().observe(viewLifecycleOwner) { vacancy ->
+                        if (vacancy != null)
+                            showVacancy(vacancy)
+                        else
+                            showError(state.message!!)
+                    }
+                }
                 is Resource.Success -> showVacancy(state.data!!)
             }
         }
@@ -92,16 +103,16 @@ class VacancyFragment : Fragment() {
         }
 
         binding.ivFavorites.setOnClickListener {
-            viewModel.favoriteClicked()
+            viewModel.favoriteClicked(NetworkHelper.isOnline(requireContext()))
         }
     }
 
     private fun showError(error: Int) {
         with(binding) {
-            if (error == ErrorMessageConstants.NOTHING_FOUND)
-                tvVacancyDetailsErrorPlaceholderVacancy.isVisible = true
-            else
-                tvServerErrorVacancyPlaceholder.isVisible = true
+            when(error) {
+                ErrorMessageConstants.NOTHING_FOUND -> tvVacancyDetailsErrorPlaceholderVacancy.isVisible = true
+                else -> tvServerErrorVacancyPlaceholder.isVisible = true
+            }
             mainContainer.isVisible = false
         }
 
@@ -109,6 +120,7 @@ class VacancyFragment : Fragment() {
 
     private fun showVacancy(vacancy: Vacancy) {
         with(binding) {
+            mainContainer.isVisible = true
             tvVacancyDetailsErrorPlaceholderVacancy.isVisible = false
             tvVacancyDetailsErrorPlaceholderVacancy.isVisible = false
             tvVacancyName.text = vacancy.vacancyName

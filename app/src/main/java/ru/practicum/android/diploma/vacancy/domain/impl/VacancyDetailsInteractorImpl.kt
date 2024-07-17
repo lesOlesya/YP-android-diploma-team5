@@ -16,6 +16,10 @@ class VacancyDetailsInteractorImpl(
         return vacancyDetailsByID.getVacancyDetails(vacancyId)
     }
 
+    override fun getVacancyDetailsFromDB(vacancyId: String): Flow<Vacancy?> {
+        return vacancyFavorite.getFavoriteVacancy(vacancyId)
+    }
+
     override suspend fun checkIsVacancyFavorite(vacancyId: String): Boolean {
         var findedVacancy: Vacancy? = null
         vacancyFavorite.getFavoriteVacancy(vacancyId).collect { vacancy ->

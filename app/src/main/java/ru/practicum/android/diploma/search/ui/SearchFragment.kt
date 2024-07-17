@@ -144,13 +144,11 @@ class SearchFragment : Fragment(), VacancyAdapter.VacancyClickListener {
     private fun showError(code: Int) {
         progressBar?.isVisible = false
         with(binding) {
-            if (!NetworkHelper.isOnline(requireContext())) {
-                tvNoInternetPlaceholder.isVisible = true
-            } else {
-                if (code == ErrorMessageConstants.NOTHING_FOUND)
-                    tvFailedRequestPlaceholder.isVisible = true
-                else
-                    tvServerErrorPlaceholder.isVisible = true
+            when(code) {
+                ErrorMessageConstants.NETWORK_ERROR -> tvNoInternetPlaceholder.isVisible = true
+                ErrorMessageConstants.NOTHING_FOUND -> tvFailedRequestPlaceholder.isVisible = true
+                ErrorMessageConstants.SERVER_ERROR -> tvServerErrorPlaceholder.isVisible = true
+                else -> tvServerErrorPlaceholder.isVisible = true
             }
         }
     }
