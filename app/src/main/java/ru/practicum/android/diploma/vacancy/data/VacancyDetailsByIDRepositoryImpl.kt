@@ -1,7 +1,9 @@
 package ru.practicum.android.diploma.vacancy.data
 
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
 import ru.practicum.android.diploma.search.data.NetworkClient
 import ru.practicum.android.diploma.search.data.network.ErrorMessageConstants
 import ru.practicum.android.diploma.search.domain.models.Salary
@@ -48,5 +50,5 @@ class VacancyDetailsByIDRepositoryImpl(
                 emit(Resource.Error(ErrorMessageConstants.SERVER_ERROR))
             }
         }
-    }
+    }.flowOn(Dispatchers.IO)
 }

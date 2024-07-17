@@ -67,7 +67,7 @@ class SearchFragment : Fragment(), VacancyAdapter.VacancyClickListener {
                 tvFailedRequestPlaceholder.isVisible = false
                 tvServerErrorPlaceholder.isVisible = false
                 tvNoInternetPlaceholder.isVisible = false
-                rvWithChip?.isVisible  = false
+                rvWithChip?.isVisible = false
                 progressBar?.isVisible = false
             }
         }
@@ -158,13 +158,18 @@ class SearchFragment : Fragment(), VacancyAdapter.VacancyClickListener {
 
     private fun showError(code: Int) {
         progressBar?.isVisible = false
+        rvWithChip?.isVisible = false
         with(binding) {
             when (code) {
                 ErrorMessageConstants.NETWORK_ERROR -> tvNoInternetPlaceholder.isVisible = true
                 ErrorMessageConstants.NOTHING_FOUND -> {
                     tvFailedRequestPlaceholder.isVisible = true
                     rvWithChip?.isVisible = true
+                    rvVacancies?.isVisible = false
+                    chipVacancies.isVisible = true
+                    chipVacancies.text = requireContext().getString(R.string.vacancy_list_empty_label)
                 }
+
                 ErrorMessageConstants.SERVER_ERROR -> tvServerErrorPlaceholder.isVisible = true
                 else -> tvServerErrorPlaceholder.isVisible = true
             }
