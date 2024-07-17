@@ -29,15 +29,15 @@ class VacancyDetailsRepositoryImpl(
                         Vacancy(
                             vacancyId = id,
                             vacancyName = name,
-                            salary = Salary(salary.from, salary.to, salary.currency),
+                            salary = Salary(salary?.from, salary?.to, salary?.currency),
                             employerName = employer.name,
                             area = area.name,
-                            artworkUrl = employer.logoUrls.logo240,
-                            experience = experience.name,
-                            employment = employment.name,
-                            schedule = schedule.name,
+                            artworkUrl = employer.logoUrls?.logo240,
+                            experience = experience?.name,
+                            employment = employment?.name,
+                            schedule = schedule?.name,
                             description = description,
-                            keySkills = keySkills.map { it.name },
+                            keySkills = keySkills?.map { it.name },
                             vacancyUrlHh = alternateUrl,
                         )
                     emit(Resource.Success(data))
