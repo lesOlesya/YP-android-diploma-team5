@@ -5,18 +5,21 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import ru.practicum.android.diploma.databinding.FavouriteFragmentBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import ru.practicum.android.diploma.R
+import ru.practicum.android.diploma.favourite.presentation.FavoritesState
+import ru.practicum.android.diploma.favourite.presentation.FavoritesViewModel
 import ru.practicum.android.diploma.search.domain.models.Vacancy
 import ru.practicum.android.diploma.search.ui.adapter.VacancyAdapter
 
-class FavouriteFragment : Fragment() {
+class FavouriteFragment : Fragment(), VacancyAdapter.VacancyClickListener {
     private var _binding: FavouriteFragmentBinding? = null
     private val binding get() = _binding!!
     private val viewModel: FavoritesViewModel by viewModel()
-    private val vacancyAdapter = VacancyAdapter { vacancy -> // Add onClick
-    }
+    private val vacancyAdapter = VacancyAdapter(this)
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FavouriteFragmentBinding.inflate(layoutInflater, container, false)
@@ -42,16 +45,16 @@ class FavouriteFragment : Fragment() {
                 is FavoritesState.Ready -> {
                     vacancyAdapter.vacancies = stateLiveData.favoritesList as ArrayList<Vacancy>
                     if (vacancyAdapter.vacancies.isEmpty()) {
-                        binding.elPlaceholder.root.visibility = View.VISIBLE
+                        binding.elPlaceholder.visibility = View.VISIBLE
                     } else {
-                        binding.elPlaceholder.root.visibility = View.GONE
-                        binding.nfPlaceholder.root.visibility = View.GONE
+                        binding.elPlaceholder.visibility = View.GONE
+                        binding.nfPlaceholder.visibility = View.GONE
                         vacancyAdapter.notifyDataSetChanged()
                     }
                 }
 
                 FavoritesState.Error -> {
-                    binding.nfPlaceholder.root.visibility = View.VISIBLE
+                    binding.nfPlaceholder.visibility = View.VISIBLE
                 }
 
                 FavoritesState.Loading -> {}
@@ -63,5 +66,12 @@ class FavouriteFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    override fun onVacancyClick(vacancy: Vacancy) {
+        findNavController().navigate(
+            R.id.action_favouriteFragment_to_vacancyFragment,
+//            VacancyFragment.createArgs(vacancy.vacancyId)
+        )
     }
 }

@@ -1,20 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="?android:colorPrimary"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".favourite.ui.FavouriteFragment">
 
-    <com.google.android.material.appbar.MaterialToolbar
+    <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
-        android:layout_height="wrap_content"
-        android:layout_width="match_parent"
-        app:titleMarginBottom="@dimen/dp_16"
-        app:layout_constraintTop_toTopOf="parent"
         style="@style/ToolbarStyle"
-        app:navigationIconTint="?android:colorSecondary"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
         app:title="@string/favourite_headline" />
 
     <androidx.recyclerview.widget.RecyclerView
@@ -29,24 +27,26 @@
         app:layout_constraintTop_toBottomOf="@id/toolbar"
         app:layout_constraintVertical_bias="0.0" />
 
-    <include
+    <TextView
         android:id="@+id/el_placeholder"
+        style="@style/PlaceholderMessage"
+        android:text="@string/list_empty"
+        android:visibility="gone"
+        app:drawableTopCompat="@drawable/empty_list_placeholder"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/toolbar"
-        app:layout_constraintBottom_toBottomOf="parent"
-        style="@style/PlaceholderMessage"
-        android:visibility="gone"
-        layout="@layout/empty_list_placeholder"/>
+        app:layout_constraintBottom_toBottomOf="parent" />
 
-    <include
+    <TextView
         android:id="@+id/nf_placeholder"
+        style="@style/PlaceholderMessage"
+        android:text="@string/vacancy_list_error"
+        android:visibility="gone"
+        app:drawableTopCompat="@drawable/not_found_placeholder"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/toolbar"
-        app:layout_constraintBottom_toBottomOf="parent"
-        style="@style/PlaceholderMessage"
-        android:visibility="gone"
-        layout="@layout/not_found_placeholder"/>
+        app:layout_constraintBottom_toBottomOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
