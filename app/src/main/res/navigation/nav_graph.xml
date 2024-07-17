@@ -36,5 +36,9 @@
         android:id="@+id/favouriteFragment"
         android:name="ru.practicum.android.diploma.favourite.ui.FavouriteFragment"
         android:label="favourite_fragment"
-        tools:layout="@layout/favourite_fragment" />
+        tools:layout="@layout/favourite_fragment" >
+        <action
+            android:id="@+id/action_favouriteFragment_to_vacancyFragment"
+            app:destination="@id/vacancyFragment" />
+    </fragment>
 </navigation>

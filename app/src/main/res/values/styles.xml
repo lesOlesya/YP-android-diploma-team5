@@ -5,6 +5,7 @@
         <item name="titleTextAppearance">@style/TextMedium22</item>
         <item name="theme">@style/Theme.PracticumAndroidDiploma</item>
         <item name="titleTextColor">?attr/colorOnPrimary</item>
+        <item name="android:minHeight">?attr/actionBarSize</item>
     </style>
 
     <style name="TextBold32">
@@ -69,7 +70,7 @@
         <item name="android:background">?attr/colorPrimary</item>
         <item name="theme">@style/Theme.PracticumAndroidDiploma</item>
     </style>
-  
+
     <style name="EditTextStyle">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">@dimen/dp_56</item>
