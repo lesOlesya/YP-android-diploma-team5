@@ -27,10 +27,12 @@ class SearchFragment : Fragment(), VacancyAdapter.VacancyClickListener {
     private var _binding: SearchFragmentBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var viewModel: SearchViewModel
+    private var _viewModel: SearchViewModel? = null
+    private val viewModel get() = _viewModel!!
 
     private val adapter = VacancyAdapter(this)
-    private lateinit var rvVacancies: RecyclerView
+    private var _rvVacancies: RecyclerView? = null
+    private val rvVacancies get() = _rvVacancies!!
 
     private var textWatcher: TextWatcher? = null
 
@@ -43,12 +45,13 @@ class SearchFragment : Fragment(), VacancyAdapter.VacancyClickListener {
         return binding.root
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel = viewModel<SearchViewModel>().value
+        _viewModel = viewModel<SearchViewModel>().value
 
-        rvVacancies = binding.rvVacancyList
+        _rvVacancies = binding.rvVacancyList
         rvVacancies.adapter = adapter
 
         editText = binding.editTextSearch
@@ -65,6 +68,7 @@ class SearchFragment : Fragment(), VacancyAdapter.VacancyClickListener {
             adapter.notifyDataSetChanged()
         }
 
+        @SuppressLint("detekt.EmptyFunctionBlock")
         textWatcher = object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
             }
@@ -86,7 +90,7 @@ class SearchFragment : Fragment(), VacancyAdapter.VacancyClickListener {
         }
         textWatcher?.let { editText.addTextChangedListener(it) }
 
-        editText.setOnEditorActionListener { _, actionId, _ -> //enter на клаве
+        editText.setOnEditorActionListener { _, actionId, _ -> // enter на клаве
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 viewModel.searchDebounce(
                     changedText = editText.text.toString()

@@ -2,7 +2,7 @@ package ru.practicum.android.diploma.search.presentation
 
 import ru.practicum.android.diploma.search.domain.models.Vacancy
 
-interface VacanciesState  {
+interface VacanciesState {
 
     object Loading : VacanciesState
 
