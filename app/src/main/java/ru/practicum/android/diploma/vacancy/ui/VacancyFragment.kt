@@ -125,7 +125,7 @@ class VacancyFragment : Fragment() {
         } else {
             var keySkillsText = ""
             keySkills.forEach {
-                keySkillsText += "• $it\n"
+                keySkillsText += "   •   $it\n"
             }
             binding.tvKeySkills.text = keySkillsText
         }
