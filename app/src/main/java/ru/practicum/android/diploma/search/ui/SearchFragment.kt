@@ -43,7 +43,6 @@ class SearchFragment : Fragment(), VacancyAdapter.VacancyClickListener {
         return binding.root
     }
 
-    @SuppressLint("NotifyDataSetChanged")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -61,7 +60,6 @@ class SearchFragment : Fragment(), VacancyAdapter.VacancyClickListener {
 
         clearButton.setOnClickListener {
             editText?.setText("")
-            adapter.notifyDataSetChanged()
         }
 
         textWatcher = object : TextWatcher {
@@ -99,6 +97,14 @@ class SearchFragment : Fragment(), VacancyAdapter.VacancyClickListener {
 
         viewModel.getStateLiveData().observe(viewLifecycleOwner) {
             render(it)
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (editText?.text?.isEmpty() == true) {
+            rvWithChip?.isVisible = false
+            binding.ivSearchPlaceholder.isVisible = true
         }
     }
 
