@@ -63,7 +63,8 @@ class VacancyFragment : Fragment() {
                 override fun handleOnBackPressed() {
                     findNavController().navigateUp()
                 }
-            })
+            }
+        )
 
         binding.toolbarVacancy.setNavigationOnClickListener {
             requireActivity().onBackPressedDispatcher.onBackPressed()
@@ -71,7 +72,7 @@ class VacancyFragment : Fragment() {
 
         binding.ivShare.setOnClickListener {
             val state = viewModel.getState()
-            if (state != null && state is Resource.Success<Vacancy>) {
+            if (state is Resource.Success<Vacancy>) {
                 if (state.data?.vacancyUrlHh != null) {
                     val intent = Intent(Intent.ACTION_SEND)
                     intent.type = "text/plain"

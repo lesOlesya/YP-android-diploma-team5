@@ -1,5 +1,6 @@
 package ru.practicum.android.diploma.vacancy.data.dto
 
+import com.google.gson.annotations.SerializedName
 import ru.practicum.android.diploma.search.data.dto.Response
 
 @Suppress("detekt.LongParameterList")
@@ -13,8 +14,8 @@ class VacancyDetailsResponse(
     val employment: EmploymentResponse?, // Тип занятости
     val schedule: ScheduleResponse?, // Расписание
     val description: String, // Описание вакансии
-    val key_skills: List<KeySkillResponse>?, // Ключевые навыки
-    val alternate_url: String, // Ссылка на вакансию на hh.ru
+    @SerializedName("key_skills")val keySkills: List<KeySkillResponse>?, // Ключевые навыки
+    @SerializedName("alternate_url")val alternateUrl: String, // Ссылка на вакансию на hh.ru
 ) : Response()
 
 class AreaResponse(
@@ -28,13 +29,13 @@ class SalaryResponse(
 )
 
 class EmployerResponse(
-    val logo_urls: LogoUrlsResponse?,
+    @SerializedName("logo_urls")val logoUrls: LogoUrlsResponse?,
     val name: String,
 )
 
 class LogoUrlsResponse(
-    val `240`: String,
-    val `90`: String,
+    @SerializedName("240")val logo240: String,
+    @SerializedName("90")val logo90: String,
     val original: String
 )
 
