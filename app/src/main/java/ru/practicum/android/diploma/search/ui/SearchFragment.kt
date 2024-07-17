@@ -104,7 +104,7 @@ class SearchFragment : Fragment(), VacancyAdapter.VacancyClickListener {
                 if (dy > 0) {
                     val pos = (rvVacancies?.layoutManager as LinearLayoutManager).findLastVisibleItemPosition()
                     val itemsCount = adapter.itemCount
-                    if (pos >= itemsCount-1) {
+                    if (pos >= itemsCount - 1) {
                         viewModel.searchVacancies(editText?.text.toString(), false)
                     }
                 }
