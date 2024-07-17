@@ -1,6 +1,5 @@
 package ru.practicum.android.diploma.vacancy.domain.impl
 
-
 import kotlinx.coroutines.flow.Flow
 import ru.practicum.android.diploma.favourite.domain.api.FavoriteVacanciesRepository
 import ru.practicum.android.diploma.search.domain.models.Vacancy

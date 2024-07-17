@@ -15,7 +15,7 @@ class FavoritesViewModel(private val interactor: FavoriteVacanciesInteractor) : 
         getVacancies()
     }
 
-    fun checkFavorites(){
+    fun checkFavorites() {
         getVacancies()
     }
 
