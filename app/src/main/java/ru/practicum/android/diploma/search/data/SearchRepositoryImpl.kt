@@ -10,13 +10,14 @@ import ru.practicum.android.diploma.search.data.network.ErrorMessageConstants
 import ru.practicum.android.diploma.search.domain.api.SearchRepository
 import ru.practicum.android.diploma.search.domain.models.Salary
 import ru.practicum.android.diploma.search.domain.models.Vacancy
+import ru.practicum.android.diploma.search.domain.models.VacancyPagination
 import ru.practicum.android.diploma.util.Resource
 
 class SearchRepositoryImpl(
     private val networkClient: NetworkClient
 ) : SearchRepository {
 
-    override fun search(text: String): Flow<Resource<List<Vacancy>>> = flow {
+    override fun search(text: String): Flow<Resource<VacancyPagination>> = flow {
         val response = networkClient.doRequest(VacancySearchRequest(text))
 
         when (response.resultCode) {
@@ -26,18 +27,23 @@ class SearchRepositoryImpl(
 
             ErrorMessageConstants.SUCCESS -> {
                 with(response as VacancySearchResponse) {
-                    val data = results.map {
+                    val data = items.map {
                         Vacancy(
                             vacancyId = it.id,
                             vacancyName = it.name,
-                            salary = Salary(it.salary.from, it.salary.to, it.salary.currency),
+                            salary = Salary(it.salary?.from, it.salary?.to, it.salary?.currency),
                             employerName = it.employer.name,
                             area = it.area.name,
-                            artworkUrl = it.employer.logoUrls.logo240
+                            artworkUrl = it.employer.logoUrls?.logo240
                         )
                     }
-                    emit(Resource.Success(data))
+                    val vacancyPagination = VacancyPagination(data, found)
+                    emit(Resource.Success(vacancyPagination))
                 }
+            }
+
+            ErrorMessageConstants.REQUEST_ERROR -> {
+                emit(Resource.Error(ErrorMessageConstants.REQUEST_ERROR))
             }
 
             else -> {

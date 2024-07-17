@@ -5,7 +5,7 @@ data class Vacancy(
     val vacancyName: String, // Название вакансии
     val salary: Salary?, // ЗП
     val employerName: String?, // Работодатель
-    val area: String, // Регион
+    val area: String?, // Регион
     val artworkUrl: String?, // Логотип компании
     // данные для деталей
     val vacancyIdInDatabase: Long = 0L, // ID вакансии в БД
