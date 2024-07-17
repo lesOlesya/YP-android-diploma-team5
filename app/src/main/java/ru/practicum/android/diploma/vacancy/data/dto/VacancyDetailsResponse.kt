@@ -6,15 +6,15 @@ import ru.practicum.android.diploma.search.data.dto.Response
 class VacancyDetailsResponse(
     val id: String, // ID вакансии
     val name: String, // Название вакансии
-    val salary: SalaryResponse, // ЗП
+    val salary: SalaryResponse?, // ЗП
     val employer: EmployerResponse, // Работодатель
     val area: AreaResponse, // Регион
-    val experience: ExperienceResponse, // Опыт работы
-    val employment: EmploymentResponse, // Тип занятости
-    val schedule: ScheduleResponse, // Расписание
+    val experience: ExperienceResponse?, // Опыт работы
+    val employment: EmploymentResponse?, // Тип занятости
+    val schedule: ScheduleResponse?, // Расписание
     val description: String, // Описание вакансии
-    val keySkills: List<KeySkillResponse>, // Ключевые навыки
-    val alternateUrl: String, // Ссылка на вакансию на hh.ru
+    val key_skills: List<KeySkillResponse>?, // Ключевые навыки
+    val alternate_url: String, // Ссылка на вакансию на hh.ru
 ) : Response()
 
 class AreaResponse(
@@ -22,19 +22,19 @@ class AreaResponse(
 )
 
 class SalaryResponse(
-    val from: Int,
-    val to: Int,
+    val from: Int?,
+    val to: Int?,
     val currency: String
 )
 
 class EmployerResponse(
-    val logoUrls: LogoUrlsResponse,
+    val logo_urls: LogoUrlsResponse?,
     val name: String,
 )
 
 class LogoUrlsResponse(
-    val logo240: String,
-    val logo90: String,
+    val `240`: String,
+    val `90`: String,
     val original: String
 )
 

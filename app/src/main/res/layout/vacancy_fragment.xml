@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/scrollView"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:background="?attr/colorPrimary"
     tools:context="ru.practicum.android.diploma.vacancy.ui.VacancyFragment">
 
@@ -229,7 +229,7 @@
             android:id="@+id/tvServerErrorVacancyPlaceholder"
             style="@style/PlaceholderMessage"
             android:text="@string/server_error"
-            android:visibility="visible"
+            android:visibility="gone"
             app:drawableTopCompat="@drawable/placeholder_server_error_vacancy"
             app:layout_constraintEnd_toStartOf="@id/rightBorder"
             app:layout_constraintStart_toEndOf="@id/leftBorder"
