@@ -112,8 +112,8 @@ class VacancyFragment : Fragment() {
     private fun showError(error: Int) {
         with(binding) {
             when (error) {
-                ErrorMessageConstants.NOTHING_FOUND -> tvVacancyDetailsErrorPlaceholderVacancy.isVisible = true
-                else -> tvServerErrorVacancyPlaceholder.isVisible = true
+                ErrorMessageConstants.SERVER_ERROR -> tvServerErrorVacancyPlaceholder.isVisible = true
+                else -> tvVacancyDetailsErrorPlaceholderVacancy.isVisible = true
             }
             mainContainer.isVisible = false
         }
