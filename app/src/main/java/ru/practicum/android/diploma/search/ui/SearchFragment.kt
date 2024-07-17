@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.SearchFragmentBinding
+import ru.practicum.android.diploma.search.data.network.ErrorMessageConstants
 import ru.practicum.android.diploma.search.domain.models.Vacancy
 import ru.practicum.android.diploma.search.presentation.SearchViewModel
 import ru.practicum.android.diploma.search.presentation.VacanciesState
@@ -62,6 +63,13 @@ class SearchFragment : Fragment(), VacancyAdapter.VacancyClickListener {
 
         clearButton.setOnClickListener {
             editText?.setText("")
+            with(binding) {
+                tvFailedRequestPlaceholder.isVisible = false
+                tvServerErrorPlaceholder.isVisible = false
+                tvNoInternetPlaceholder.isVisible = false
+                rvWithChip?.isVisible  = false
+                progressBar?.isVisible = false
+            }
         }
 
         textWatcher = object : TextWatcher {
@@ -141,24 +149,40 @@ class SearchFragment : Fragment(), VacancyAdapter.VacancyClickListener {
 
     private fun showLoading(rvVisible: Boolean) {
         progressBar?.isVisible = true
-        rvVacancies?.isVisible = !rvVisible
+        rvWithChip?.isVisible = !rvVisible
+        binding.tvNoInternetPlaceholder.isVisible = false
+        binding.tvServerErrorPlaceholder.isVisible = false
+        binding.tvServerErrorPlaceholder.isVisible = false
         binding.ivSearchPlaceholder.isVisible = false
     }
 
     private fun showError(code: Int) {
-        TODO()
+        progressBar?.isVisible = false
+        with(binding) {
+            when (code) {
+                ErrorMessageConstants.NETWORK_ERROR -> tvNoInternetPlaceholder.isVisible = true
+                ErrorMessageConstants.NOTHING_FOUND -> {
+                    tvFailedRequestPlaceholder.isVisible = true
+                    rvWithChip?.isVisible = true
+                }
+                ErrorMessageConstants.SERVER_ERROR -> tvServerErrorPlaceholder.isVisible = true
+                else -> tvServerErrorPlaceholder.isVisible = true
+            }
+        }
     }
 
     @SuppressLint("NotifyDataSetChanged")
     private fun showContent(vacancies: List<Vacancy>, count: Int) {
         progressBar?.isVisible = false
+        binding.tvNoInternetPlaceholder.isVisible = false
+        binding.tvServerErrorPlaceholder.isVisible = false
+        binding.tvServerErrorPlaceholder.isVisible = false
         rvWithChip?.isVisible = true
         binding.ivSearchPlaceholder.isVisible = false
         binding.chipVacancies.text = requireContext().resources.getQuantityString(
             R.plurals.vacancyCount,
             count, count
         )
-
         adapter.vacancies.clear()
         adapter.vacancies.addAll(vacancies)
         adapter.notifyDataSetChanged()

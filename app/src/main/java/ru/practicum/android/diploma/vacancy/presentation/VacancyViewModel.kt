@@ -15,10 +15,16 @@ class VacancyViewModel(private val interactor: VacancyDetailsInteractor) : ViewM
 
     private val vacancyState = MutableLiveData<Resource<Vacancy>>()
 
+    private val vacancyDBState = MutableLiveData<Vacancy?>()
+
     private val favoritesState = MutableLiveData<Boolean>(false)
 
     private fun setVacancyState(resource: Resource<Vacancy>) {
         vacancyState.postValue(resource)
+    }
+
+    private fun setVacancyDBState(vacancy: Vacancy?) {
+        vacancyDBState.postValue(vacancy)
     }
 
     private fun setFavoriteState(isFavorite: Boolean) {
@@ -27,9 +33,13 @@ class VacancyViewModel(private val interactor: VacancyDetailsInteractor) : ViewM
 
     fun observeVacancyState(): LiveData<Resource<Vacancy>> = vacancyState
 
+    fun observeVacancyDBState(): LiveData<Vacancy?> = vacancyDBState
+
     fun observeFavoriteState(): LiveData<Boolean> = favoritesState
 
     fun getVacancyState(): Resource<Vacancy>? = vacancyState.value
+
+    fun getVacancyDBState(): Vacancy? = vacancyDBState.value
 
     private fun getFavoriteState(): Boolean = favoritesState.value!!
 
@@ -52,15 +62,44 @@ class VacancyViewModel(private val interactor: VacancyDetailsInteractor) : ViewM
         }
     }
 
-    fun favoriteClicked() {
+    fun getVacancyFromDB(vacancyID: String) {
         viewModelScope.launch {
-            val vacancyID = getVacancyState()?.data?.vacancyId!!
-            if (getFavoriteState()) {
-                interactor.deleteVacancyFromFavorite(vacancyID)
-            } else {
-                interactor.addVacancyToFavorite(getVacancyState()?.data!!)
+            interactor.getVacancyDetailsFromDB(vacancyID).collect { vacancy ->
+                setVacancyDBState(vacancy)
             }
-            isVacancyFavorite(vacancyID)
+        }
+    }
+
+    fun isVacancyFavorite(vacancyID: String, isOnline: Boolean) {
+        viewModelScope.launch {
+            val isFavorite = interactor.checkIsVacancyFavorite(vacancyID)
+            if (isFavorite && needUpdate && isOnline) {
+                updateVacancy()
+                needUpdate = false
+            }
+            setFavoriteState(isFavorite)
+        }
+    }
+
+    fun favoriteClicked(isOnline: Boolean) {
+        viewModelScope.launch {
+            val vacancy = if (isOnline) {
+                getVacancyState()?.data
+            } else {
+                getVacancyDBState()
+            }
+            if (getFavoriteState()) {
+                if (vacancy != null) {
+                    interactor.deleteVacancyFromFavorite(vacancy.vacancyId)
+                }
+            } else {
+                if (vacancy != null) {
+                    interactor.addVacancyToFavorite(vacancy)
+                }
+            }
+            if (vacancy != null) {
+                isVacancyFavorite(vacancy.vacancyId, isOnline)
+            }
         }
     }
 

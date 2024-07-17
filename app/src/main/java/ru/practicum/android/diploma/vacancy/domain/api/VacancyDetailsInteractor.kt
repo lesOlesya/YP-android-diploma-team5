@@ -8,6 +8,8 @@ interface VacancyDetailsInteractor {
 
     fun getVacancyDetails(vacancyId: String): Flow<Resource<Vacancy>>
 
+    fun getVacancyDetailsFromDB(vacancyId: String): Flow<Vacancy?>
+
     suspend fun checkIsVacancyFavorite(vacancyId: String): Boolean
 
     suspend fun addVacancyToFavorite(vacancy: Vacancy)

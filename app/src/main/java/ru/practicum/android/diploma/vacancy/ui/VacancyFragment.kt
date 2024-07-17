@@ -16,7 +16,9 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.VacancyFragmentBinding
+import ru.practicum.android.diploma.search.data.network.ErrorMessageConstants
 import ru.practicum.android.diploma.search.domain.models.Vacancy
+import ru.practicum.android.diploma.util.NetworkHelper
 import ru.practicum.android.diploma.util.Resource
 import ru.practicum.android.diploma.util.salaryFormat
 import ru.practicum.android.diploma.vacancy.presentation.VacancyViewModel
@@ -46,13 +48,25 @@ class VacancyFragment : Fragment() {
         } else {
             showProgressBar(true)
             viewModel.getVacancy(vacancyID)
-            viewModel.isVacancyFavorite(vacancyID)
+            viewModel.isVacancyFavorite(vacancyID, NetworkHelper.isOnline(requireContext()))
         }
 
         viewModel.observeVacancyState().observe(viewLifecycleOwner) { state ->
             showProgressBar(false)
             when (state) {
-                is Resource.Error -> showError(state.message!!)
+                is Resource.Error -> {
+                    if (vacancyID != null) {
+                        viewModel.getVacancyFromDB(vacancyID)
+                    }
+                    viewModel.observeVacancyDBState().observe(viewLifecycleOwner) { vacancy ->
+                        if (vacancy != null) {
+                            showVacancy(vacancy)
+                        } else {
+                            showError(state.message!!)
+                        }
+                    }
+                }
+
                 is Resource.Success -> showVacancy(state.data!!)
             }
         }
@@ -91,16 +105,26 @@ class VacancyFragment : Fragment() {
         }
 
         binding.ivFavorites.setOnClickListener {
-            viewModel.favoriteClicked()
+            viewModel.favoriteClicked(NetworkHelper.isOnline(requireContext()))
         }
     }
 
     private fun showError(error: Int) {
-        TODO()
+        with(binding) {
+            when (error) {
+                ErrorMessageConstants.NOTHING_FOUND -> tvVacancyDetailsErrorPlaceholderVacancy.isVisible = true
+                else -> tvServerErrorVacancyPlaceholder.isVisible = true
+            }
+            mainContainer.isVisible = false
+        }
+
     }
 
     private fun showVacancy(vacancy: Vacancy) {
         with(binding) {
+            mainContainer.isVisible = true
+            tvVacancyDetailsErrorPlaceholderVacancy.isVisible = false
+            tvVacancyDetailsErrorPlaceholderVacancy.isVisible = false
             tvVacancyName.text = vacancy.vacancyName
             tvTypeOfEmploymentAndSchedule.text = requireContext()
                 .getString(R.string.employment_with_schedule, vacancy.employment, vacancy.schedule)
@@ -147,13 +171,7 @@ class VacancyFragment : Fragment() {
     private fun showProgressBar(needShow: Boolean) {
         with(binding) {
             pbVacancy.isVisible = needShow
-            tvVacancyName.isVisible = !needShow
-            tvSalary.isVisible = !needShow
-            VacancyCard.isVisible = !needShow
-            groupExperience.isVisible = !needShow
-            tvTypeOfEmploymentAndSchedule.isVisible = !needShow
-            groupDescriptionVacancy.isVisible = !needShow
-            groupKeySkills.isVisible = !needShow
+            mainContainer.isVisible = !needShow
         }
     }
 
