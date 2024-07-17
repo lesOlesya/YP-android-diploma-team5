@@ -17,8 +17,8 @@ class SearchRepositoryImpl(
     private val networkClient: NetworkClient
 ) : SearchRepository {
 
-    override fun search(text: String): Flow<Resource<VacancyPagination>> = flow {
-        val response = networkClient.doRequest(VacancySearchRequest(text))
+    override fun search(text: String, perPage: Int): Flow<Resource<VacancyPagination>> = flow {
+        val response = networkClient.doRequest(VacancySearchRequest(text, perPage))
 
         when (response.resultCode) {
             ErrorMessageConstants.NETWORK_ERROR -> {
@@ -37,7 +37,7 @@ class SearchRepositoryImpl(
                             artworkUrl = it.employer.logoUrls?.logo240
                         )
                     }
-                    val vacancyPagination = VacancyPagination(data, found)
+                    val vacancyPagination = VacancyPagination(data, found, page, pages)
                     emit(Resource.Success(vacancyPagination))
                 }
             }

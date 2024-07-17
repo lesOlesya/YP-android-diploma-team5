@@ -66,43 +66,46 @@
             android:visibility="gone"/>
     </FrameLayout>
 
-    <LinearLayout
-        android:id="@+id/ll_rv_and_chip"
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/group_rv_and_chip"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:orientation="vertical"
+        android:layout_height="0dp"
         android:visibility="gone"
+        app:constraint_referenced_ids="chip_vacancies, rvVacancyList"/>
+
+    <com.google.android.material.chip.Chip
+        android:id="@+id/chip_vacancies"
+        style="@style/ChipMessage"
+        android:text="@string/vacancy_list_empty_label"
         app:layout_constraintEnd_toStartOf="@id/rightBorder"
         app:layout_constraintStart_toEndOf="@id/leftBorder"
-        app:layout_constraintTop_toBottomOf="@id/fl_search_et">
+        app:layout_constraintTop_toBottomOf="@id/fl_search_et"
+        tools:text="Найдено 286 вакансий" />
 
-        <com.google.android.material.chip.Chip
-            android:id="@+id/chip_vacancies"
-            style="@style/ChipMessage"
-            android:text="@string/vacancy_list_empty_label"
-            tools:text="Найдено 286 вакансий" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rvVacancyList"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:animationCache="true"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            tools:listitem="@layout/item_vacancy" />
-    </LinearLayout>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvVacancyList"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_0"
+        android:animationCache="true"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintEnd_toStartOf="@id/rightBorder"
+        app:layout_constraintStart_toEndOf="@id/leftBorder"
+        app:layout_constraintTop_toBottomOf="@id/chip_vacancies"
+        app:layout_constraintBottom_toTopOf="@id/progress_bar_search"
+        tools:listitem="@layout/item_vacancy"
+        tools:itemCount="5"/>
 
     <ProgressBar
         android:id="@+id/progress_bar_search"
         android:layout_width="@dimen/dp_48"
         android:layout_height="@dimen/dp_48"
-        android:layout_gravity="center"
+        android:layout_gravity="center_horizontal"
         android:indeterminateTint="?attr/colorPrimaryVariant"
         android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/rightBorder"
         app:layout_constraintStart_toEndOf="@id/leftBorder"
-        app:layout_constraintTop_toBottomOf="@id/fl_search_et" />
+        app:layout_constraintTop_toBottomOf="@id/rvVacancyList"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
 <!--    <androidx.constraintlayout.widget.Group-->
 <!--        android:id="@+id/groupPlaceholders"-->
