@@ -32,7 +32,7 @@ class RetrofitNetworkClient(
         return withContext(Dispatchers.IO) {
             try {
                 val response = when (dto) {
-                    is VacancySearchRequest -> headHunterService.search(dto.expression)
+                    is VacancySearchRequest -> headHunterService.search(text = dto.expression)
                     else -> headHunterService.getVacancyDetails(vacancyId = (dto as VacancyDetailsRequest).vacancyId)
                 }
                 response.apply { resultCode = ErrorMessageConstants.SUCCESS }
