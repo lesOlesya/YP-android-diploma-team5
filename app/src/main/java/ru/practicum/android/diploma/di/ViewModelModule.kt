@@ -10,7 +10,7 @@ val viewModelModule = module {
     viewModel {
         SearchViewModel(get())
     }
-    
+
     viewModel<FavoritesViewModel> {
         FavoritesViewModel(get())
     }
