@@ -16,7 +16,6 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.VacancyFragmentBinding
-import ru.practicum.android.diploma.search.data.network.ErrorMessageConstants
 import ru.practicum.android.diploma.search.domain.models.Vacancy
 import ru.practicum.android.diploma.util.Resource
 import ru.practicum.android.diploma.util.salaryFormat
@@ -84,20 +83,11 @@ class VacancyFragment : Fragment() {
     }
 
     private fun showError(error: Int) {
-        with(binding) {
-            if (error == ErrorMessageConstants.NOTHING_FOUND)
-                tvVacancyDetailsErrorPlaceholderVacancy.isVisible = true
-            else
-                tvServerErrorVacancyPlaceholder.isVisible = true
-            mainContainer.isVisible = false
-        }
-
+        TODO()
     }
 
     private fun showVacancy(vacancy: Vacancy) {
         with(binding) {
-            tvVacancyDetailsErrorPlaceholderVacancy.isVisible = false
-            tvVacancyDetailsErrorPlaceholderVacancy.isVisible = false
             tvVacancyName.text = vacancy.vacancyName
             tvTypeOfEmploymentAndSchedule.text = requireContext()
                 .getString(R.string.employment_with_schedule, vacancy.employment, vacancy.schedule)
@@ -144,7 +134,13 @@ class VacancyFragment : Fragment() {
     private fun showProgressBar(needShow: Boolean) {
         with(binding) {
             pbVacancy.isVisible = needShow
-            mainContainer.isVisible = !needShow
+            tvVacancyName.isVisible = !needShow
+            tvSalary.isVisible = !needShow
+            VacancyCard.isVisible = !needShow
+            groupExperience.isVisible = !needShow
+            tvTypeOfEmploymentAndSchedule.isVisible = !needShow
+            groupDescriptionVacancy.isVisible = !needShow
+            groupKeySkills.isVisible = !needShow
         }
     }
 
