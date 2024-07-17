@@ -48,7 +48,7 @@ class VacancyFragment : Fragment() {
         } else {
             showProgressBar(true)
             viewModel.getVacancy(vacancyID)
-            viewModel.isVacancyFavorite(vacancyID,NetworkHelper.isOnline(requireContext()))
+            viewModel.isVacancyFavorite(vacancyID, NetworkHelper.isOnline(requireContext()))
         }
 
         viewModel.observeVacancyState().observe(viewLifecycleOwner) { state ->
@@ -59,12 +59,14 @@ class VacancyFragment : Fragment() {
                         viewModel.getVacancyFromDB(vacancyID)
                     }
                     viewModel.observeVacancyDBState().observe(viewLifecycleOwner) { vacancy ->
-                        if (vacancy != null)
+                        if (vacancy != null) {
                             showVacancy(vacancy)
-                        else
+                        } else {
                             showError(state.message!!)
+                        }
                     }
                 }
+
                 is Resource.Success -> showVacancy(state.data!!)
             }
         }
@@ -109,7 +111,7 @@ class VacancyFragment : Fragment() {
 
     private fun showError(error: Int) {
         with(binding) {
-            when(error) {
+            when (error) {
                 ErrorMessageConstants.NOTHING_FOUND -> tvVacancyDetailsErrorPlaceholderVacancy.isVisible = true
                 else -> tvServerErrorVacancyPlaceholder.isVisible = true
             }

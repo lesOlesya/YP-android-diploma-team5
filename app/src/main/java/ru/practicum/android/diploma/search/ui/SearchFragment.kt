@@ -23,7 +23,6 @@ import ru.practicum.android.diploma.search.domain.models.Vacancy
 import ru.practicum.android.diploma.search.presentation.SearchViewModel
 import ru.practicum.android.diploma.search.presentation.VacanciesState
 import ru.practicum.android.diploma.search.ui.adapter.VacancyAdapter
-import ru.practicum.android.diploma.util.NetworkHelper
 import ru.practicum.android.diploma.vacancy.ui.VacancyFragment
 
 class SearchFragment : Fragment(), VacancyAdapter.VacancyClickListener {
@@ -67,6 +66,7 @@ class SearchFragment : Fragment(), VacancyAdapter.VacancyClickListener {
                 tvFailedRequestPlaceholder.isVisible = false
                 tvServerErrorPlaceholder.isVisible = false
                 tvNoInternetPlaceholder.isVisible = false
+                rvWithChip?.isVisible  = false
                 progressBar?.isVisible = false
             }
         }
@@ -144,9 +144,12 @@ class SearchFragment : Fragment(), VacancyAdapter.VacancyClickListener {
     private fun showError(code: Int) {
         progressBar?.isVisible = false
         with(binding) {
-            when(code) {
+            when (code) {
                 ErrorMessageConstants.NETWORK_ERROR -> tvNoInternetPlaceholder.isVisible = true
-                ErrorMessageConstants.NOTHING_FOUND -> tvFailedRequestPlaceholder.isVisible = true
+                ErrorMessageConstants.NOTHING_FOUND -> {
+                    tvFailedRequestPlaceholder.isVisible = true
+                    rvWithChip?.isVisible = true
+                }
                 ErrorMessageConstants.SERVER_ERROR -> tvServerErrorPlaceholder.isVisible = true
                 else -> tvServerErrorPlaceholder.isVisible = true
             }

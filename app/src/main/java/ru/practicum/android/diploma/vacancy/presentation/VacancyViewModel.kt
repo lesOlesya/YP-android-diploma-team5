@@ -7,7 +7,6 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.search.domain.models.Vacancy
-import ru.practicum.android.diploma.util.NetworkHelper
 import ru.practicum.android.diploma.util.Resource
 import ru.practicum.android.diploma.vacancy.domain.api.VacancyDetailsInteractor
 
@@ -40,6 +39,8 @@ class VacancyViewModel(private val interactor: VacancyDetailsInteractor) : ViewM
 
     fun getVacancyState(): Resource<Vacancy>? = vacancyState.value
 
+    fun getVacancyDBState(): Vacancy? = vacancyDBState.value
+
     private fun getFavoriteState(): Boolean = favoritesState.value!!
 
     fun getVacancy(vacancyID: String) {
@@ -61,11 +62,9 @@ class VacancyViewModel(private val interactor: VacancyDetailsInteractor) : ViewM
     fun isVacancyFavorite(vacancyID: String, isOnline: Boolean) {
         viewModelScope.launch {
             val isFavorite = interactor.checkIsVacancyFavorite(vacancyID)
-            if (isFavorite && needUpdate) {
-                if (isOnline) {
-                    updateVacancy()
-                    needUpdate = false
-                }
+            if (isFavorite && needUpdate && isOnline) {
+                updateVacancy()
+                needUpdate = false
             }
             setFavoriteState(isFavorite)
         }
@@ -73,13 +72,23 @@ class VacancyViewModel(private val interactor: VacancyDetailsInteractor) : ViewM
 
     fun favoriteClicked(isOnline: Boolean) {
         viewModelScope.launch {
-            val vacancyID = getVacancyState()?.data?.vacancyId!!
-            if (getFavoriteState()) {
-                interactor.deleteVacancyFromFavorite(vacancyID)
+            val vacancy = if (isOnline) {
+                getVacancyState()?.data
             } else {
-                interactor.addVacancyToFavorite(getVacancyState()?.data!!)
+                getVacancyDBState()
             }
-            isVacancyFavorite(vacancyID,isOnline)
+            if (getFavoriteState()) {
+                if (vacancy != null) {
+                    interactor.deleteVacancyFromFavorite(vacancy.vacancyId)
+                }
+            } else {
+                if (vacancy != null) {
+                    interactor.addVacancyToFavorite(vacancy)
+                }
+            }
+            if (vacancy != null) {
+                isVacancyFavorite(vacancy.vacancyId, isOnline)
+            }
         }
     }
 
