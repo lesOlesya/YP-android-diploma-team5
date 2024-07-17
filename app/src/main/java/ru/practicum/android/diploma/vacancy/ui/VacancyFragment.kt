@@ -72,14 +72,12 @@ class VacancyFragment : Fragment() {
 
         binding.ivShare.setOnClickListener {
             val state = viewModel.getState()
-            if (state is Resource.Success<Vacancy>) {
-                if (state.data?.vacancyUrlHh != null) {
-                    val intent = Intent(Intent.ACTION_SEND)
-                    intent.type = "text/plain"
-                    intent.putExtra(Intent.EXTRA_TEXT, state.data.vacancyUrlHh)
-                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK + Intent.FLAG_ACTIVITY_CLEAR_TASK
-                    requireContext().startActivity(intent)
-                }
+            if (state is Resource.Success<Vacancy> && state.data?.vacancyUrlHh != null) {
+                val intent = Intent(Intent.ACTION_SEND)
+                intent.type = "text/plain"
+                intent.putExtra(Intent.EXTRA_TEXT, state.data.vacancyUrlHh)
+                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK + Intent.FLAG_ACTIVITY_CLEAR_TASK
+                requireContext().startActivity(intent)
             }
         }
     }
