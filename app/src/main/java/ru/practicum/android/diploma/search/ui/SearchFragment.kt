@@ -66,6 +66,7 @@ class SearchFragment : Fragment(), VacancyAdapter.VacancyClickListener {
         @SuppressLint("detekt.EmptyFunctionBlock")
         textWatcher = object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                // detekt
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
@@ -81,6 +82,7 @@ class SearchFragment : Fragment(), VacancyAdapter.VacancyClickListener {
             }
 
             override fun afterTextChanged(s: Editable?) {
+                // detekt
             }
         }
         textWatcher?.let { editText.addTextChangedListener(it) }
