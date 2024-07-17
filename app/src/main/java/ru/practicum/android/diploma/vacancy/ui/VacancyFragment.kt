@@ -29,6 +29,15 @@ class VacancyFragment : Fragment() {
 
     private val viewModel by viewModel<VacancyViewModel>()
 
+    private var vacancyID: String? = null
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        arguments?.let {
+            vacancyID = it.getString(VACANCY_ID)
+        }
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = VacancyFragmentBinding.inflate(layoutInflater, container, false)
         return binding.root
@@ -42,33 +51,16 @@ class VacancyFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val vacancyID = arguments?.getString(VACANCY_ID)
         if (vacancyID == null) {
             findNavController().navigateUp()
         } else {
             showProgressBar(true)
-            viewModel.getVacancy(vacancyID)
-            viewModel.isVacancyFavorite(vacancyID, NetworkHelper.isOnline(requireContext()))
+            viewModel.getVacancy(vacancyID!!)
+            viewModel.isVacancyFavorite(vacancyID!!, NetworkHelper.isOnline(requireContext()))
         }
 
         viewModel.observeVacancyState().observe(viewLifecycleOwner) { state ->
-            showProgressBar(false)
-            when (state) {
-                is Resource.Error -> {
-                    if (vacancyID != null) {
-                        viewModel.getVacancyFromDB(vacancyID)
-                    }
-                    viewModel.observeVacancyDBState().observe(viewLifecycleOwner) { vacancy ->
-                        if (vacancy != null) {
-                            showVacancy(vacancy)
-                        } else {
-                            showError(state.message!!)
-                        }
-                    }
-                }
-
-                is Resource.Success -> showVacancy(state.data!!)
-            }
+            renderState(state)
         }
 
         viewModel.observeFavoriteState().observe(viewLifecycleOwner) { isFavorite ->
@@ -94,18 +86,40 @@ class VacancyFragment : Fragment() {
         }
 
         binding.ivShare.setOnClickListener {
-            val state = viewModel.getVacancyState()
-            if (state is Resource.Success<Vacancy> && state.data?.vacancyUrlHh != null) {
-                val intent = Intent(Intent.ACTION_SEND)
-                intent.type = "text/plain"
-                intent.putExtra(Intent.EXTRA_TEXT, state.data.vacancyUrlHh)
-                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK + Intent.FLAG_ACTIVITY_CLEAR_TASK
-                requireContext().startActivity(intent)
-            }
+            shareVacancy()
         }
 
         binding.ivFavorites.setOnClickListener {
             viewModel.favoriteClicked(NetworkHelper.isOnline(requireContext()))
+        }
+    }
+
+    private fun renderState(state: Resource<Vacancy>) {
+        showProgressBar(false)
+        when (state) {
+            is Resource.Error -> {
+                vacancyID?.let { viewModel.getVacancyFromDB(it) }
+                viewModel.observeVacancyDBState().observe(viewLifecycleOwner) { vacancy ->
+                    if (vacancy != null) {
+                        showVacancy(vacancy)
+                    } else {
+                        showError(state.message!!)
+                    }
+                }
+            }
+
+            is Resource.Success -> showVacancy(state.data!!)
+        }
+    }
+
+    private fun shareVacancy() {
+        val state = viewModel.getVacancyState()
+        if (state is Resource.Success<Vacancy> && state.data?.vacancyUrlHh != null) {
+            val intent = Intent(Intent.ACTION_SEND)
+            intent.type = "text/plain"
+            intent.putExtra(Intent.EXTRA_TEXT, state.data.vacancyUrlHh)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK + Intent.FLAG_ACTIVITY_CLEAR_TASK
+            requireContext().startActivity(intent)
         }
     }
 
