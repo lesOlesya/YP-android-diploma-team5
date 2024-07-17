@@ -4,7 +4,9 @@ import ru.practicum.android.diploma.search.domain.models.Vacancy
 
 interface VacanciesState {
 
-    object Loading : VacanciesState
+    data class Loading(
+        val isNewSearchText: Boolean
+    ) : VacanciesState
 
     data class Content(
         val vacancies: List<Vacancy>,

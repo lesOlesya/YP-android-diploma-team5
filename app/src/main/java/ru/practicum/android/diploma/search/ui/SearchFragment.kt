@@ -9,11 +9,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.widget.EditText
-import android.widget.LinearLayout
 import android.widget.ProgressBar
+import androidx.constraintlayout.widget.Group
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
@@ -37,7 +38,7 @@ class SearchFragment : Fragment(), VacancyAdapter.VacancyClickListener {
 
     private var editText: EditText? = null
     private var progressBar: ProgressBar? = null
-    private var rvWithChip: LinearLayout? = null
+    private var rvWithChip: Group? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = SearchFragmentBinding.inflate(layoutInflater, container, false)
@@ -52,7 +53,7 @@ class SearchFragment : Fragment(), VacancyAdapter.VacancyClickListener {
 
         editText = binding.editTextSearch
         progressBar = binding.progressBarSearch
-        rvWithChip = binding.llRvAndChip
+        rvWithChip = binding.groupRvAndChip
         val clearButton = binding.ivIconClear
 
         binding.ivFilter.setOnClickListener {
@@ -96,6 +97,20 @@ class SearchFragment : Fragment(), VacancyAdapter.VacancyClickListener {
             false
         }
 
+        rvVacancies?.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+
+                if (dy > 0) {
+                    val pos = (rvVacancies?.layoutManager as LinearLayoutManager).findLastVisibleItemPosition()
+                    val itemsCount = adapter.itemCount
+                    if (pos >= itemsCount-1) {
+                        viewModel.searchVacancies(editText?.text.toString(), false)
+                    }
+                }
+            }
+        })
+
         viewModel.getStateLiveData().observe(viewLifecycleOwner) {
             render(it)
         }
@@ -117,16 +132,16 @@ class SearchFragment : Fragment(), VacancyAdapter.VacancyClickListener {
 
     private fun render(state: VacanciesState) {
         when (state) {
-            is VacanciesState.Loading -> showLoading()
+            is VacanciesState.Loading -> showLoading(state.isNewSearchText)
             is VacanciesState.Content -> showContent(state.vacancies, state.count)
             is VacanciesState.Error -> showError(state.errorCode)
             is VacanciesState.Empty -> showError(state.code)
         }
     }
 
-    private fun showLoading() {
+    private fun showLoading(rvVisible: Boolean) {
         progressBar?.isVisible = true
-        rvWithChip?.isVisible = false
+        rvVacancies?.isVisible = !rvVisible
         binding.ivSearchPlaceholder.isVisible = false
     }
 

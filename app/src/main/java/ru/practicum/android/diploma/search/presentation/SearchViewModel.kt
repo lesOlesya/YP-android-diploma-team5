@@ -16,11 +16,18 @@ class SearchViewModel(
 ) : ViewModel() {
 
     private val vacancies = ArrayList<Vacancy>()
+    private var currentPage = 0
+    private var maxPages = 1
+    private var isNextPageLoading = false
 
     private var latestSearchText: String? = null
     private val vacancySearchDebounce =
         debounce<String>(SEARCH_DEBOUNCE_DELAY, viewModelScope, true) { changedText ->
-            findVacancies(changedText)
+            searchVacancies(changedText)
+            currentPage = 0
+            maxPages = 1
+            isNextPageLoading = false
+            vacancies.clear()
         }
 
     private val stateLiveData = MutableLiveData<VacanciesState>()
@@ -34,12 +41,13 @@ class SearchViewModel(
         }
     }
 
-    private fun findVacancies(query: String) {
-        if (query.isNotEmpty()) {
-            renderState(VacanciesState.Loading)
+    fun searchVacancies(query: String, isNewSearchText: Boolean = true) {
+        if (!isNextPageLoading && query.isNotEmpty() && currentPage != maxPages) {
+            renderState(VacanciesState.Loading(isNewSearchText))
+            isNextPageLoading = true
             viewModelScope.launch {
                 searchInteractor
-                    .search(query)
+                    .search(query, currentPage)
                     .collect { pair ->
                         processResult(pair.first, pair.second)
                     }
@@ -49,8 +57,11 @@ class SearchViewModel(
 
     private fun processResult(vacancyPagination: VacancyPagination?, errorCode: Int?) {
         if (vacancyPagination != null) {
-            vacancies.clear()
             vacancies.addAll(vacancyPagination.vacancyList)
+            currentPage = vacancyPagination.page
+            currentPage++
+            maxPages = vacancyPagination.pages
+            isNextPageLoading = false
         }
         when {
             errorCode != null -> {

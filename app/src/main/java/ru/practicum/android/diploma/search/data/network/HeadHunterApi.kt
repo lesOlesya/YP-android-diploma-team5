@@ -13,7 +13,9 @@ interface HeadHunterApi {
     suspend fun search(
         @Header("Authorization") token: String = "Bearer " + BuildConfig.HH_ACCESS_TOKEN,
         @Header("HH-User-Agent") name: String = "Jobka (olesyad285@gmail.com)",
-        @Query("text") text: String
+        @Query("text") text: String,
+        @Query("page") page: Int,
+        @Query("per_page") perPage: Int = 20
     ): VacancySearchResponse
 
     @GET("/vacancies/{vacancy_id}")
