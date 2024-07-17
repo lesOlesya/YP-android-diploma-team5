@@ -8,7 +8,6 @@ import ru.practicum.android.diploma.BuildConfig
 import ru.practicum.android.diploma.search.data.dto.VacancySearchResponse
 import ru.practicum.android.diploma.vacancy.data.dto.VacancyDetailsResponse
 
-
 interface HeadHunterApi {
     @GET("/vacancies")
     suspend fun search(
