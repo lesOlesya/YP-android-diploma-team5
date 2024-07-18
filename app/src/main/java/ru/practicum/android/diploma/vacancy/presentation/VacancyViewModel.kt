@@ -9,10 +9,10 @@ import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.favourite.domain.api.FavoriteVacanciesInteractor
 import ru.practicum.android.diploma.search.domain.models.Vacancy
 import ru.practicum.android.diploma.util.Resource
-import ru.practicum.android.diploma.vacancy.domain.usecase.GetVacancyDetailsByIdUseCase
+import ru.practicum.android.diploma.vacancy.domain.usecase.GetVacancyDetailsByIDUseCase
 
 class VacancyViewModel(
-    private val getVacancyDetailsByIdUseCase: GetVacancyDetailsByIdUseCase,
+    private val getVacancyDetailsByIDUseCase: GetVacancyDetailsByIDUseCase,
     private val favoriteVacancyInteractor: FavoriteVacanciesInteractor
 ) : ViewModel() {
 
@@ -50,7 +50,7 @@ class VacancyViewModel(
 
     fun getVacancy(vacancyID: String) {
         viewModelScope.launch {
-            getVacancyDetailsByIdUseCase.execute(vacancyID).collect { resource ->
+            getVacancyDetailsByIDUseCase.execute(vacancyID).collect { resource ->
                 setVacancyState(resource)
             }
         }

@@ -30,12 +30,12 @@ class VacancyFragment : Fragment() {
 
     private val viewModel by viewModel<VacancyViewModel>()
 
-    private var vacancyId: String? = null
+    private var vacancyID: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            vacancyId = it.getString(VACANCY_ID)
+            vacancyID = it.getString(VACANCY_ID)
         }
     }
 
@@ -52,12 +52,12 @@ class VacancyFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        if (vacancyId == null) {
+        if (vacancyID == null) {
             findNavController().navigateUp()
         } else {
             showProgressBar(true)
-            viewModel.getVacancy(vacancyId!!)
-            viewModel.isVacancyFavorite(vacancyId!!, NetworkHelper.isOnline(requireContext()))
+            viewModel.getVacancy(vacancyID!!)
+            viewModel.isVacancyFavorite(vacancyID!!, NetworkHelper.isOnline(requireContext()))
         }
 
         viewModel.observeVacancyState().observe(viewLifecycleOwner) { state ->
@@ -99,7 +99,7 @@ class VacancyFragment : Fragment() {
         showProgressBar(false)
         when (state) {
             is Resource.Error -> {
-                vacancyId?.let { viewModel.getVacancyFromDB(it) }
+                vacancyID?.let { viewModel.getVacancyFromDB(it) }
                 viewModel.observeVacancyDBState().observe(viewLifecycleOwner) { vacancy ->
                     if (vacancy != null) {
                         showVacancy(vacancy)
