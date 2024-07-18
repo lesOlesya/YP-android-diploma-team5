@@ -9,12 +9,13 @@ import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.favourite.domain.api.FavoriteVacanciesInteractor
 import ru.practicum.android.diploma.search.domain.models.Vacancy
 import ru.practicum.android.diploma.util.Resource
-import ru.practicum.android.diploma.vacancy.domain.api.VacancyDetailsByIDUseCase
+import ru.practicum.android.diploma.vacancy.domain.usecase.GetVacancyDetailsByIdUseCase
 
 class VacancyViewModel(
-    private val detailsUseCase: VacancyDetailsByIDUseCase,
+    private val getVacancyDetailsByIdUseCase: GetVacancyDetailsByIdUseCase,
     private val favoriteVacancyInteractor: FavoriteVacanciesInteractor
 ) : ViewModel() {
+
     private var needUpdate = true
 
     private val vacancyState = MutableLiveData<Resource<Vacancy>>()
@@ -49,7 +50,7 @@ class VacancyViewModel(
 
     fun getVacancy(vacancyID: String) {
         viewModelScope.launch {
-            detailsUseCase.getVacancyDetails(vacancyID).collect { resource ->
+            getVacancyDetailsByIdUseCase.execute(vacancyID).collect { resource ->
                 setVacancyState(resource)
             }
         }
@@ -98,7 +99,7 @@ class VacancyViewModel(
         }
     }
 
-    fun updateVacancy() {
+    private fun updateVacancy() {
         viewModelScope.launch {
             delay(DELAY)
             favoriteVacancyInteractor.updateFavoriteVacancy(getVacancyState()?.data!!)

@@ -24,17 +24,18 @@ import ru.practicum.android.diploma.util.salaryFormat
 import ru.practicum.android.diploma.vacancy.presentation.VacancyViewModel
 
 class VacancyFragment : Fragment() {
+
     private var _binding: VacancyFragmentBinding? = null
     private val binding get() = _binding!!
 
     private val viewModel by viewModel<VacancyViewModel>()
 
-    private var vacancyID: String? = null
+    private var vacancyId: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            vacancyID = it.getString(VACANCY_ID)
+            vacancyId = it.getString(VACANCY_ID)
         }
     }
 
@@ -51,12 +52,12 @@ class VacancyFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        if (vacancyID == null) {
+        if (vacancyId == null) {
             findNavController().navigateUp()
         } else {
             showProgressBar(true)
-            viewModel.getVacancy(vacancyID!!)
-            viewModel.isVacancyFavorite(vacancyID!!, NetworkHelper.isOnline(requireContext()))
+            viewModel.getVacancy(vacancyId!!)
+            viewModel.isVacancyFavorite(vacancyId!!, NetworkHelper.isOnline(requireContext()))
         }
 
         viewModel.observeVacancyState().observe(viewLifecycleOwner) { state ->
@@ -98,7 +99,7 @@ class VacancyFragment : Fragment() {
         showProgressBar(false)
         when (state) {
             is Resource.Error -> {
-                vacancyID?.let { viewModel.getVacancyFromDB(it) }
+                vacancyId?.let { viewModel.getVacancyFromDB(it) }
                 viewModel.observeVacancyDBState().observe(viewLifecycleOwner) { vacancy ->
                     if (vacancy != null) {
                         showVacancy(vacancy)

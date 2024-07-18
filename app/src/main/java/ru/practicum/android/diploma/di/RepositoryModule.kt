@@ -6,8 +6,8 @@ import ru.practicum.android.diploma.favourite.data.FavoriteVacanciesRepositoryIm
 import ru.practicum.android.diploma.favourite.data.converters.FavoriteVacancyDbConverter
 import ru.practicum.android.diploma.search.domain.api.SearchRepository
 import ru.practicum.android.diploma.search.data.SearchRepositoryImpl
-import ru.practicum.android.diploma.vacancy.data.VacancyDetailsByIDRepositoryImpl
-import ru.practicum.android.diploma.vacancy.domain.api.VacancyDetailsByIDRepository
+import ru.practicum.android.diploma.vacancy.data.VacancyDetailsByIdRepositoryImpl
+import ru.practicum.android.diploma.vacancy.domain.api.VacancyDetailsByIdRepository
 
 val repositoryModule = module {
 
@@ -15,8 +15,8 @@ val repositoryModule = module {
         FavoriteVacanciesRepositoryImpl(get(), get())
     }
 
-    single<VacancyDetailsByIDRepository> {
-        VacancyDetailsByIDRepositoryImpl(get())
+    single<VacancyDetailsByIdRepository> {
+        VacancyDetailsByIdRepositoryImpl(get())
     }
 
     single<SearchRepository> {
