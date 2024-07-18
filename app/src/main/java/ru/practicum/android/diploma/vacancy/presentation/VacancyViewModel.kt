@@ -6,11 +6,15 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import ru.practicum.android.diploma.favourite.domain.api.FavoriteVacanciesInteractor
 import ru.practicum.android.diploma.search.domain.models.Vacancy
 import ru.practicum.android.diploma.util.Resource
-import ru.practicum.android.diploma.vacancy.domain.api.VacancyDetailsInteractor
+import ru.practicum.android.diploma.vacancy.domain.api.VacancyDetailsByIDUseCase
 
-class VacancyViewModel(private val interactor: VacancyDetailsInteractor) : ViewModel() {
+class VacancyViewModel(
+    private val detailsUseCase: VacancyDetailsByIDUseCase,
+    private val favoriteVacancyInteractor: FavoriteVacanciesInteractor
+) : ViewModel() {
     private var needUpdate = true
 
     private val vacancyState = MutableLiveData<Resource<Vacancy>>()
@@ -39,32 +43,21 @@ class VacancyViewModel(private val interactor: VacancyDetailsInteractor) : ViewM
 
     fun getVacancyState(): Resource<Vacancy>? = vacancyState.value
 
-    fun getVacancyDBState(): Vacancy? = vacancyDBState.value
+    private fun getVacancyDBState(): Vacancy? = vacancyDBState.value
 
     private fun getFavoriteState(): Boolean = favoritesState.value!!
 
     fun getVacancy(vacancyID: String) {
         viewModelScope.launch {
-            interactor.getVacancyDetails(vacancyID).collect { resource ->
+            detailsUseCase.getVacancyDetails(vacancyID).collect { resource ->
                 setVacancyState(resource)
             }
         }
     }
 
-    fun isVacancyFavorite(vacancyID: String) {
-        viewModelScope.launch {
-            val isFavorite = interactor.checkIsVacancyFavorite(vacancyID)
-            if (isFavorite && needUpdate) {
-                updateVacancy()
-                needUpdate = false
-            }
-            setFavoriteState(isFavorite)
-        }
-    }
-
     fun getVacancyFromDB(vacancyID: String) {
         viewModelScope.launch {
-            interactor.getVacancyDetailsFromDB(vacancyID).collect { vacancy ->
+            favoriteVacancyInteractor.getFavoriteVacancy(vacancyID).collect { vacancy ->
                 setVacancyDBState(vacancy)
             }
         }
@@ -72,12 +65,14 @@ class VacancyViewModel(private val interactor: VacancyDetailsInteractor) : ViewM
 
     fun isVacancyFavorite(vacancyID: String, isOnline: Boolean) {
         viewModelScope.launch {
-            val isFavorite = interactor.checkIsVacancyFavorite(vacancyID)
-            if (isFavorite && needUpdate && isOnline) {
-                updateVacancy()
-                needUpdate = false
+            favoriteVacancyInteractor.getFavoriteVacancy(vacancyID).collect {
+                val isFavorite = it != null
+                if (isFavorite && needUpdate && isOnline) {
+                    updateVacancy()
+                    needUpdate = false
+                }
+                setFavoriteState(isFavorite)
             }
-            setFavoriteState(isFavorite)
         }
     }
 
@@ -90,11 +85,11 @@ class VacancyViewModel(private val interactor: VacancyDetailsInteractor) : ViewM
             }
             if (getFavoriteState()) {
                 if (vacancy != null) {
-                    interactor.deleteVacancyFromFavorite(vacancy.vacancyId)
+                    favoriteVacancyInteractor.deleteFavoriteVacancy(vacancy.vacancyId)
                 }
             } else {
                 if (vacancy != null) {
-                    interactor.addVacancyToFavorite(vacancy)
+                    favoriteVacancyInteractor.insertFavoriteVacancy(vacancy)
                 }
             }
             if (vacancy != null) {
@@ -106,7 +101,7 @@ class VacancyViewModel(private val interactor: VacancyDetailsInteractor) : ViewM
     fun updateVacancy() {
         viewModelScope.launch {
             delay(DELAY)
-            interactor.updateVacancy(getVacancyState()?.data!!)
+            favoriteVacancyInteractor.updateFavoriteVacancy(getVacancyState()?.data!!)
         }
     }
 
