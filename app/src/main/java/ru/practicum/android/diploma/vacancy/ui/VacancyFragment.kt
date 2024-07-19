@@ -24,6 +24,7 @@ import ru.practicum.android.diploma.util.salaryFormat
 import ru.practicum.android.diploma.vacancy.presentation.VacancyViewModel
 
 class VacancyFragment : Fragment() {
+
     private var _binding: VacancyFragmentBinding? = null
     private val binding get() = _binding!!
 
