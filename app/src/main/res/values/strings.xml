@@ -5,7 +5,7 @@
     <string name="filter_headline">Настройки фильтрации</string>
     <string name="place_of_work_headline">Выбор места работы</string>
     <string name="country_headline">Выбор страны</string>
-    <string name="region_headline">Выбор региона</string>
+    <string name="area_headline">Выбор региона</string>
     <string name="industry_headline">Выбор отрасли</string>
     <string name="vacancy_headline">Вакансия</string>
     <string name="favourite_headline">Избранное</string>

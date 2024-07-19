@@ -120,4 +120,14 @@
         <item name="chipCornerRadius">@dimen/dp_12</item>
     </style>
 
+    <style name="ChooseButtonStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/dp_60</item>
+        <item name="android:layout_marginHorizontal">@dimen/dp_16</item>
+        <item name="android:text">@string/choose_button_label</item>
+        <item name="android:textAppearance">@style/TextMedium16</item>
+        <item name="android:textColor">@color/white_universal</item>
+        <item name="android:background">@drawable/choose_button_background</item>
+    </style>
+
 </resources>

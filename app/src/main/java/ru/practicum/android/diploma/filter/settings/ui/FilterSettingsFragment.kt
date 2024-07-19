@@ -12,7 +12,6 @@ import ru.practicum.android.diploma.databinding.FilterListItemBinding
 import ru.practicum.android.diploma.databinding.FilterSettingsFragmentBinding
 
 class FilterSettingsFragment : Fragment() {
-
     private var _binding: FilterSettingsFragmentBinding? = null
     private val binding get() = _binding!!
 
