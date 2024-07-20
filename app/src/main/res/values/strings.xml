@@ -23,6 +23,7 @@
     <!-- Search texts. -->
     <string name="enter_request_hint">Введите запрос</string>
     <string name="vacancy_list_empty_label">Таких вакансий нет</string>
+    <string name="error_no_internet">Нет интернета</string>
     <!-- Filter texts. -->
     <string name="place_of_work_hint">Место работы</string>
     <string name="country_hint">Страна</string>
@@ -49,6 +50,13 @@
     <string name="salary_is_empty">Зарплата не указана</string>
     <string name="from">от %1$s \u0020</string>
     <string name="to">до %1$s \u0020</string>
+    <!-- Экран "Выбор отрасли" -->
+    <string name="selection_industry">Выбор отрасли</string>
+    <string name="enter_industry">Введите отрасль</string>
+    <string name="choose">Выбрать</string>
+    <string name="industry_name">Авиаперевозки</string>
+    <string name="not_found">Не удалось получить\n список</string>
+    <string name="failed_message">Такой отрасли нет</string>
 
     <plurals name="vacancyCount">
         <item quantity="one">%1$d vacancy was found</item>

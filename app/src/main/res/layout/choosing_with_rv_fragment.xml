@@ -1,14 +1,147 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".filter.industry.ui.ChoosingIndustryFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/area_headline" />
+        android:layout_height="@dimen/dp_64"
+        app:contentInsetStart="@dimen/dp_0"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-</FrameLayout>
+        <ImageView
+            android:id="@+id/ivBack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dp_4"
+            android:layout_marginTop="@dimen/dp_8"
+            android:layout_marginBottom="@dimen/dp_8"
+            android:src="@drawable/ic_back_arrow" />
+
+        <TextView
+            android:id="@+id/tvIndustryHeadline"
+            style="@style/VacancyHeadline"
+            android:layout_width="wrap_content"
+            android:layout_marginStart="@dimen/dp_4"
+            android:text="@string/selection_industry"
+            app:layout_constraintStart_toEndOf="@id/ivBack" />
+
+    </androidx.appcompat.widget.Toolbar>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/leftBorder"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="@dimen/dp_16" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/rightBorder"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_end="@dimen/dp_16" />
+
+    <EditText
+        android:id="@+id/etIndustry"
+        style="@style/Search"
+        android:layout_marginTop="@dimen/dp_8"
+        android:background="@drawable/rounded_search_edit_text"
+        android:focusableInTouchMode="true"
+        android:hint="@string/enter_industry"
+        android:lines="1"
+        android:paddingStart="@dimen/dp_14"
+        android:textCursorDrawable="@drawable/search_cursor"
+        app:layout_constraintEnd_toStartOf="@id/rightBorder"
+        app:layout_constraintStart_toEndOf="@id/leftBorder"
+        app:layout_constraintTop_toBottomOf="@id/toolbar"
+        tools:ignore="MissingConstraints" />
+
+    <ImageView
+        android:id="@+id/ivIndustry"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_12"
+        android:layout_marginEnd="@dimen/dp_20"
+        android:background="@drawable/rounded_search_edit_text"
+        android:src="@drawable/ic_search"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvIndustryList"
+        android:layout_width="@dimen/dp_0"
+        android:layout_height="@dimen/dp_0"
+        android:layout_marginTop="@dimen/dp_8"
+        android:animationCache="true"
+        android:visibility="visible"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constrainedHeight="true"
+        app:layout_constraintBottom_toTopOf="@id/bChoose"
+        app:layout_constraintEnd_toStartOf="@id/rightBorder"
+        app:layout_constraintStart_toEndOf="@id/leftBorder"
+        app:layout_constraintTop_toBottomOf="@id/etIndustry"
+        tools:listitem="@layout/item_industry" />
+
+    <Button
+        android:id="@+id/bChoose"
+        style="@style/Button"
+        android:background="@drawable/round_bg_blue_12"
+        android:text="@string/choose"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/rightBorder"
+        app:layout_constraintStart_toEndOf="@id/leftBorder" />
+
+    <TextView
+        android:id="@+id/tvNoInternetPlaceholder"
+        style="@style/PlaceholderMessage"
+        android:text="@string/error_no_internet"
+        android:visibility="gone"
+        app:drawableTopCompat="@drawable/placeholder_no_internet"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/rightBorder"
+        app:layout_constraintStart_toEndOf="@id/leftBorder"
+        app:layout_constraintTop_toBottomOf="@id/etIndustry" />
+
+    <TextView
+        android:id="@+id/tvNotFoundPlaceholder"
+        style="@style/PlaceholderMessage"
+        android:text="@string/not_found"
+        android:visibility="gone"
+        app:drawableTopCompat="@drawable/placeholder_not_found"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/rightBorder"
+        app:layout_constraintStart_toEndOf="@id/leftBorder"
+        app:layout_constraintTop_toBottomOf="@id/etIndustry" />
+
+    <TextView
+        android:id="@+id/tvFailedRequestPlaceholder"
+        style="@style/PlaceholderMessage"
+        android:text="@string/failed_message"
+        android:visibility="gone"
+        app:drawableTopCompat="@drawable/placeholder_failed_request"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/rightBorder"
+        app:layout_constraintStart_toEndOf="@id/leftBorder"
+        app:layout_constraintTop_toBottomOf="@id/etIndustry" />
+
+    <ProgressBar
+        android:id="@id/pbLoading"
+        android:layout_width="@dimen/dp_48"
+        android:layout_height="@dimen/dp_48"
+        android:visibility="gone"
+        android:indeterminateTint="@color/blue"
+        app:layout_constraintTop_toBottomOf="@id/etIndustry"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/rightBorder"
+        app:layout_constraintStart_toEndOf="@id/leftBorder" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
