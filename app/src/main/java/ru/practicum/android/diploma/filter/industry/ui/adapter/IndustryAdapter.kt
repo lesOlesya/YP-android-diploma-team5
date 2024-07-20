@@ -1,4 +1,4 @@
-package ru.practicum.android.diploma.filter.settings.ui
+package ru.practicum.android.diploma.filter.industry.ui.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
