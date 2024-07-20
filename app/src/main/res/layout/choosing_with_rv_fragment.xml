@@ -4,43 +4,26 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="?attr/colorPrimary"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".filter.industry.ui.ChoosingIndustryFragment">
 
     <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar_industry"
+        android:id="@+id/toolbar"
         style="@style/ToolbarStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:navigationIcon="@drawable/ic_back_arrow"
-        app:title="@string/vacancy_headline">
+        app:title=".title Настроить в фрагменте">
     </androidx.appcompat.widget.Toolbar>
 
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvIndustryList"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="@dimen/dp_16"
-        android:layout_marginEnd="@dimen/dp_16"
-        android:layout_marginTop="@dimen/dp_8"
-        android:animationCache="true"
-        android:visibility="visible"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        app:layout_constrainedHeight="true"
-        app:layout_constraintBottom_toTopOf="@id/choose_industry_button"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/edit_text_search"
-        tools:listitem="@layout/item_industry" />
-
     <FrameLayout
-        android:id="@+id/edit_text_search"
+        android:id="@+id/edit_text_filter"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/toolbar_industry">
+        app:layout_constraintTop_toBottomOf="@id/toolbar">
 
         <EditText
             android:id="@+id/edit_text_search_input"
@@ -58,6 +41,18 @@
             android:visibility="gone"/>
     </FrameLayout>
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/dp_8"
+        android:animationCache="true"
+        android:visibility="visible"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/edit_text_filter"/>
+
     <androidx.appcompat.widget.AppCompatButton style="@style/ChooseButtonStyle"
         android:id="@+id/choose_industry_button"
         app:layout_constraintStart_toStartOf="parent"
@@ -69,23 +64,25 @@
     <TextView
         android:id="@+id/tvNoInternetPlaceholder"
         style="@style/PlaceholderMessage"
-        android:text="@string/no_internet_error"
+        android:layout_marginHorizontal="@dimen/dp_16"
+        android:text="@string/region_list_empty_error"
         android:visibility="gone"
-        app:drawableTopCompat="@drawable/placeholder_no_internet"
+        app:drawableTopCompat="@drawable/cat_placeholder"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="parent"
-        app:layout_constraintStart_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/edit_text_search" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/edit_text_filter" />
 
     <TextView
         android:id="@+id/tvNotFoundPlaceholder"
         style="@style/PlaceholderMessage"
+        android:layout_marginHorizontal="@dimen/dp_16"
         android:text="@string/list_error"
         android:visibility="gone"
-        app:drawableTopCompat="@drawable/placeholder_not_found"
+        app:drawableTopCompat="@drawable/magic_carpet_placeholder"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="parent"
-        app:layout_constraintStart_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/edit_text_search" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/edit_text_filter" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
