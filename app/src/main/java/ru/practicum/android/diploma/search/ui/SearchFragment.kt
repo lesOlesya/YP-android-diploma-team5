@@ -128,7 +128,10 @@ class SearchFragment : Fragment(), VacancyAdapter.VacancyClickListener {
         super.onResume()
         if (editText?.text?.isEmpty() == true) {
             rvWithChip?.isVisible = false
+            makePlaceholderInvisible()
             binding.ivSearchPlaceholder.isVisible = true
+        } else {
+            binding.ivSearchPlaceholder.isVisible = false
         }
     }
 
@@ -136,6 +139,12 @@ class SearchFragment : Fragment(), VacancyAdapter.VacancyClickListener {
         super.onDestroyView()
         _binding = null
         textWatcher?.let { editText?.removeTextChangedListener(it) }
+    }
+
+    private fun makePlaceholderInvisible() {
+        binding.tvServerErrorPlaceholder.isVisible = false
+        binding.tvFailedRequestPlaceholder.isVisible = false
+        binding.tvNoInternetPlaceholder.isVisible = false
     }
 
     private fun render(state: VacanciesState) {
@@ -150,9 +159,7 @@ class SearchFragment : Fragment(), VacancyAdapter.VacancyClickListener {
     private fun showLoading(rvVisible: Boolean) {
         progressBar?.isVisible = true
         rvWithChip?.isVisible = !rvVisible
-        binding.tvNoInternetPlaceholder.isVisible = false
-        binding.tvServerErrorPlaceholder.isVisible = false
-        binding.tvServerErrorPlaceholder.isVisible = false
+        makePlaceholderInvisible()
         binding.ivSearchPlaceholder.isVisible = false
     }
 
@@ -179,9 +186,7 @@ class SearchFragment : Fragment(), VacancyAdapter.VacancyClickListener {
     @SuppressLint("NotifyDataSetChanged")
     private fun showContent(vacancies: List<Vacancy>, count: Int) {
         progressBar?.isVisible = false
-        binding.tvNoInternetPlaceholder.isVisible = false
-        binding.tvServerErrorPlaceholder.isVisible = false
-        binding.tvServerErrorPlaceholder.isVisible = false
+        makePlaceholderInvisible()
         rvWithChip?.isVisible = true
         binding.ivSearchPlaceholder.isVisible = false
         binding.chipVacancies.text = requireContext().resources.getQuantityString(
