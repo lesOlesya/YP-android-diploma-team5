@@ -54,8 +54,9 @@
             android:hint="@string/enter_amount_hint"/>
     </com.google.android.material.textfield.TextInputLayout>
 
-    <CheckedTextView
+    <CheckedTextView style="@style/CheckedTextViewStyle"
         android:id="@+id/checkbox_salary"
+        android:layout_height="@dimen/dp_60"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/salary_input_layout"
@@ -65,15 +66,7 @@
         android:gravity="center_vertical"
         android:checkMark="?android:attr/listChoiceIndicatorMultiple"
         android:text="@string/hide_without_salary_switch_text"
-        android:checked="true"
-
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/dp_60"
-        android:textColor="@color/black_universal"
-        android:textAppearance="@style/TextRegular16"
-
-        android:checkMarkTint="?attr/colorPrimaryVariant"
-        />
+        android:checked="true"/>
 
     <androidx.appcompat.widget.AppCompatButton style="@style/ChooseButtonStyle"
         android:id="@+id/apply_settings_button"
