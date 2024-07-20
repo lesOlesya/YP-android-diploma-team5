@@ -8,8 +8,8 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import ru.practicum.android.diploma.R
-import ru.practicum.android.diploma.databinding.FilterListItemBinding
 import ru.practicum.android.diploma.databinding.FilterSettingsFragmentBinding
+import ru.practicum.android.diploma.databinding.ItemFilterBinding
 
 class FilterSettingsFragment : Fragment() {
     private var _binding: FilterSettingsFragmentBinding? = null
@@ -23,7 +23,7 @@ class FilterSettingsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // placeOfWork
+        // placeOfWork -->>
         setHint(binding.placeOfWork, requireContext().getString(R.string.place_of_work_hint))
 
         binding.placeOfWork.textField.setOnClickListener {
@@ -33,8 +33,9 @@ class FilterSettingsFragment : Fragment() {
         binding.placeOfWork.ivClear.setOnClickListener {
             setVisualItems(binding.placeOfWork)
         }
+        // <<-- placeOfWork
 
-        // industry
+        // industry -->>
         setHint(binding.industry, requireContext().getString(R.string.industry_hint))
 
         binding.industry.textField.setOnClickListener {
@@ -44,6 +45,12 @@ class FilterSettingsFragment : Fragment() {
         binding.industry.ivClear.setOnClickListener {
             setVisualItems(binding.industry)
         }
+        // <<-- industry
+
+        binding.checkboxSalary.setOnClickListener {
+            binding.checkboxSalary.isChecked = !binding.checkboxSalary.isChecked
+        }
+
     }
 
     override fun onResume() {
@@ -60,7 +67,7 @@ class FilterSettingsFragment : Fragment() {
         setVisualItems(binding.industry, editTextIsEmpty = false, text = "TEXT") // text = textIndustry
     }
 
-    private fun setVisualItems(itemBinding: FilterListItemBinding, editTextIsEmpty: Boolean = true, text: String = "") {
+    private fun setVisualItems(itemBinding: ItemFilterBinding, editTextIsEmpty: Boolean = true, text: String = "") {
         with(itemBinding) {
             textField.setText(text)
             hintField.isHintEnabled = !editTextIsEmpty
@@ -69,7 +76,7 @@ class FilterSettingsFragment : Fragment() {
         }
     }
 
-    private fun setHint(itemBinding: FilterListItemBinding, hintText: String) {
+    private fun setHint(itemBinding: ItemFilterBinding, hintText: String) {
         itemBinding.hintField.hint = hintText
         itemBinding.textField.hint = hintText
     }

@@ -2,6 +2,7 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:minHeight="@dimen/dp_60"
     android:background="@null"
     android:foreground="?attr/selectableItemBackground"
     xmlns:app="http://schemas.android.com/apk/res-auto">
@@ -17,30 +18,25 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/hint_field"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingTop="@dimen/dp_6"
+        style="@style/TextInputLayoutStyle"
+        android:minHeight="@dimen/dp_60"
+        android:paddingHorizontal="@dimen/dp_16"
         android:background="@null"
-        app:boxStrokeWidth="@dimen/dp_0"
+        android:foreground="?attr/selectableItemBackground"
         android:focusable="false"
         android:clickable="false"
         android:longClickable="false"
-        android:foreground="?attr/selectableItemBackground"
-        app:hintTextAppearance="@style/TextRegular12"
         android:textColorHint="?attr/colorOnPrimary"
-        app:hintAnimationEnabled="false"
         app:hintEnabled="false"
         android:hint="верхний hint настроить в фрагменте">
+
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/text_field"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingTop="@dimen/dp_16"
-            android:textAppearance="@style/TextRegular16"
-            android:textColor="?attr/colorOnPrimary"
+            style="@style/TextInputEditTextStyle"
+            android:paddingStart="@dimen/dp_0"
+            android:paddingEnd="@dimen/dp_48"
             android:focusable="false"
             android:longClickable="false"
-            android:textColorHint="@color/gray"
             android:hint="hint настроить в фрагменте"/>
     </com.google.android.material.textfield.TextInputLayout>
 

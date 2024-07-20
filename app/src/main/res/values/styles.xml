@@ -79,7 +79,7 @@
         <item name="android:layout_marginHorizontal">@dimen/dp_16</item>
         <item name="android:layout_marginVertical">@dimen/dp_8</item>
         <item name="android:hint">@string/enter_request_hint</item>
-        <item name="android:background">@drawable/rounded_search_edit_text</item>
+        <item name="android:background">@drawable/edit_text_background</item>
         <item name="android:inputType">text</item>
         <item name="android:textColor">?attr/textColorSearchUrl</item>
         <item name="android:textColorHint">?attr/colorOnSecondary</item>
@@ -97,15 +97,39 @@
         <item name="android:layout_gravity">end</item>
     </style>
 
-    <style name="PlaceholderMessage">
-        <item name="android:layout_width">0dp</item>
+    <style name="TextInputLayoutStyle">
+        <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_marginTop">@dimen/dp_8</item>
-        <item name="android:textColor">?attr/colorOnPrimary</item>
-        <item name="android:textAppearance">@style/TextMedium22</item>
-        <item name="android:padding">@dimen/dp_44</item>
-        <item name="android:drawablePadding">@dimen/dp_16</item>
-        <item name="android:textAlignment">center</item>
+        <item name="android:paddingVertical">@dimen/dp_8</item>
+        <item name="android:background">@drawable/edit_text_background</item>
+        <item name="android:textColorHint">?attr/colorOnSecondary</item>
+        <item name="boxStrokeWidth">@dimen/dp_0</item>
+        <item name="boxStrokeColor">@null</item>
+        <item name="cursorColor">?attr/colorPrimaryVariant</item>
+        <item name="expandedHintEnabled">false</item>
+        <item name="hintTextAppearance">@style/TextRegular12</item>
+        <item name="hintTextColor">?attr/colorPrimaryVariant</item>
+    </style>
+
+    <style name="TextInputEditTextStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingTop">@dimen/dp_12</item>
+        <item name="android:paddingBottom">@dimen/dp_0</item>
+        <item name="android:textAppearance">@style/TextRegular16</item>
+        <item name="android:textColorHint">?attr/colorOnSecondary</item>
+        <item name="android:textColor">?attr/textColorSearchUrl</item>
+        <item name="android:imeOptions">actionDone</item>
+    </style>
+
+    <style name="ChooseButtonStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/dp_60</item>
+        <item name="android:layout_marginHorizontal">@dimen/dp_16</item>
+        <item name="android:text">@string/choose_button_label</item>
+        <item name="android:textAppearance">@style/TextMedium16</item>
+        <item name="android:textColor">@color/white_universal</item>
+        <item name="android:background">@drawable/choose_button_background</item>
     </style>
 
     <style name="ChipMessage">
@@ -120,14 +144,15 @@
         <item name="chipCornerRadius">@dimen/dp_12</item>
     </style>
 
-    <style name="ChooseButtonStyle">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">@dimen/dp_60</item>
-        <item name="android:layout_marginHorizontal">@dimen/dp_16</item>
-        <item name="android:text">@string/choose_button_label</item>
-        <item name="android:textAppearance">@style/TextMedium16</item>
-        <item name="android:textColor">@color/white_universal</item>
-        <item name="android:background">@drawable/choose_button_background</item>
+    <style name="PlaceholderMessage">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">@dimen/dp_8</item>
+        <item name="android:textColor">?attr/colorOnPrimary</item>
+        <item name="android:textAppearance">@style/TextMedium22</item>
+        <item name="android:padding">@dimen/dp_44</item>
+        <item name="android:drawablePadding">@dimen/dp_16</item>
+        <item name="android:textAlignment">center</item>
     </style>
 
 </resources>
