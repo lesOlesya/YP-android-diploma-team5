@@ -83,6 +83,7 @@ class SearchFragment : Fragment(), VacancyAdapter.VacancyClickListener {
                 if (editText?.text?.isEmpty() == true) {
                     rvWithChip?.isVisible = false
                     binding.ivSearchPlaceholder.isVisible = true
+                    makePlaceholderInvisible()
                 }
                 viewModel.searchDebounce(
                     changedText = s?.toString() ?: ""
