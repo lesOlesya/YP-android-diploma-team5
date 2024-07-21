@@ -1,4 +1,4 @@
-package ru.practicum.android.diploma.filter.industry.data.dto
+package ru.practicum.android.diploma.filter.area.data.dto
 
 import com.google.gson.annotations.SerializedName
 

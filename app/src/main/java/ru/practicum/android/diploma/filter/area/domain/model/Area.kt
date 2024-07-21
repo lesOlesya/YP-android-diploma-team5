@@ -1,4 +1,4 @@
-package ru.practicum.android.diploma.filter.industry.domain.model
+package ru.practicum.android.diploma.filter.area.domain.model
 
 data class Area(
     val areaId: String, // ID региона для фильтра поиска
