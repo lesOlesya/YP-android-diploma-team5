@@ -18,7 +18,6 @@ class ChoosingIndustryViewModel(
 
     private val allIndustries = ArrayList<Industry>()
     private val industries = ArrayList<Industry>()
-
     private val choosingIndustryScreenStateLiveData = MutableLiveData<ChoosingIndustryScreenState>()
     fun observeChoosingIndustryScreenState(): LiveData<ChoosingIndustryScreenState> =
         choosingIndustryScreenStateLiveData
