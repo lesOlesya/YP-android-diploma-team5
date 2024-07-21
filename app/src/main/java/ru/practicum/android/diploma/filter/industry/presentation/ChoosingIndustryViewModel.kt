@@ -1,6 +1,5 @@
 package ru.practicum.android.diploma.filter.industry.presentation
 
-import java.util.ArrayList
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import androidx.lifecycle.LiveData
