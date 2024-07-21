@@ -1,15 +1,12 @@
 package ru.practicum.android.diploma.filter.industry.presentation
 
+import java.util.ArrayList
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-
-import java.util.ArrayList
-
 import ru.practicum.android.diploma.domain.industry.IndustryInteractor
 import ru.practicum.android.diploma.filter.industry.domain.models.ResponseStatus
 import ru.practicum.android.diploma.filter.industry.domain.models.Industry
