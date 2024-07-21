@@ -1,5 +1,9 @@
 package ru.practicum.android.diploma.filter.industry.presentation
 
+import ru.practicum.android.diploma.filter.industry.domain.IndustryInteractor
+import ru.practicum.android.diploma.filter.industry.domain.models.Industry
+import ru.practicum.android.diploma.filter.industry.domain.models.ResponseStatus
+import ru.practicum.android.diploma.filter.industry.ui.ChoosingIndustryScreenState
 
 class ChoosingIndustryViewModel(
     private val industryInteractor: IndustryInteractor,
