@@ -54,6 +54,17 @@
             android:hint="@string/enter_amount_hint"/>
     </com.google.android.material.textfield.TextInputLayout>
 
+    <ImageView
+        android:id="@+id/iv_clear_et"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="@id/salary_input_layout"
+        app:layout_constraintTop_toTopOf="@id/salary_input_layout"
+        app:layout_constraintBottom_toBottomOf="@id/salary_input_layout"
+        android:layout_marginEnd="@dimen/dp_4"
+        android:visibility="gone"
+        android:src="@drawable/ic_clear" />
+
     <CheckedTextView style="@style/CheckedTextViewStyle"
         android:id="@+id/checkbox_salary"
         android:layout_height="@dimen/dp_60"
