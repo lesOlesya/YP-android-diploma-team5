@@ -9,8 +9,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.widget.EditText
-import android.widget.ProgressBar
-import androidx.constraintlayout.widget.Group
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -38,8 +36,6 @@ class SearchFragment : Fragment(), VacancyAdapter.VacancyClickListener {
     private var textWatcher: TextWatcher? = null
 
     private var editText: EditText? = null
-    private var progressBar: ProgressBar? = null
-    private var rvWithChip: Group? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = SearchFragmentBinding.inflate(layoutInflater, container, false)
@@ -53,8 +49,6 @@ class SearchFragment : Fragment(), VacancyAdapter.VacancyClickListener {
         rvVacancies?.adapter = adapter
 
         editText = binding.editTextSearch
-        progressBar = binding.progressBarSearch
-        rvWithChip = binding.groupRvAndChip
         val clearButton = binding.ivIconClear
 
         binding.ivFilter.setOnClickListener {
@@ -63,27 +57,20 @@ class SearchFragment : Fragment(), VacancyAdapter.VacancyClickListener {
 
         clearButton.setOnClickListener {
             editText?.setText("")
-            with(binding) {
-                tvFailedRequestPlaceholder.isVisible = false
-                tvServerErrorPlaceholder.isVisible = false
-                tvNoInternetPlaceholder.isVisible = false
-                rvWithChip?.isVisible = false
-                progressBar?.isVisible = false
-            }
         }
 
         textWatcher = object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-                // detekt
+                if (s?.isEmpty() == true) {
+                    viewModel.setDefaultState()
+                }
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 clearButton.isVisible = !s.isNullOrEmpty()
                 binding.ivIconSearch.isVisible = s.isNullOrEmpty()
-                if (editText?.text?.isEmpty() == true) {
-                    rvWithChip?.isVisible = false
-                    binding.ivSearchPlaceholder.isVisible = true
-                    makePlaceholderInvisible()
+                if (s?.isEmpty() == true) {
+                    viewVisibility(searchDefaultPlaceholder = true)
                 }
                 viewModel.searchDebounce(
                     changedText = s?.toString() ?: ""
@@ -125,78 +112,74 @@ class SearchFragment : Fragment(), VacancyAdapter.VacancyClickListener {
         }
     }
 
-    override fun onResume() {
-        super.onResume()
-        if (editText?.text?.isEmpty() == true) {
-            rvWithChip?.isVisible = false
-            makePlaceholderInvisible()
-            binding.ivSearchPlaceholder.isVisible = true
-        } else {
-            binding.ivSearchPlaceholder.isVisible = false
-        }
+    override fun onDestroy() {
+        super.onDestroy()
+        textWatcher?.let { editText?.removeTextChangedListener(it) }
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-        textWatcher?.let { editText?.removeTextChangedListener(it) }
-    }
-
-    private fun makePlaceholderInvisible() {
-        binding.tvServerErrorPlaceholder.isVisible = false
-        binding.tvFailedRequestPlaceholder.isVisible = false
-        binding.tvNoInternetPlaceholder.isVisible = false
     }
 
     private fun render(state: VacanciesState) {
         when (state) {
-            is VacanciesState.Loading -> showLoading(state.isNewSearchText)
+            is VacanciesState.Loading -> viewVisibility(progressBar = true, rvWithChip = !state.isNewSearchText)
             is VacanciesState.Content -> showContent(state.vacancies, state.count)
             is VacanciesState.Error -> showError(state.errorCode)
             is VacanciesState.Empty -> showError(state.code)
+            is VacanciesState.Default -> viewVisibility(searchDefaultPlaceholder = true)
         }
     }
 
-    private fun showLoading(rvVisible: Boolean) {
-        progressBar?.isVisible = true
-        rvWithChip?.isVisible = !rvVisible
-        makePlaceholderInvisible()
-        binding.ivSearchPlaceholder.isVisible = false
-    }
-
     private fun showError(code: Int) {
-        progressBar?.isVisible = false
-        rvWithChip?.isVisible = false
-        with(binding) {
-            when (code) {
-                ErrorMessageConstants.NETWORK_ERROR -> tvNoInternetPlaceholder.isVisible = true
-                ErrorMessageConstants.NOTHING_FOUND -> {
-                    tvFailedRequestPlaceholder.isVisible = true
-                    rvWithChip?.isVisible = true
-                    rvVacancies?.isVisible = false
-                    chipVacancies.isVisible = true
-                    chipVacancies.text = requireContext().getString(R.string.vacancy_list_empty_label)
-                }
-
-                ErrorMessageConstants.SERVER_ERROR -> tvServerErrorPlaceholder.isVisible = true
-                else -> tvServerErrorPlaceholder.isVisible = true
-            }
+        when (code) {
+            ErrorMessageConstants.NETWORK_ERROR -> viewVisibility(noInternetPlaceholder = true)
+            ErrorMessageConstants.NOTHING_FOUND -> viewVisibility(failedRequestPlaceholder = true)
+            ErrorMessageConstants.SERVER_ERROR -> viewVisibility(serverErrorPlaceholder = true)
+            else -> viewVisibility(serverErrorPlaceholder = true)
         }
     }
 
     @SuppressLint("NotifyDataSetChanged")
     private fun showContent(vacancies: List<Vacancy>, count: Int) {
-        progressBar?.isVisible = false
-        makePlaceholderInvisible()
-        rvWithChip?.isVisible = true
-        binding.ivSearchPlaceholder.isVisible = false
+        viewVisibility(rvWithChip = true)
         binding.chipVacancies.text = requireContext().resources.getQuantityString(
             R.plurals.vacancyCount,
             count, count
         )
+
         adapter.vacancies.clear()
         adapter.vacancies.addAll(vacancies)
         adapter.notifyDataSetChanged()
+    }
+
+    private fun viewVisibility(
+        progressBar: Boolean = false,
+        rvWithChip: Boolean = false,
+        noInternetPlaceholder: Boolean = false,
+        serverErrorPlaceholder: Boolean = false,
+        searchDefaultPlaceholder: Boolean = false,
+        failedRequestPlaceholder: Boolean = false,
+    ) {
+        with(binding) {
+            progressBarSearch.isVisible = progressBar
+            // rv with chip
+            groupRvAndChip.isVisible = rvWithChip
+            rvVacancyList.isVisible = rvWithChip
+            chipVacancies.isVisible = rvWithChip
+            // placeholders
+            tvNoInternetPlaceholder.isVisible = noInternetPlaceholder
+            tvServerErrorPlaceholder.isVisible = serverErrorPlaceholder
+            ivSearchPlaceholder.isVisible = searchDefaultPlaceholder
+            // nothingFound placeholder and chip
+            tvFailedRequestPlaceholder.isVisible = failedRequestPlaceholder
+            if (failedRequestPlaceholder) {
+                groupRvAndChip.isVisible = true
+                rvVacancyList.isVisible = false
+                chipVacancies.text = requireContext().getString(R.string.vacancy_list_empty_label)
+            }
+        }
     }
 
     override fun onVacancyClick(vacancy: Vacancy) {
