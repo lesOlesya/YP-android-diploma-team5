@@ -4,36 +4,37 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import ru.practicum.android.diploma.databinding.ItemAreaBinding
+import ru.practicum.android.diploma.filter.industry.domain.model.Area
 
 class AreaAdapter(private val clickListener: AreaClickListener) : RecyclerView.Adapter<AreaViewHolder>() {
 
-    private val areaNames = ArrayList<String>()
+    private val areas = ArrayList<Area>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AreaViewHolder {
         return AreaViewHolder(ItemAreaBinding.inflate(LayoutInflater.from(parent.context), parent, false))
     }
 
     override fun getItemCount(): Int {
-        return areaNames.size
+        return areas.size
     }
 
     override fun onBindViewHolder(holder: AreaViewHolder, position: Int) {
-        holder.bind(areaNames[position])
-        holder.itemView.setOnClickListener { clickListener.onAreaClick(areaNames[position]) }
+        holder.bind(areas[position])
+        holder.itemView.setOnClickListener { clickListener.onAreaClick(areas[position]) }
     }
 
-    fun setAreas(areas: List<String>) {
-        areaNames.clear()
-        areaNames.addAll(areas)
+    fun setAreas(areaList: List<Area>) {
+        areas.clear()
+        areas.addAll(areaList)
         notifyDataSetChanged()
     }
 
     fun clearAreas() {
-        areaNames.clear()
+        areas.clear()
         notifyDataSetChanged()
     }
 
     fun interface AreaClickListener {
-        fun onAreaClick(areaName: String)
+        fun onAreaClick(area: Area)
     }
 }

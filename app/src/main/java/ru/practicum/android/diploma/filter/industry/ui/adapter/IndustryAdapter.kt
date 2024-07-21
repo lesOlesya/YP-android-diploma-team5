@@ -6,9 +6,10 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import ru.practicum.android.diploma.databinding.IndustryListItemBinding
+import ru.practicum.android.diploma.filter.industry.domain.model.Industry
 
 class IndustryAdapter(private val clickListener: OnItemClickListener) :
-    ListAdapter<String, IndustryAdapter.IndustryViewHolder>(TrackDiffCallback()) {
+    ListAdapter<Industry, IndustryAdapter.IndustryViewHolder>(TrackDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): IndustryViewHolder {
         val binding =
@@ -19,8 +20,8 @@ class IndustryAdapter(private val clickListener: OnItemClickListener) :
     }
 
     override fun onBindViewHolder(holder: IndustryViewHolder, position: Int) {
-        val track = getItem(position)
-        holder.bind(track)
+        val industry = getItem(position)
+        holder.bind(industry)
     }
 
     inner class IndustryViewHolder(private val binding: IndustryListItemBinding, clickAtPosition: (Int) -> Unit) :
@@ -31,24 +32,24 @@ class IndustryAdapter(private val clickListener: OnItemClickListener) :
                 clickAtPosition(adapterPosition)
             }
         }
-        fun bind(name: String) {
+        fun bind(industry: Industry) {
             binding.apply {
-                tvIndustry.text = name
+                tvIndustry.text = industry.industryName
             }
         }
     }
 
-    class TrackDiffCallback : DiffUtil.ItemCallback<String>() {
-        override fun areItemsTheSame(oldItem: String, newItem: String): Boolean {
+    class TrackDiffCallback : DiffUtil.ItemCallback<Industry>() {
+        override fun areItemsTheSame(oldItem: Industry, newItem: Industry): Boolean {
             return oldItem == newItem
         }
 
-        override fun areContentsTheSame(oldItem: String, newItem: String): Boolean {
+        override fun areContentsTheSame(oldItem: Industry, newItem: Industry): Boolean {
             return oldItem == newItem
         }
     }
 
     fun interface OnItemClickListener {
-        fun click(name: String)
+        fun click(industry: Industry)
     }
 }
