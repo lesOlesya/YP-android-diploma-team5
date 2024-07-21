@@ -11,8 +11,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.databinding.FragmentSelectCountryBinding
 import ru.practicum.android.diploma.filter.country.domain.models.AreaCountry
 import ru.practicum.android.diploma.filter.country.presentation.ChoosingCountryViewModel
-import ru.practicum.android.diploma.ui.country.adapter.CountryAdapter
-
+import ru.practicum.android.diploma.filter.country.ui.adapter.CountryAdapter
 
 class ChoosingCountryFragment : Fragment() {
 

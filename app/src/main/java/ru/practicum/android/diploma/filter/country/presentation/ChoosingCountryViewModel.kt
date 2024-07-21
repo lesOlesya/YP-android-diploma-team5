@@ -10,7 +10,6 @@ import ru.practicum.android.diploma.filter.country.domain.models.AreasInteractor
 import ru.practicum.android.diploma.filter.country.domain.models.ResponseStatus
 import ru.practicum.android.diploma.filter.country.ui.CountryFragmentStatus
 
-
 class ChoosingCountryViewModel(
     private val areasInteractor: AreasInteractor
 ) : ViewModel() {

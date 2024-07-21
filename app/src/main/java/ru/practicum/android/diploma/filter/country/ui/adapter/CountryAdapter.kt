@@ -1,10 +1,11 @@
-package ru.practicum.android.diploma.ui.country.adapter
+package ru.practicum.android.diploma.filter.country.ui.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.filter.country.domain.models.AreaCountry
+import ru.practicum.android.diploma.filter.country.ui.adapter.CountryViewHolder
 
 class CountryAdapter(
     private val areas: List<AreaCountry>
