@@ -49,7 +49,7 @@ class FavoriteVacanciesRepositoryImpl(
         emit(convertFromVacancyEntity(favoriteVacanciesList))
     }.flowOn(Dispatchers.IO)
 
-    override fun convertFromVacancyEntity(vacancies: List<VacancyEntity>): List<Vacancy> {
+    private fun convertFromVacancyEntity(vacancies: List<VacancyEntity>): List<Vacancy> {
         return vacancies.map { favoriteVacancyDbConverter.map(it) }
     }
 }

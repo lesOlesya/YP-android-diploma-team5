@@ -1,7 +1,6 @@
 package ru.practicum.android.diploma.favourite.domain.api
 
 import kotlinx.coroutines.flow.Flow
-import ru.practicum.android.diploma.favourite.data.db.entity.VacancyEntity
 import ru.practicum.android.diploma.search.domain.models.Vacancy
 
 interface FavoriteVacanciesRepository {
@@ -17,7 +16,5 @@ interface FavoriteVacanciesRepository {
     fun getFavoriteVacanciesId(): Flow<List<String>>
 
     fun getFavoriteVacancies(): Flow<List<Vacancy>>
-
-    fun convertFromVacancyEntity(vacancies: List<VacancyEntity>): List<Vacancy>
 
 }

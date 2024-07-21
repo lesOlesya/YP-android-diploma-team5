@@ -13,12 +13,10 @@ fun Salary.salaryFormat(context: Context): String? {
     val salaryCurrency = this.currency
     val salaryString = buildString {
 
-        if (from != null) {
-            this.append(context.getString(R.string.from, from.sumFormat()))
-        }
-        if (to != null) {
-            this.append(context.getString(R.string.to, to.sumFormat()))
-        }
+        from?.let { this.append(context.getString(R.string.from, it.sumFormat())) }
+
+        to?.let { this.append(context.getString(R.string.to, it.sumFormat())) }
+
         val currency: Currency = when (salaryCurrency) {
             null -> return null
             "RUR" -> Currency.getInstance("RUB")
