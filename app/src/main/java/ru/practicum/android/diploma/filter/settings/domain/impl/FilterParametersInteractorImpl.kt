@@ -14,4 +14,8 @@ class FilterParametersInteractorImpl(private val repository: FilterParametersRep
         return repository.getParameters()
     }
 
+    override fun resetParameters() {
+        repository.resetParameters()
+    }
+
 }

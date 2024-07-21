@@ -8,4 +8,6 @@ interface FilterParametersInteractor {
 
     fun getParameters(): FilterParameters
 
+    fun resetParameters()
+
 }

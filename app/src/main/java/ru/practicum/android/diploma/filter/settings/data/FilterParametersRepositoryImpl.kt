@@ -27,4 +27,11 @@ class FilterParametersRepositoryImpl(
         return parameters
     }
 
+    override fun resetParameters() {
+        val json = gson.toJson(FilterParameters())
+        sharedPreferences.edit()
+            .putString(FILTER_PARAMETERS_KEY, json)
+            .apply()
+    }
+
 }

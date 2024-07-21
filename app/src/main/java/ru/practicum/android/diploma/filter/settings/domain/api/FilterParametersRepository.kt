@@ -8,4 +8,6 @@ interface FilterParametersRepository {
 
     fun getParameters(): FilterParameters
 
+    fun resetParameters()
+
 }
