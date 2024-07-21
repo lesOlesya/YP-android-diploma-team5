@@ -20,7 +20,7 @@ class FavoritesViewModel(private val interactor: FavoriteVacanciesInteractor) : 
     fun checkFavorites() {
         getVacancies()
     }
-    
+
     private fun getVacancies() {
         viewModelScope.launch {
             try {
@@ -33,7 +33,6 @@ class FavoritesViewModel(private val interactor: FavoriteVacanciesInteractor) : 
                 _stateLiveData.value = FavoritesState.Error
                 e.message?.let { Log.e("ROOM", it) }
             }
-
         }
     }
 }
