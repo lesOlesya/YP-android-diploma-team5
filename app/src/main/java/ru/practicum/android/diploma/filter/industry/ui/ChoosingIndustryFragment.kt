@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.databinding.ChoosingWithRvFragmentBinding
 import ru.practicum.android.diploma.filter.industry.domain.models.Industry
-import ru.practicum.android.diploma.presentation.industry.ChoosingIndustryViewModel
+import ru.practicum.android.diploma.filter.industry.presentation.ChoosingIndustryViewModel
 
 class ChoosingIndustryFragment : Fragment() {
 

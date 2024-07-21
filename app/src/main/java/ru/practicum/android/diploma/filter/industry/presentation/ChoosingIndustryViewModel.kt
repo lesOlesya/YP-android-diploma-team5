@@ -1,4 +1,4 @@
-package ru.practicum.android.diploma.presentation.industry
+package ru.practicum.android.diploma.filter.industry.presentation
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -6,11 +6,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.util.ArrayList
 import ru.practicum.android.diploma.domain.industry.IndustryInteractor
 import ru.practicum.android.diploma.filter.industry.domain.models.ResponseStatus
 import ru.practicum.android.diploma.filter.industry.domain.models.Industry
 import ru.practicum.android.diploma.filter.industry.ui.ChoosingIndustryScreenState
-import java.util.ArrayList
 
 class ChoosingIndustryViewModel(
     private val industryInteractor: IndustryInteractor,
