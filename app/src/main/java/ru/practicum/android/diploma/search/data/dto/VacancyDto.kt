@@ -7,6 +7,7 @@ data class VacancyDto(
     val name: String, // Название вакансии
     val salary: SalaryResponse?, // ЗП
     val employer: EmployerResponse, // Работодатель
+    val address: String, // Адрес
     val area: AreaResponse, // Регион
 )
 
