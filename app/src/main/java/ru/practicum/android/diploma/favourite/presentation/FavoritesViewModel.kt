@@ -1,5 +1,7 @@
 package ru.practicum.android.diploma.favourite.presentation
 
+import android.database.SQLException
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -18,18 +20,18 @@ class FavoritesViewModel(private val interactor: FavoriteVacanciesInteractor) : 
     fun checkFavorites() {
         getVacancies()
     }
-
-    @Suppress("detekt.TooGenericExceptionCaught", "detekt.SwallowedException")
+    
     private fun getVacancies() {
         viewModelScope.launch {
             try {
                 interactor
                     .getFavoriteVacancies()
                     .collect { result ->
-                        _stateLiveData.value = FavoritesState.Ready(result)
+                        _stateLiveData.value = FavoritesState.Success(result)
                     }
-            } catch (e: Exception) {
+            } catch (e: SQLException) {
                 _stateLiveData.value = FavoritesState.Error
+                e.message?.let { Log.e("ROOM", it) }
             }
 
         }

@@ -48,7 +48,7 @@ class FavouriteFragment : Fragment(), VacancyAdapter.VacancyClickListener {
     private fun setupObserver() {
         viewModel.stateLiveData.observe(viewLifecycleOwner) { stateLiveData ->
             when (stateLiveData) {
-                is FavoritesState.Ready -> {
+                is FavoritesState.Success -> {
                     vacancyAdapter.vacancies = stateLiveData.favoritesList as ArrayList<Vacancy>
                     if (vacancyAdapter.vacancies.isEmpty()) {
                         binding.elPlaceholder.visibility = View.VISIBLE
