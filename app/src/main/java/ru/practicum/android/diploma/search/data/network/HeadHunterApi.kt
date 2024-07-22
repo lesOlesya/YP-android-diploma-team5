@@ -5,10 +5,12 @@ import retrofit2.http.Header
 import retrofit2.http.Path
 import retrofit2.http.Query
 import ru.practicum.android.diploma.BuildConfig
+import ru.practicum.android.diploma.filter.area.data.dto.AreaArrayResponse
 import ru.practicum.android.diploma.search.data.dto.VacancySearchResponse
 import ru.practicum.android.diploma.vacancy.data.dto.VacancyDetailsResponse
 
 interface HeadHunterApi {
+
     @GET("/vacancies")
     suspend fun search(
         @Header("Authorization") token: String = "Bearer " + BuildConfig.HH_ACCESS_TOKEN,
@@ -24,5 +26,10 @@ interface HeadHunterApi {
         @Header("HH-User-Agent") name: String = "Jobka (olesyad285@gmail.com)",
         @Path("vacancy_id") vacancyId: String
     ): VacancyDetailsResponse
+
+    @GET("/areas")
+    suspend fun getAreas(
+        @Header("HH-User-Agent") name: String = "Jobka (olesyad285@gmail.com)",
+    ): AreaArrayResponse
 
 }

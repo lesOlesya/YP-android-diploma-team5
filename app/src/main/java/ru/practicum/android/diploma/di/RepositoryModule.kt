@@ -4,6 +4,11 @@ import org.koin.dsl.module
 import ru.practicum.android.diploma.favourite.domain.api.FavoriteVacanciesRepository
 import ru.practicum.android.diploma.favourite.data.FavoriteVacanciesRepositoryImpl
 import ru.practicum.android.diploma.favourite.data.converters.FavoriteVacancyDbConverter
+import ru.practicum.android.diploma.filter.area.data.RegionRepositoryImpl
+import ru.practicum.android.diploma.filter.area.data.converter.AreaDtoConverter
+import ru.practicum.android.diploma.filter.area.domain.api.RegionRepository
+import ru.practicum.android.diploma.filter.country.data.CountryRepositoryImpl
+import ru.practicum.android.diploma.filter.country.domain.api.CountryRepository
 import ru.practicum.android.diploma.search.domain.api.SearchRepository
 import ru.practicum.android.diploma.search.data.SearchRepositoryImpl
 import ru.practicum.android.diploma.vacancy.data.VacancyDetailsByIDRepositoryImpl
@@ -23,6 +28,18 @@ val repositoryModule = module {
         SearchRepositoryImpl(get())
     }
 
+    single<RegionRepository> {
+        RegionRepositoryImpl(get(), get())
+    }
+
+    single<CountryRepository> {
+        CountryRepositoryImpl(get(), get())
+    }
+
     factory { FavoriteVacancyDbConverter(get()) }
+
+    factory<AreaDtoConverter> {
+        AreaDtoConverter()
+    }
 
 }
