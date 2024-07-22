@@ -49,11 +49,12 @@ class RetrofitNetworkClient(
     }
 
     private fun isWrongRequest(dto: Any): Boolean {
-        if (dto !is VacancySearchRequest && dto !is VacancyDetailsRequest) {
-            if (dto !is AreaRequest && dto !is IndustryRequest) {
-                return true
-            }
+        return when (dto) {
+            is VacancySearchRequest -> false
+            is VacancyDetailsRequest -> false
+            is AreaRequest -> false
+            is IndustryRequest -> false
+            else -> true
         }
-        return false
     }
 }
