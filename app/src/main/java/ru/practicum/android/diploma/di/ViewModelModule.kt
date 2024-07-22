@@ -26,7 +26,6 @@ val viewModelModule = module {
         ChoosingIndustryViewModel(get())
     }
 
-
     viewModel {
         ChoosingRegionViewModel(get())
     }

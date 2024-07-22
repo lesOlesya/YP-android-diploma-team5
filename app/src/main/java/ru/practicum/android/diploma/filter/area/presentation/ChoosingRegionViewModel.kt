@@ -58,7 +58,7 @@ class ChoosingRegionViewModel(private val interactor: RegionInteractor) : ViewMo
         setRegions(ArrayList(filtredRegions))
     }
 
-    fun reloadRegions(){
+    fun reloadRegions() {
         setRegions(regions)
     }
 }
