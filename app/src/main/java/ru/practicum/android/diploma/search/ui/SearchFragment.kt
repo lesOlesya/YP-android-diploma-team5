@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.widget.EditText
+import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -126,18 +127,34 @@ class SearchFragment : Fragment(), VacancyAdapter.VacancyClickListener {
         when (state) {
             is VacanciesState.Loading -> viewVisibility(progressBar = true, rvWithChip = !state.isNewSearchText)
             is VacanciesState.Content -> showContent(state.vacancies, state.count)
-            is VacanciesState.Error -> showError(state.errorCode)
-            is VacanciesState.Empty -> showError(state.code)
+            is VacanciesState.Error -> showError(state.errorCode, state.errorDuringPagination)
+            is VacanciesState.Empty -> showError(state.code, false)
             is VacanciesState.Default -> viewVisibility(searchDefaultPlaceholder = true)
         }
     }
 
-    private fun showError(code: Int) {
-        when (code) {
-            ErrorMessageConstants.NETWORK_ERROR -> viewVisibility(noInternetPlaceholder = true)
-            ErrorMessageConstants.NOTHING_FOUND -> viewVisibility(failedRequestPlaceholder = true)
-            ErrorMessageConstants.SERVER_ERROR -> viewVisibility(serverErrorPlaceholder = true)
-            else -> viewVisibility(serverErrorPlaceholder = true)
+    private fun showError(code: Int, errorDuringPagination: Boolean) {
+        if (!errorDuringPagination) {
+            when (code) {
+                ErrorMessageConstants.NETWORK_ERROR -> viewVisibility(noInternetPlaceholder = true)
+                ErrorMessageConstants.NOTHING_FOUND -> viewVisibility(failedRequestPlaceholder = true)
+                ErrorMessageConstants.SERVER_ERROR -> viewVisibility(serverErrorPlaceholder = true)
+                else -> viewVisibility(serverErrorPlaceholder = true)
+            }
+        } else {
+            viewVisibility(rvWithChip = true)
+            val toast = Toast.makeText(
+                requireContext(),
+                getString(R.string.toast_no_internet_error),
+                Toast.LENGTH_LONG
+            )
+            when (code) {
+                ErrorMessageConstants.NETWORK_ERROR -> toast.show()
+                else -> {
+                    toast.setText(getString(R.string.toast_error))
+                    toast.show()
+                }
+            }
         }
     }
 

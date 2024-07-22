@@ -55,7 +55,7 @@ class SearchViewModel(
                 searchInteractor
                     .search(query, currentPage)
                     .collect { pair ->
-                        processResult(pair.first, pair.second)
+                        processResult(pair.first, pair.second, isNewSearchText)
                     }
             }
         } else if (query.isEmpty()) {
@@ -63,7 +63,7 @@ class SearchViewModel(
         }
     }
 
-    private fun processResult(vacancyPagination: VacancyPagination?, errorCode: Int?) {
+    private fun processResult(vacancyPagination: VacancyPagination?, errorCode: Int?, isNewSearchText: Boolean) {
         if (vacancyPagination != null) {
             vacancies.addAll(vacancyPagination.vacancyList)
             currentPage = vacancyPagination.page
@@ -73,7 +73,7 @@ class SearchViewModel(
         }
         when {
             errorCode != null -> {
-                renderState(VacanciesState.Error(errorCode))
+                renderState(VacanciesState.Error(errorCode, !isNewSearchText))
             }
 
             vacancies.isEmpty() -> {
