@@ -66,7 +66,7 @@
         android:label="ChoosingCountryFragment"/>
     <fragment
         android:id="@+id/choosingAreaFragment"
-        android:name="ru.practicum.android.diploma.filter.area.ui.ChoosingAreaFragment"
+        android:name="ru.practicum.android.diploma.filter.area.ui.ChoosingRegionFragment"
         android:label="ChoosingAreaFragment"
         tools:layout="@layout/choosing_with_rv_fragment" />
     <fragment
