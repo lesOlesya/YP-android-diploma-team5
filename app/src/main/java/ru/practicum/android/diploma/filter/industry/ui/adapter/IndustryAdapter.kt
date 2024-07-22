@@ -9,7 +9,7 @@ import ru.practicum.android.diploma.databinding.IndustryListItemBinding
 import ru.practicum.android.diploma.filter.industry.domain.model.Industry
 
 class IndustryAdapter(private val clickListener: OnItemClickListener) :
-    ListAdapter<String, IndustryAdapter.IndustryViewHolder>(IndustryDiffCallback()) {
+    ListAdapter<Industry, IndustryAdapter.IndustryViewHolder>(IndustryDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): IndustryViewHolder {
         val binding =
@@ -39,8 +39,8 @@ class IndustryAdapter(private val clickListener: OnItemClickListener) :
         }
     }
 
-    class IndustryDiffCallback : DiffUtil.ItemCallback<String>() {
-        override fun areItemsTheSame(oldItem: String, newItem: String): Boolean {
+    class IndustryDiffCallback : DiffUtil.ItemCallback<Industry>() {
+        override fun areItemsTheSame(oldItem: Industry, newItem: Industry): Boolean {
             return oldItem == newItem
         }
 
