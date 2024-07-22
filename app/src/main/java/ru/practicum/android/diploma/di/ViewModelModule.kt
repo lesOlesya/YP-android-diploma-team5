@@ -1,7 +1,6 @@
 package ru.practicum.android.diploma.di
 
 import org.koin.androidx.viewmodel.dsl.viewModel
-import org.koin.core.scope.get
 import org.koin.dsl.module
 import ru.practicum.android.diploma.favourite.presentation.FavoritesViewModel
 import ru.practicum.android.diploma.filter.industry.presentation.ChoosingIndustryViewModel
@@ -17,6 +16,7 @@ val viewModelModule = module {
     viewModel<FavoritesViewModel> {
         FavoritesViewModel(get())
     }
+
     viewModel {
         VacancyViewModel(get(), get())
     }
@@ -24,4 +24,5 @@ val viewModelModule = module {
     viewModel {
         ChoosingIndustryViewModel()
     }
+
 }

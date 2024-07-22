@@ -4,10 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.filter.industry.domain.model.Industry
-import ru.practicum.android.diploma.filter.industry.ui.ChoosingIndustryScreenState
 
 class ChoosingIndustryViewModel : ViewModel() {
 
@@ -21,25 +19,25 @@ class ChoosingIndustryViewModel : ViewModel() {
         }
     }
 
-    private val _choosingIndustryScreenStateLiveData =
-        MutableLiveData<ChoosingIndustryScreenState>()
-    val choosingIndustryScreenStateLiveData: LiveData<ChoosingIndustryScreenState> =
-        _choosingIndustryScreenStateLiveData
+    private val _choosingIndustryStateLiveData =
+        MutableLiveData<ChoosingIndustryState>()
+    val choosingIndustryStateLiveData: LiveData<ChoosingIndustryState> =
+        _choosingIndustryStateLiveData
 
     init {
         getIndustries()
     }
 
-    fun observeChoosingIndustryScreenState(): LiveData<ChoosingIndustryScreenState> {
-        return _choosingIndustryScreenStateLiveData
+    fun observeChoosingIndustryState(): LiveData<ChoosingIndustryState> {
+        return _choosingIndustryStateLiveData
     }
 
     fun getIndustries() {
-        _choosingIndustryScreenStateLiveData.value = ChoosingIndustryScreenState.UploadingProcess
-        viewModelScope.launch(Dispatchers.IO) {
+        _choosingIndustryStateLiveData.value = ChoosingIndustryState.Loading
+        viewModelScope.launch {
             val industries = ArrayList(industryInteractor.getIndustry().sortedBy { it.industryName })
-            _choosingIndustryScreenStateLiveData.postValue(
-                ChoosingIndustryScreenState.IndustriesUploaded(
+            _choosingIndustryStateLiveData.postValue(
+                ChoosingIndustryState.Success(
                     industries = industries,
                     selectedIndustryId = ""
                 )
