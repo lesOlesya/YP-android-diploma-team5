@@ -7,6 +7,12 @@ import ru.practicum.android.diploma.favourite.domain.api.FavoriteVacanciesReposi
 import ru.practicum.android.diploma.filter.industry.data.IndustryRepositoryImpl
 import ru.practicum.android.diploma.filter.industry.data.convertor.IndustryDtoConvertor
 import ru.practicum.android.diploma.filter.industry.domain.api.IndustryRepository
+import ru.practicum.android.diploma.filter.area.data.RegionRepositoryImpl
+import ru.practicum.android.diploma.filter.area.data.converter.AreaDtoConverter
+import ru.practicum.android.diploma.filter.area.domain.api.RegionRepository
+import ru.practicum.android.diploma.filter.country.data.CountryRepositoryImpl
+import ru.practicum.android.diploma.filter.country.domain.api.CountryRepository
+import ru.practicum.android.diploma.search.domain.api.SearchRepository
 import ru.practicum.android.diploma.search.data.SearchRepositoryImpl
 import ru.practicum.android.diploma.search.domain.api.SearchRepository
 import ru.practicum.android.diploma.vacancy.data.VacancyDetailsByIDRepositoryImpl
@@ -30,8 +36,20 @@ val repositoryModule = module {
         SearchRepositoryImpl(get())
     }
 
+    single<RegionRepository> {
+        RegionRepositoryImpl(get(), get())
+    }
+
+    single<CountryRepository> {
+        CountryRepositoryImpl(get(), get())
+    }
+
     factory { FavoriteVacancyDbConverter(get()) }
 
     factory { IndustryDtoConvertor() }
+
+    factory<AreaDtoConverter> {
+        AreaDtoConverter()
+    }
 
 }
