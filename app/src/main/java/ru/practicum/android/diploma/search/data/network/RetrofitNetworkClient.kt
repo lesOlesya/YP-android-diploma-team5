@@ -24,7 +24,7 @@ class RetrofitNetworkClient(
             return Response().apply { resultCode = ErrorMessageConstants.NETWORK_ERROR }
         }
 
-        if (dto !is VacancySearchRequest && dto !is VacancyDetailsRequest && dto !is AreaRequest && dto !is IndustryRequest) {
+        if (isWrongRequest(dto)) {
             return Response().apply { resultCode = ErrorMessageConstants.REQUEST_ERROR }
         }
 
@@ -46,5 +46,14 @@ class RetrofitNetworkClient(
                 Response().apply { resultCode = ErrorMessageConstants.SERVER_ERROR }
             }
         }
+    }
+
+    private fun isWrongRequest(dto: Any): Boolean {
+        if (dto !is VacancySearchRequest && dto !is VacancyDetailsRequest) {
+            if (dto !is AreaRequest && dto !is IndustryRequest) {
+                return true
+            }
+        }
+        return false
     }
 }
