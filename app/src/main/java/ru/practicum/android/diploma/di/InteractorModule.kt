@@ -24,6 +24,7 @@ val interactorModule = module {
 
     factory<IndustryInteractor> {
         IndustryInteractorImpl(get())
+    }
 
     factory<RegionInteractor> {
         RegionInteractorImpl(get())

@@ -12,7 +12,6 @@ import ru.practicum.android.diploma.filter.area.data.converter.AreaDtoConverter
 import ru.practicum.android.diploma.filter.area.domain.api.RegionRepository
 import ru.practicum.android.diploma.filter.country.data.CountryRepositoryImpl
 import ru.practicum.android.diploma.filter.country.domain.api.CountryRepository
-import ru.practicum.android.diploma.search.domain.api.SearchRepository
 import ru.practicum.android.diploma.search.data.SearchRepositoryImpl
 import ru.practicum.android.diploma.search.domain.api.SearchRepository
 import ru.practicum.android.diploma.vacancy.data.VacancyDetailsByIDRepositoryImpl
