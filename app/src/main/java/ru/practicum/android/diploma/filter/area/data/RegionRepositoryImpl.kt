@@ -5,6 +5,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import ru.practicum.android.diploma.filter.area.data.converter.AreaDtoConverter
+import ru.practicum.android.diploma.filter.area.data.dto.AreaDto
 import ru.practicum.android.diploma.filter.area.data.dto.AreaRequest
 import ru.practicum.android.diploma.filter.area.data.dto.AreaResponse
 import ru.practicum.android.diploma.filter.area.domain.api.RegionRepository
@@ -28,21 +29,7 @@ class RegionRepositoryImpl(
 
             ErrorMessageConstants.SUCCESS -> {
                 with(response as AreaResponse) {
-                    val data = if (countryId != null) {
-                        items.flatMap { areaDto ->
-                            if (areaDto.id == countryId) {
-                                areaDtoConverter.areaFlatMap(areaDto) ?: emptyList()
-                            }
-                            emptyList()
-                        }
-                    } else {
-                        items.flatMap { areaDto ->
-                            areaDtoConverter.areaFlatMap(areaDto) ?: emptyList()
-                        }
-                    }
-
-                    data.sortedBy { it.areaName }
-
+                    val data = getRegionData(items, countryId).sortedBy { it.areaName }
                     emit(Resource.Success(data))
                 }
             }
@@ -56,5 +43,23 @@ class RegionRepositoryImpl(
             }
         }
     }.flowOn(Dispatchers.IO)
+
+    private fun getRegionData(items: ArrayList<AreaDto>, countryId: String?): List<Area> {
+        val data = if (countryId != null) {
+            items.flatMap { areaDto ->
+                if (areaDto.id == countryId) {
+                    areaDtoConverter.areaFlatMap(areaDto) ?: emptyList()
+                } else {
+                    emptyList()
+                }
+            }
+        } else {
+            items.flatMap { areaDto ->
+                areaDtoConverter.areaFlatMap(areaDto) ?: emptyList()
+            }
+        }
+
+        return data
+    }
 
 }

@@ -5,6 +5,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import ru.practicum.android.diploma.filter.area.data.converter.AreaDtoConverter
+import ru.practicum.android.diploma.filter.area.data.dto.AreaDto
 import ru.practicum.android.diploma.filter.area.data.dto.AreaRequest
 import ru.practicum.android.diploma.filter.area.data.dto.AreaResponse
 import ru.practicum.android.diploma.filter.area.domain.model.Area
@@ -55,13 +56,7 @@ class CountryRepositoryImpl(
 
             ErrorMessageConstants.SUCCESS -> {
                 with(response as AreaResponse) {
-                    items.forEach {
-                        if (it.id == countryId) {
-                            val country = areaDtoConverter.map(it) // it.parentId == null
-                            return@flow emit(Resource.Success(country))
-                        }
-                    }
-                    return@flow emit(Resource.Error(ErrorMessageConstants.NOTHING_FOUND))
+                    emit(getCountryResource(items, countryId))
                 }
             }
 
@@ -74,4 +69,15 @@ class CountryRepositoryImpl(
             }
         }
     }.flowOn(Dispatchers.IO)
+
+    private fun getCountryResource(items: ArrayList<AreaDto>, countryId: String?): Resource<Area> {
+        items.forEach {
+            if (it.id == countryId) {
+                val country = areaDtoConverter.map(it) // it.parentId == null
+                return Resource.Success(country)
+            }
+        }
+
+        return Resource.Error(ErrorMessageConstants.NOTHING_FOUND)
+    }
 }
