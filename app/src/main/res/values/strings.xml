@@ -26,7 +26,7 @@
     <!-- Filter texts. -->
     <string name="place_of_work_hint">Место работы</string>
     <string name="country_hint">Страна</string>
-    <string name="region_hint">Регион</string>
+    <string name="area_hint">Регион</string>
     <string name="enter_region_hint">Введите регион</string>
     <string name="industry_hint">Отрасль</string>
     <string name="enter_industry_hint">Введите отрасль</string>
@@ -34,6 +34,7 @@
     <string name="enter_amount_hint">Введите сумму</string>
     <string name="hide_without_salary_switch_text">Не показывать без зарплаты</string>
     <string name="choose_button_label">Выбрать</string>
+    <string name="apply_button_label">Применить</string>
     <string name="reset_button_label">Сбросить</string>
     <!-- Vacancy title texts. -->
     <string name="experience_vacancy_title">Требуемый опыт</string>
