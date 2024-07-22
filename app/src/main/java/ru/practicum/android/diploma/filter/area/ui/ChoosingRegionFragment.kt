@@ -46,12 +46,11 @@ class ChoosingRegionFragment : Fragment(), AreaAdapter.AreaClickListener {
         super.onViewCreated(view, savedInstanceState)
 
         requireActivity().onBackPressedDispatcher
-            .addCallback(viewLifecycleOwner,
-                object : OnBackPressedCallback(true) {
-                    override fun handleOnBackPressed() {
-                        findNavController().navigateUp()
-                    }
+            .addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    findNavController().navigateUp()
                 }
+            }
             )
 
         with(binding) {
