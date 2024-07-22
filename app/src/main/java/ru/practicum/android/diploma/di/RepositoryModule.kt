@@ -32,6 +32,7 @@ val repositoryModule = module {
 
     single<FilterParametersRepository> {
         FilterParametersRepositoryImpl(get(), get())
+    }
 
     single<RegionRepository> {
         RegionRepositoryImpl(get(), get())
