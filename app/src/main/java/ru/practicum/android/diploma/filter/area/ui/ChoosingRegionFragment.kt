@@ -54,16 +54,16 @@ class ChoosingRegionFragment : Fragment(), AreaAdapter.AreaClickListener {
             recyclerView.adapter = adapter
 
             toolbar.title = getString(R.string.area_headline)
-            editTextSearchInput.hint = getString(R.string.enter_region_hint)
+            editTextFilter.hint = getString(R.string.enter_region_hint)
             ivIconClear.setOnClickListener {
-                editTextSearchInput.setText("")
+                editTextFilter.setText("")
             }
 
             toolbar.setNavigationOnClickListener {
                 requireActivity().onBackPressedDispatcher.onBackPressed()
             }
 
-            editTextSearchInput.addTextChangedListener(object : TextWatcher {
+            editTextFilter.addTextChangedListener(object : TextWatcher {
                 override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
                 override fun afterTextChanged(s: Editable?) {}
 
@@ -85,13 +85,13 @@ class ChoosingRegionFragment : Fragment(), AreaAdapter.AreaClickListener {
                     showData()
                     adapter.setAreas(state.areas)
                 }
+
                 RegionFragmentState.Empty -> showEmpty()
                 RegionFragmentState.Error -> showError()
             }
         }
 
-        viewModel.getAreas(null)
-
+        requestAreas(null)
     }
 
     private fun changeIcons(isTextEmpty: Boolean) {
@@ -99,21 +99,44 @@ class ChoosingRegionFragment : Fragment(), AreaAdapter.AreaClickListener {
         binding.ivIconClear.isVisible = !isTextEmpty
     }
 
+    private fun requestAreas(countryID: String?) {
+        showProgressBar()
+        viewModel.getAreas(countryID)
+    }
+
+    private fun showProgressBar() {
+        with(binding) {
+            recyclerView.isVisible = false
+            tvFailedRequestPlaceholder.isVisible = false
+            tvNotFoundPlaceholder.isVisible = false
+            progressBar.isVisible = true
+        }
+    }
+
     private fun showEmpty() {
-        binding.recyclerView.isVisible = false
-        binding.tvNotFoundPlaceholder.isVisible = true
+        with(binding) {
+            recyclerView.isVisible = false
+            tvFailedRequestPlaceholder.isVisible = false
+            tvNotFoundPlaceholder.isVisible = true
+            progressBar.isVisible = false
+        }
     }
 
     private fun showError() {
-        binding.recyclerView.isVisible = false
-        binding.tvNoInternetPlaceholder.isVisible = true
+        with(binding) {
+            recyclerView.isVisible = false
+            tvFailedRequestPlaceholder.isVisible = true
+            tvNotFoundPlaceholder.isVisible = false
+            progressBar.isVisible = false
+        }
     }
 
     private fun showData() {
         with(binding) {
             recyclerView.isVisible = true
-            tvNoInternetPlaceholder.isVisible = false
+            tvFailedRequestPlaceholder.isVisible = false
             tvNotFoundPlaceholder.isVisible = false
+            progressBar.isVisible = false
         }
     }
 
