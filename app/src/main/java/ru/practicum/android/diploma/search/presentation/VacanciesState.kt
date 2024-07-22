@@ -2,9 +2,9 @@ package ru.practicum.android.diploma.search.presentation
 
 import ru.practicum.android.diploma.search.domain.models.Vacancy
 
-interface VacanciesState {
+sealed interface VacanciesState {
 
-    object Default : VacanciesState
+    data object Default : VacanciesState
 
     data class Loading(
         val isNewSearchText: Boolean
@@ -16,7 +16,8 @@ interface VacanciesState {
     ) : VacanciesState
 
     data class Error(
-        val errorCode: Int
+        val errorCode: Int,
+        val errorDuringPagination: Boolean
     ) : VacanciesState
 
     data class Empty(
