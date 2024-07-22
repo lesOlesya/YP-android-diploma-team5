@@ -18,6 +18,7 @@
     <string name="list_error">Не удалось получить список</string>
     <!-- Empty texts. -->
     <string name="region_list_empty_error">Такого региона нет</string>
+    <string name="industry_list_empty_error">Такой отрасли нет</string>
     <string name="list_empty">Список пуст</string>
     <!-- Search texts. -->
     <string name="enter_request_hint">Введите запрос</string>

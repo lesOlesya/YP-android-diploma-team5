@@ -20,13 +20,14 @@
     </androidx.appcompat.widget.Toolbar>
 
     <FrameLayout
-        android:id="@+id/edit_text_filter"
+        android:id="@+id/fl_edit_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@id/toolbar">
 
         <EditText
-            android:id="@+id/edit_text_search_input"
+            android:id="@+id/edit_text_filter"
+            android:hint="hint настроить в фрагменте"
             style="@style/EditTextStyle"/>
 
         <ImageView
@@ -51,7 +52,19 @@
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/edit_text_filter"/>
+        app:layout_constraintTop_toBottomOf="@id/fl_edit_text"/>
+
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        android:layout_width="@dimen/dp_48"
+        android:layout_height="@dimen/dp_48"
+        android:layout_gravity="center_horizontal"
+        android:indeterminateTint="?attr/colorPrimaryVariant"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/fl_edit_text"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
     <androidx.appcompat.widget.AppCompatButton style="@style/ChooseButtonStyle"
         android:id="@+id/choose_industry_button"
@@ -62,7 +75,7 @@
         android:visibility="gone"/>
 
     <TextView
-        android:id="@+id/tvNoInternetPlaceholder"
+        android:id="@+id/tvNotFoundPlaceholder"
         style="@style/PlaceholderMessage"
         android:layout_marginHorizontal="@dimen/dp_16"
         android:text="@string/region_list_empty_error"
@@ -71,10 +84,10 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/edit_text_filter" />
+        app:layout_constraintTop_toBottomOf="@id/fl_edit_text" />
 
     <TextView
-        android:id="@+id/tvNotFoundPlaceholder"
+        android:id="@+id/tvFailedRequestPlaceholder"
         style="@style/PlaceholderMessage"
         android:layout_marginHorizontal="@dimen/dp_16"
         android:text="@string/list_error"
@@ -83,6 +96,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/edit_text_filter" />
+        app:layout_constraintTop_toBottomOf="@id/fl_edit_text" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
