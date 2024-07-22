@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import ru.practicum.android.diploma.databinding.IndustryListItemBinding
 
 class IndustryAdapter(private val clickListener: OnItemClickListener) :
-    ListAdapter<String, IndustryAdapter.IndustryViewHolder>(TrackDiffCallback()) {
+    ListAdapter<String, IndustryAdapter.IndustryViewHolder>(IndustryDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): IndustryViewHolder {
         val binding =
@@ -38,7 +38,7 @@ class IndustryAdapter(private val clickListener: OnItemClickListener) :
         }
     }
 
-    class TrackDiffCallback : DiffUtil.ItemCallback<String>() {
+    class IndustryDiffCallback : DiffUtil.ItemCallback<String>() {
         override fun areItemsTheSame(oldItem: String, newItem: String): Boolean {
             return oldItem == newItem
         }
