@@ -33,6 +33,12 @@ class SearchViewModel(
     private val stateLiveData = MutableLiveData<VacanciesState>()
     fun getStateLiveData(): LiveData<VacanciesState> = stateLiveData
 
+    fun setDefaultState() {
+        if (latestSearchText == "") {
+            renderState(VacanciesState.Default)
+        }
+    }
+
     fun searchDebounce(changedText: String) {
         if (latestSearchText != changedText) {
             latestSearchText = changedText
@@ -52,6 +58,8 @@ class SearchViewModel(
                         processResult(pair.first, pair.second)
                     }
             }
+        } else if (query.isEmpty()) {
+            renderState(VacanciesState.Default)
         }
     }
 
