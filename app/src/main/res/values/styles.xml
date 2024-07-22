@@ -62,6 +62,15 @@
         <item name="android:textAppearance">@style/TextRegular16</item>
     </style>
 
+    <style name="CheckedTextViewStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:minHeight">@dimen/dp_48</item>
+        <item name="android:textColor">?attr/colorOnPrimary</item>
+        <item name="android:textAppearance">@style/TextRegular16</item>
+        <item name="android:checkMarkTint">?attr/colorPrimaryVariant</item>
+    </style>
+
     <style name="BottomNavStyle" parent="Widget.Design.BottomNavigationView">
         <item name="itemTextColor">@drawable/icon_color_bn</item>
         <item name="itemIconTint">@drawable/icon_color_bn</item>
