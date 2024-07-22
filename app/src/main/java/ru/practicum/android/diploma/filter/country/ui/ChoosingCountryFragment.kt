@@ -80,6 +80,7 @@ class ChoosingCountryFragment : Fragment(), AreaAdapter.AreaClickListener {
     }
 
     override fun onAreaClick(area: Area) {
-        TODO("Not yet implemented")
+        viewModel.saveCountryParameter(area)
+        requireActivity().onBackPressedDispatcher.onBackPressed()
     }
 }
