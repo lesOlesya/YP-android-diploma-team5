@@ -7,6 +7,8 @@ import ru.practicum.android.diploma.favourite.domain.api.FavoriteVacanciesReposi
 import ru.practicum.android.diploma.filter.industry.data.IndustryRepositoryImpl
 import ru.practicum.android.diploma.filter.industry.data.convertor.IndustryDtoConvertor
 import ru.practicum.android.diploma.filter.industry.domain.api.IndustryRepository
+import ru.practicum.android.diploma.filter.settings.data.FilterParametersRepositoryImpl
+import ru.practicum.android.diploma.filter.settings.domain.api.FilterParametersRepository
 import ru.practicum.android.diploma.filter.area.data.RegionRepositoryImpl
 import ru.practicum.android.diploma.filter.area.data.converter.AreaDtoConverter
 import ru.practicum.android.diploma.filter.area.domain.api.RegionRepository
@@ -33,6 +35,10 @@ val repositoryModule = module {
 
     single<SearchRepository> {
         SearchRepositoryImpl(get())
+    }
+
+    single<FilterParametersRepository> {
+        FilterParametersRepositoryImpl(get(), get())
     }
 
     single<RegionRepository> {
