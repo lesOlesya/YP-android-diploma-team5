@@ -24,6 +24,7 @@ val interactorModule = module {
 
     factory<FilterParametersInteractor> {
         FilterParametersInteractorImpl(get())
+    }
 
     factory<RegionInteractor> {
         RegionInteractorImpl(get())
