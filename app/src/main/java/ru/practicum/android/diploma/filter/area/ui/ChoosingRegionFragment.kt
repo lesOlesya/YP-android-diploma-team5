@@ -45,13 +45,14 @@ class ChoosingRegionFragment : Fragment(), AreaAdapter.AreaClickListener {
     ) {
         super.onViewCreated(view, savedInstanceState)
 
-        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner,
-            object : OnBackPressedCallback(true) {
-                override fun handleOnBackPressed() {
-                    findNavController().navigateUp()
+        requireActivity().onBackPressedDispatcher
+            .addCallback(viewLifecycleOwner,
+                object : OnBackPressedCallback(true) {
+                    override fun handleOnBackPressed() {
+                        findNavController().navigateUp()
+                    }
                 }
-            }
-        )
+            )
 
         with(binding) {
             recyclerView.layoutManager = LinearLayoutManager(requireContext())
@@ -69,11 +70,11 @@ class ChoosingRegionFragment : Fragment(), AreaAdapter.AreaClickListener {
 
             editTextFilter.addTextChangedListener(object : TextWatcher {
                 override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-                    //detect
+                    // detect
                 }
 
                 override fun afterTextChanged(s: Editable?) {
-                    //detect
+                    // detect
                 }
 
                 override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
