@@ -22,7 +22,6 @@ class RegionRepositoryImpl(
         val response = networkClient.doRequest(AreaRequest())
 
         when (response.resultCode) {
-
             ErrorMessageConstants.NETWORK_ERROR -> {
                 emit(Resource.Error(ErrorMessageConstants.NETWORK_ERROR))
             }
@@ -33,9 +32,8 @@ class RegionRepositoryImpl(
                         items.flatMap { areaDto ->
                             if (areaDto.id == countryId) {
                                 areaDtoConverter.areaFlatMap(areaDto) ?: emptyList()
-                            } else {
-                                emptyList()
                             }
+                            emptyList()
                         }
                     } else {
                         items.flatMap { areaDto ->

@@ -7,8 +7,8 @@ import kotlinx.coroutines.flow.flowOn
 import ru.practicum.android.diploma.filter.area.data.converter.AreaDtoConverter
 import ru.practicum.android.diploma.filter.area.data.dto.AreaRequest
 import ru.practicum.android.diploma.filter.area.data.dto.AreaResponse
-import ru.practicum.android.diploma.filter.country.domain.api.CountryRepository
 import ru.practicum.android.diploma.filter.area.domain.model.Area
+import ru.practicum.android.diploma.filter.country.domain.api.CountryRepository
 import ru.practicum.android.diploma.search.data.NetworkClient
 import ru.practicum.android.diploma.search.data.network.ErrorMessageConstants
 import ru.practicum.android.diploma.util.Resource
@@ -22,7 +22,6 @@ class CountryRepositoryImpl(
         val response = networkClient.doRequest(AreaRequest())
 
         when (response.resultCode) {
-
             ErrorMessageConstants.NETWORK_ERROR -> {
                 emit(Resource.Error(ErrorMessageConstants.NETWORK_ERROR))
             }
@@ -50,26 +49,19 @@ class CountryRepositoryImpl(
         val response = networkClient.doRequest(AreaRequest())
 
         when (response.resultCode) {
-
             ErrorMessageConstants.NETWORK_ERROR -> {
                 emit(Resource.Error(ErrorMessageConstants.NETWORK_ERROR))
             }
 
             ErrorMessageConstants.SUCCESS -> {
                 with(response as AreaResponse) {
-                    var country: Area? = null
-
                     items.forEach {
                         if (it.id == countryId) {
-                            country = areaDtoConverter.map(it) // it.parentId == null
-//                            return@forEach
+                            val country = areaDtoConverter.map(it) // it.parentId == null
+                            return@flow emit(Resource.Success(country))
                         }
                     }
-
-                    val resource = country?.let { Resource.Success(it) }
-                        ?: Resource.Error(ErrorMessageConstants.NOTHING_FOUND)
-
-                    emit(resource)
+                    return@flow emit(Resource.Error(ErrorMessageConstants.NOTHING_FOUND))
                 }
             }
 
