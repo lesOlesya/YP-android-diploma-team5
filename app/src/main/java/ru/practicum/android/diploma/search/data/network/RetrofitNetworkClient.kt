@@ -42,8 +42,13 @@ class RetrofitNetworkClient(
                     else -> headHunterService.getVacancyDetails(vacancyId = (dto as VacancyDetailsRequest).vacancyId)
                 }
                 response.apply { resultCode = ErrorMessageConstants.SUCCESS }
+
             } catch (e: Throwable) {
-                Response().apply { resultCode = ErrorMessageConstants.SERVER_ERROR }
+                if (e.message.toString() in "HTTP 404 ") { // пробел после 404 не удалять!
+                    Response().apply { resultCode = ErrorMessageConstants.REQUEST_ERROR }
+                } else {
+                    Response().apply { resultCode = ErrorMessageConstants.SERVER_ERROR }
+                }
             }
         }
     }

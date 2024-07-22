@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.favourite.domain.api.FavoriteVacanciesInteractor
@@ -102,12 +103,21 @@ class VacancyViewModel(
     private fun updateVacancy() {
         viewModelScope.launch {
             delay(DELAY)
-            favoriteVacancyInteractor.updateFavoriteVacancy(getVacancyState()?.data!!)
+            getVacancyState()?.data?.let { favoriteVacancyInteractor.updateFavoriteVacancy(it) }
         }
     }
 
     fun reloadUpdate() {
         needUpdate = true
+    }
+
+    fun deleteVacancy() {
+        if (favoritesState.value == true) {
+            setFavoriteState(false)
+            viewModelScope.launch(Dispatchers.IO) {
+                getVacancyState()?.data?.let { favoriteVacancyInteractor.deleteFavoriteVacancy(it.vacancyId) }
+            }
+        }
     }
 
     companion object {
