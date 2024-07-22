@@ -3,6 +3,8 @@ package ru.practicum.android.diploma.search.data.network
 import android.content.Context
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import ru.practicum.android.diploma.filter.industry.data.dto.IndustryRequest
+import ru.practicum.android.diploma.filter.industry.data.dto.IndustryResponse
 import ru.practicum.android.diploma.filter.area.data.dto.AreaRequest
 import ru.practicum.android.diploma.filter.area.data.dto.AreaResponse
 import ru.practicum.android.diploma.search.data.NetworkClient
@@ -22,7 +24,7 @@ class RetrofitNetworkClient(
             return Response().apply { resultCode = ErrorMessageConstants.NETWORK_ERROR }
         }
 
-        if (dto !is VacancySearchRequest && dto !is VacancyDetailsRequest && dto !is AreaRequest) {
+        if (isWrongRequest(dto)) {
             return Response().apply { resultCode = ErrorMessageConstants.REQUEST_ERROR }
         }
 
@@ -35,6 +37,7 @@ class RetrofitNetworkClient(
             try {
                 val response = when (dto) {
                     is VacancySearchRequest -> headHunterService.search(text = dto.expression, page = dto.page)
+                    is IndustryRequest -> IndustryResponse(headHunterService.searchIndustries())
                     is AreaRequest -> AreaResponse(headHunterService.getAreas())
                     else -> headHunterService.getVacancyDetails(vacancyId = (dto as VacancyDetailsRequest).vacancyId)
                 }
@@ -42,6 +45,16 @@ class RetrofitNetworkClient(
             } catch (e: Throwable) {
                 Response().apply { resultCode = ErrorMessageConstants.SERVER_ERROR }
             }
+        }
+    }
+
+    private fun isWrongRequest(dto: Any): Boolean {
+        return when (dto) {
+            is VacancySearchRequest -> false
+            is VacancyDetailsRequest -> false
+            is AreaRequest -> false
+            is IndustryRequest -> false
+            else -> true
         }
     }
 }
