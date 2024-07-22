@@ -3,6 +3,8 @@ package ru.practicum.android.diploma.search.data.network
 import android.content.Context
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import ru.practicum.android.diploma.filter.area.data.dto.AreaRequest
+import ru.practicum.android.diploma.filter.area.data.dto.AreaResponse
 import ru.practicum.android.diploma.search.data.NetworkClient
 import ru.practicum.android.diploma.search.data.dto.Response
 import ru.practicum.android.diploma.search.data.dto.VacancySearchRequest
@@ -20,7 +22,7 @@ class RetrofitNetworkClient(
             return Response().apply { resultCode = ErrorMessageConstants.NETWORK_ERROR }
         }
 
-        if (dto !is VacancySearchRequest && dto !is VacancyDetailsRequest) {
+        if (dto !is VacancySearchRequest && dto !is VacancyDetailsRequest && dto !is AreaRequest) {
             return Response().apply { resultCode = ErrorMessageConstants.REQUEST_ERROR }
         }
 
@@ -33,6 +35,7 @@ class RetrofitNetworkClient(
             try {
                 val response = when (dto) {
                     is VacancySearchRequest -> headHunterService.search(text = dto.expression, page = dto.page)
+                    is AreaRequest -> AreaResponse(headHunterService.getAreas())
                     else -> headHunterService.getVacancyDetails(vacancyId = (dto as VacancyDetailsRequest).vacancyId)
                 }
                 response.apply { resultCode = ErrorMessageConstants.SUCCESS }
