@@ -31,9 +31,8 @@ class PlaceOfWorkFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        parentFragmentManager.setFragmentResultListener(
-            "filterKey", this
-        ) { _: String?, result: Bundle ->
+        parentFragmentManager.setFragmentResultListener("filterKey", this) { _: String?, result: Bundle ->
+            // country
             result.getString(ARGS_COUNTRY_ID)?.let {
                 viewModel.setCountry(
                     Area(
@@ -43,7 +42,7 @@ class PlaceOfWorkFragment : Fragment() {
                     )
                 )
             }
-
+            // region
             result.getString(ARGS_REGION_ID)?.let {
                 viewModel.setRegion(
                     Area(
@@ -161,25 +160,28 @@ class PlaceOfWorkFragment : Fragment() {
     }
 
     companion object {
+        // country args
         private const val ARGS_COUNTRY_ID = "NewCountryId"
         private const val ARGS_COUNTRY_NAME = "NewCountryName"
 
-
+        // region args
         private const val ARGS_REGION_ID = "NewRegionId"
         private const val ARGS_REGION_NAME = "NewRegionName"
         private const val ARGS_REGION_PARENT_ID = "NewRegionParentId"
 
         fun createArgs(
+            // country
             countryId: String? = null,
             countryName: String? = null,
-
+            // region
             regionId: String? = null,
             regionName: String? = null,
             regionParentId: String? = null,
         ): Bundle = bundleOf(
+            // country
             ARGS_COUNTRY_ID to countryId,
             ARGS_COUNTRY_NAME to countryName,
-
+            // region
             ARGS_REGION_ID to regionId,
             ARGS_REGION_NAME to regionName,
             ARGS_REGION_PARENT_ID to regionParentId

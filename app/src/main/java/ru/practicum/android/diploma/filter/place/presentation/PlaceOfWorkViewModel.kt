@@ -45,7 +45,7 @@ class PlaceOfWorkViewModel(
             region = newRegion
 
             region?.parentId?.let { parentId ->
-                country?.let { it ->
+                country?.let {
                     if (parentId != it.areaId) {
                         countryInteractor.getCountryById(parentId).collect { resource ->
                             country = resource.data
