@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.widget.EditText
 import android.widget.Toast
+import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -46,6 +47,12 @@ class SearchFragment : Fragment(), VacancyAdapter.VacancyClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        parentFragmentManager.setFragmentResultListener("filterKey", this) { _: String?, result: Bundle ->
+            if (result.getBoolean(FILTERS_APPLY)) {
+                viewModel.applyFiltersLastSearch()
+            }
+        }
+
         rvVacancies = binding.rvVacancyList
         rvVacancies?.adapter = adapter
 
@@ -54,6 +61,12 @@ class SearchFragment : Fragment(), VacancyAdapter.VacancyClickListener {
 
         binding.ivFilter.setOnClickListener {
             findNavController().navigate(R.id.action_searchFragment_to_filterFragment)
+        }
+
+        if (viewModel.getSearchFilters()) {
+            binding.ivFilter.setImageResource(R.drawable.ic_filter_on)
+        } else {
+            binding.ivFilter.setImageResource(R.drawable.ic_filter_off)
         }
 
         clearButton.setOnClickListener {
@@ -204,5 +217,12 @@ class SearchFragment : Fragment(), VacancyAdapter.VacancyClickListener {
             R.id.action_searchFragment_to_vacancyFragment,
             VacancyFragment.createArgs(vacancy.vacancyId)
         )
+    }
+
+    companion object {
+        private const val FILTERS_APPLY = "Filters"
+
+        fun createArgs(filtersApply: Boolean? = false): Bundle =
+            bundleOf(FILTERS_APPLY to filtersApply)
     }
 }

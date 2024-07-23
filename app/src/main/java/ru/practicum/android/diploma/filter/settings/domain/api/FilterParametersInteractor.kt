@@ -16,7 +16,7 @@ interface FilterParametersInteractor {
         country: Area?,
         region: Area?,
         industry: Industry?,
-        expectedSalary: Int?,
+        expectedSalary: String?,
         flagOnlyWithSalary: Boolean?
     ): FilterParameters
 

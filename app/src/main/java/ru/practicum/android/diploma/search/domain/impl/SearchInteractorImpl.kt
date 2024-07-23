@@ -48,11 +48,15 @@ class SearchInteractorImpl(
             options["industry"] = it.industryId
         }
 
-        parameters.expectedSalary?.let {
-            options["salary"] = it.toString()
+        parameters.expectedSalary.let { salary ->
+            if (salary != null && salary != "") {
+                options["salary"] = salary
+            }
         }
 
-        options["only_with_salary"] = parameters.flagOnlyWithSalary.toString()
+        if (parameters.flagOnlyWithSalary) {
+            options["only_with_salary"] = true.toString()
+        }
 
         return options
     }
