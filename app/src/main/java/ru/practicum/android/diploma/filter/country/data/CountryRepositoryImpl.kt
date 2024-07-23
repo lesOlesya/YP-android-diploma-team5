@@ -29,10 +29,17 @@ class CountryRepositoryImpl(
 
             ErrorMessageConstants.SUCCESS -> {
                 with(response as AreaResponse) {
-                    val data = items.map {
-                        areaDtoConverter.map(it) // it.parentId == null
+                    val data = ArrayList<Area>()
+                    var otherCountry: Area? = null
+                    items.forEach { // it.parentId == null
+                        if (it.id == "1001" || it.name == "Другие регионы") {
+                            otherCountry = areaDtoConverter.map(it)
+                        } else {
+                            data.add(areaDtoConverter.map(it))
+                        }
                     }
-                    emit(Resource.Success(data))
+                    otherCountry?.let { data.add(it) }
+                    emit(Resource.Success(data.toList()))
                 }
             }
 

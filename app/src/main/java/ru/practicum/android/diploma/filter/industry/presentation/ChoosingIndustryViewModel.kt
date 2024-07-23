@@ -29,7 +29,7 @@ class ChoosingIndustryViewModel(
         return _choosingIndustryStateLiveData
     }
 
-    fun getIndustries() {
+    private fun getIndustries() {
         _choosingIndustryStateLiveData.value = ChoosingIndustryState.Loading
         viewModelScope.launch(Dispatchers.IO) {
             industryInteractor
