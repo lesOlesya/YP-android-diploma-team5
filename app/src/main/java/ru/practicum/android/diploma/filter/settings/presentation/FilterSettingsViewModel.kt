@@ -4,12 +4,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.filter.area.domain.model.Area
 import ru.practicum.android.diploma.filter.industry.domain.model.Industry
 import ru.practicum.android.diploma.filter.settings.domain.api.FilterParametersInteractor
 import ru.practicum.android.diploma.filter.settings.domain.models.FilterParameters
+import ru.practicum.android.diploma.util.debounce
 
 class FilterSettingsViewModel(
     private val filterInteractor: FilterParametersInteractor
@@ -36,34 +35,43 @@ class FilterSettingsViewModel(
         flagOnlyWithSalaryLiveData.postValue(filterParameters!!.flagOnlyWithSalary)
     }
 
-    private fun saveAreaParameters() {
-        viewModelScope.launch(Dispatchers.IO) {
-            filterInteractor.saveParameters(
-                filterInteractor.buildFilterParameters(
-                    country = placeOfWorkLiveData.value?.first,
-                    region = placeOfWorkLiveData.value?.second,
-                    industry = industryLiveData.value,
-                    expectedSalary = expectedSalaryLiveData.value,
-                    flagOnlyWithSalary = flagOnlyWithSalaryLiveData.value
-                )
+    private fun saveParameters() {
+        filterInteractor.saveParameters(
+            filterInteractor.buildFilterParameters(
+                country = placeOfWorkLiveData.value?.first,
+                region = placeOfWorkLiveData.value?.second,
+                industry = industryLiveData.value,
+                expectedSalary = expectedSalaryLiveData.value,
+                flagOnlyWithSalary = flagOnlyWithSalaryLiveData.value
             )
-        }
+        )
     }
 
 
     fun clearPlaceOfWork() {
-        placeOfWorkLiveData.postValue(Pair(null, null))
-        saveAreaParameters()
+        placeOfWorkLiveData.value = Pair(null, null)
+        saveParameters()
     }
 
     fun clearIndustry() {
-        industryLiveData.postValue(null)
-        saveAreaParameters()
+        industryLiveData.value = null
+        saveParameters()
+    }
+
+    fun updateSalary(text: String) {
+        debounce<String>(UPDATE_DEBOUNCE_DELAY, viewModelScope, true) { changedText ->
+            expectedSalaryLiveData.value = changedText.toInt()
+            saveParameters()
+        }(text)
     }
 
     fun updateFlagSalary(check: Boolean) {
-        flagOnlyWithSalaryLiveData.postValue(check)
-        saveAreaParameters()
+        flagOnlyWithSalaryLiveData.value = (check)
+        saveParameters()
+    }
+
+    companion object {
+        private const val UPDATE_DEBOUNCE_DELAY = 400L
     }
 
 }
