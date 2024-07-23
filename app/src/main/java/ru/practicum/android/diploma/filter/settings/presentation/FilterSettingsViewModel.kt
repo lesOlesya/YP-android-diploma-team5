@@ -26,7 +26,6 @@ class FilterSettingsViewModel(
     fun getExpectedSalaryLiveData(): LiveData<String?> = expectedSalaryLiveData
     fun getFlagOnlyWithSalaryLiveData(): LiveData<Boolean> = flagOnlyWithSalaryLiveData
 
-
     fun setFilterParameters() {
         filterParameters = filterInteractor.getParameters()
         placeOfWorkLiveData.postValue(Pair(filterParameters!!.country, filterParameters!!.region))
@@ -46,7 +45,6 @@ class FilterSettingsViewModel(
             )
         )
     }
-
 
     fun clearPlaceOfWork() {
         placeOfWorkLiveData.value = Pair(null, null)
@@ -74,7 +72,7 @@ class FilterSettingsViewModel(
     }
 
     fun updateFlagSalary(check: Boolean) {
-        flagOnlyWithSalaryLiveData.value = (check)
+        flagOnlyWithSalaryLiveData.value = check
         saveParameters()
     }
 
