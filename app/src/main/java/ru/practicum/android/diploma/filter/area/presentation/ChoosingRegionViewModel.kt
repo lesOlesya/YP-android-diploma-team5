@@ -9,6 +9,7 @@ import ru.practicum.android.diploma.filter.area.domain.api.RegionInteractor
 import ru.practicum.android.diploma.filter.area.domain.model.Area
 import ru.practicum.android.diploma.filter.area.ui.RegionFragmentState
 import ru.practicum.android.diploma.util.Resource
+import java.util.Locale
 
 class ChoosingRegionViewModel(private val interactor: RegionInteractor) : ViewModel() {
 
@@ -53,7 +54,7 @@ class ChoosingRegionViewModel(private val interactor: RegionInteractor) : ViewMo
 
     fun filterRegions(filterValue: String) {
         val filtredRegions = regions.filter { area ->
-            area.areaName.contains(Regex("($filterValue)+"))
+            area.areaName.lowercase().contains(Regex("(${filterValue.lowercase()})+"))
         }
         setRegions(ArrayList(filtredRegions))
     }
