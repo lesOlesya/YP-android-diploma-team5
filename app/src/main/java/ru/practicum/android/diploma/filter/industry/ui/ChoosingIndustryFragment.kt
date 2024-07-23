@@ -123,6 +123,12 @@ class ChoosingIndustryFragment : Fragment(), IndustryAdapter.OnItemClickListener
     }
 
     override fun click(industry: Industry) {
-        TODO("Not yet implemented")
+        var needToShow = false
+        industries.forEach {
+            it.isChosen = it.industryId == industry.industryId
+            if (it.isChosen) needToShow = true
+        }
+        adapter.notifyDataSetChanged()
+        binding.chooseIndustryButton.isVisible = needToShow
     }
 }
