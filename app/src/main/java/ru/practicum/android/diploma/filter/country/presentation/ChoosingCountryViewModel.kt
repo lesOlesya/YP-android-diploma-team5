@@ -8,12 +8,10 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.filter.area.domain.model.Area
 import ru.practicum.android.diploma.filter.country.domain.api.CountryInteractor
-import ru.practicum.android.diploma.filter.settings.domain.api.FilterParametersInteractor
 import ru.practicum.android.diploma.util.Resource
 
 class ChoosingCountryViewModel(
-    private val countryInteractor: CountryInteractor,
-    private val filterParametersInteractor: FilterParametersInteractor
+    private val countryInteractor: CountryInteractor
 ) : ViewModel() {
 
     private val countries = ArrayList<Area>()
@@ -23,14 +21,6 @@ class ChoosingCountryViewModel(
 
     init {
         getCountries()
-    }
-
-    fun saveCountryParameter(country: Area) {
-        viewModelScope.launch(Dispatchers.IO) {
-            filterParametersInteractor.saveParameters(
-                filterParametersInteractor.buildFilterParameters(country = country)
-            )
-        }
     }
 
     private fun getCountries() {
