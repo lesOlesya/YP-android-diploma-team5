@@ -15,6 +15,7 @@ import ru.practicum.android.diploma.filter.area.domain.model.Area
 import ru.practicum.android.diploma.filter.area.ui.adapter.AreaAdapter
 import ru.practicum.android.diploma.filter.country.presentation.ChoosingCountryState
 import ru.practicum.android.diploma.filter.country.presentation.ChoosingCountryViewModel
+import ru.practicum.android.diploma.filter.place.ui.PlaceOfWorkFragment
 
 class ChoosingCountryFragment : Fragment(), AreaAdapter.AreaClickListener {
     private var _binding: ChoosingWithRvFragmentBinding? = null
@@ -80,6 +81,10 @@ class ChoosingCountryFragment : Fragment(), AreaAdapter.AreaClickListener {
     }
 
     override fun onAreaClick(area: Area) {
-        TODO("Not yet implemented")
+        getParentFragmentManager().setFragmentResult(
+            "filterKey",
+            PlaceOfWorkFragment.createArgs(countryId = area.areaId, countryName = area.areaName)
+        )
+        requireActivity().onBackPressedDispatcher.onBackPressed()
     }
 }
