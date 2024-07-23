@@ -66,7 +66,8 @@ class ChoosingIndustryFragment : Fragment(), IndustryAdapter.OnItemClickListener
         _binding = null
     }
 
-    fun setUpSearch() {
+    @Suppress("detekt.EmptyFunctionBlock")
+    private fun setUpSearch() {
         binding.editTextFilter.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
             }
@@ -79,7 +80,6 @@ class ChoosingIndustryFragment : Fragment(), IndustryAdapter.OnItemClickListener
             }
         })
     }
-
 
     private fun filter(text: String) {
         val filteredList: ArrayList<Industry> = arrayListOf()
