@@ -12,32 +12,16 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.ItemFilterBinding
 import ru.practicum.android.diploma.databinding.PlaceOfWorkFragmentBinding
+import ru.practicum.android.diploma.filter.area.domain.model.Area
 import ru.practicum.android.diploma.filter.place.presentation.PlaceOfWorkViewModel
-import ru.practicum.android.diploma.filter.settings.domain.models.FilterParameters
 import ru.practicum.android.diploma.filter.settings.presentation.FilterSettingsState
+import ru.practicum.android.diploma.filter.settings.presentation.model.FilterParametersUi
 
 class PlaceOfWorkFragment : Fragment() {
     private var _binding: PlaceOfWorkFragmentBinding? = null
     private val binding get() = _binding!!
 
     private val viewModel by viewModel<PlaceOfWorkViewModel>()
-
-    private var newCountryId: String? = null
-    private var newCountryName: String? = null
-
-    private var newRegionId: String? = null
-    private var newRegionName: String? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            newCountryId = it.getString(ARGS_COUNTRY_ID)
-            newCountryName = it.getString(ARGS_COUNTRY_NAME)
-
-            newRegionId = it.getString(ARGS_REGION_ID)
-            newRegionName = it.getString(ARGS_REGION_NAME)
-        }
-    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = PlaceOfWorkFragmentBinding.inflate(layoutInflater, container, false)
@@ -46,6 +30,32 @@ class PlaceOfWorkFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        parentFragmentManager.setFragmentResultListener(
+            "filterKey", this
+        ) { _: String?, result: Bundle ->
+            result.getString(ARGS_COUNTRY_ID)?.let {
+                viewModel.setCountry(
+                    Area(
+                        areaId = it,
+                        parentId = null,
+                        areaName = result.getString(ARGS_COUNTRY_NAME)!!,
+                    )
+                )
+            }
+
+            result.getString(ARGS_REGION_ID)?.let {
+                viewModel.setRegion(
+                    Area(
+                        areaId = it,
+                        parentId = result.getString(ARGS_REGION_PARENT_ID)!!,
+                        areaName = result.getString(ARGS_REGION_NAME)!!
+                    )
+                )
+            }
+
+            viewModel.setFilterParameters()
+        }
 
         // country -->>
         setHint(binding.country, requireContext().getString(R.string.country_hint))
@@ -56,6 +66,7 @@ class PlaceOfWorkFragment : Fragment() {
 
         binding.country.ivClear.setOnClickListener {
             setVisualItems(binding.country)
+            viewModel.clearArea(needClearCountry = true)
         }
         // <<-- country
 
@@ -63,15 +74,27 @@ class PlaceOfWorkFragment : Fragment() {
         setHint(binding.region, requireContext().getString(R.string.area_hint))
 
         binding.region.textField.setOnClickListener {
-            findNavController().navigate(R.id.action_choosingPlaceFragment_to_choosingAreaFragment)
+            findNavController().navigate(
+                R.id.action_choosingPlaceFragment_to_choosingAreaFragment,
+                // тут использовать ф-ию createArgs choosingAreaFragment,
+                // чтобы передать id страны, если она выбрана. Перед сдачей сделаю это
+            )
         }
 
         binding.region.ivClear.setOnClickListener {
             setVisualItems(binding.region)
+            viewModel.clearArea(needClearRegion = true)
         }
         // <<-- region
 
-        viewModel.setFilterParameters()
+        binding.toolbar.setNavigationOnClickListener {
+            findNavController().navigateUp()
+        }
+
+        binding.chooseButton.setOnClickListener {
+            viewModel.saveAreaParameters()
+            findNavController().navigateUp()
+        }
 
         viewModel.observeStateLiveData().observe(viewLifecycleOwner) {
             renderState(it)
@@ -81,21 +104,21 @@ class PlaceOfWorkFragment : Fragment() {
     private fun renderState(state: FilterSettingsState) {
         when (state) {
             is FilterSettingsState.Loading -> viewVisibility(progressBarVisible = true)
-            is FilterSettingsState.Success -> showContent(state.filterParameters)
+            is FilterSettingsState.Success -> showContent(state.filterParametersUi)
         }
     }
 
-    private fun showContent(filterParameters: FilterParameters) {
+    private fun showContent(filterParameters: FilterParametersUi) {
         viewVisibility(contentVisible = true)
 
-        val countryName = newCountryName ?: filterParameters.country?.areaName ?: ""
+        val countryName = filterParameters.countryName
         setVisualItems(
             binding.country,
             countryName.isEmpty(),
             countryName
         )
 
-        val regionName = newRegionName ?: filterParameters.region?.areaName ?: ""
+        val regionName = filterParameters.regionName
         setVisualItems(
             binding.region,
             regionName.isEmpty(),
@@ -141,15 +164,25 @@ class PlaceOfWorkFragment : Fragment() {
         private const val ARGS_COUNTRY_ID = "NewCountryId"
         private const val ARGS_COUNTRY_NAME = "NewCountryName"
 
+
         private const val ARGS_REGION_ID = "NewRegionId"
         private const val ARGS_REGION_NAME = "NewRegionName"
+        private const val ARGS_REGION_PARENT_ID = "NewRegionParentId"
 
         fun createArgs(
-            countryId: String? = null, countryName: String? = null,
-            regionId: String? = null, regionName: String? = null
+            countryId: String? = null,
+            countryName: String? = null,
+
+            regionId: String? = null,
+            regionName: String? = null,
+            regionParentId: String? = null,
         ): Bundle = bundleOf(
-            ARGS_COUNTRY_ID to countryId, ARGS_COUNTRY_NAME to countryName,
-            ARGS_REGION_ID to regionId, ARGS_REGION_NAME to regionName
+            ARGS_COUNTRY_ID to countryId,
+            ARGS_COUNTRY_NAME to countryName,
+
+            ARGS_REGION_ID to regionId,
+            ARGS_REGION_NAME to regionName,
+            ARGS_REGION_PARENT_ID to regionParentId
         )
     }
 }

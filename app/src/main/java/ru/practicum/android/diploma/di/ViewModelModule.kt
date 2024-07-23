@@ -24,7 +24,7 @@ val viewModelModule = module {
     }
 
     viewModel {
-        PlaceOfWorkViewModel(get())
+        PlaceOfWorkViewModel(get(), get())
     }
 
     viewModel {

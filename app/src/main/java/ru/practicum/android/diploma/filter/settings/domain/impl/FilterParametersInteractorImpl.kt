@@ -34,7 +34,7 @@ class FilterParametersInteractorImpl(private val repository: FilterParametersRep
             region ?: parameters.region,
             industry ?: parameters.industry,
             expectedSalary ?: parameters.expectedSalary,
-            flagShowWithoutSalary ?: parameters.flagShowWithoutSalary
+            flagShowWithoutSalary ?: parameters.flagOnlyWithSalary
         )
     }
 
