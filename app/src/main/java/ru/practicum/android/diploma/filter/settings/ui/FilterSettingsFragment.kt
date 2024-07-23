@@ -158,10 +158,10 @@ class FilterSettingsFragment : Fragment() {
     private fun buttonsVisible() {
         with(binding) {
             resetSettingsButton.isVisible =
-                (placeOfWork.textField.isVisible
-                    || industry.textField.isVisible
-                    || editText?.text != null
-                    || checkboxSalary.isChecked)
+                !(placeOfWork.textField.text.isNullOrEmpty()
+                    || industry.textField.text.isNullOrEmpty()
+                    || editText?.text.isNullOrEmpty()
+                    || !checkboxSalary.isChecked)
             applySettingsButton.isVisible = resetSettingsButton.isVisible
         }
     }
