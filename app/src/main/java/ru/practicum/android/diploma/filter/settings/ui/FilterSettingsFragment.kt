@@ -7,13 +7,17 @@ import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.FilterSettingsFragmentBinding
 import ru.practicum.android.diploma.databinding.ItemFilterBinding
+import ru.practicum.android.diploma.filter.settings.presentation.FilterSettingsViewModel
 
 class FilterSettingsFragment : Fragment() {
     private var _binding: FilterSettingsFragmentBinding? = null
     private val binding get() = _binding!!
+
+    private val viewModel by viewModel<FilterSettingsViewModel>()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FilterSettingsFragmentBinding.inflate(layoutInflater, container, false)
@@ -22,6 +26,8 @@ class FilterSettingsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        viewModel.setFilterParameters()
 
         // placeOfWork -->>
         setHint(binding.placeOfWork, requireContext().getString(R.string.place_of_work_hint))
@@ -47,8 +53,21 @@ class FilterSettingsFragment : Fragment() {
         }
         // <<-- industry
 
+        binding.toolbar.setNavigationOnClickListener {
+            findNavController().navigateUp()
+        }
+
+//        binding.chooseButton.setOnClickListener {
+//            viewModel.saveAreaParameters()
+//            findNavController().navigateUp()
+//        }
+
         binding.checkboxSalary.setOnClickListener {
             binding.checkboxSalary.isChecked = !binding.checkboxSalary.isChecked
+        }
+
+        viewModel.getPlaceOfWorkLiveData().observe(viewLifecycleOwner) {
+
         }
 
     }

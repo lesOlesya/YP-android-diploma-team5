@@ -1,6 +1,4 @@
-package ru.practicum.android.diploma.filter.settings.presentation
-
-import ru.practicum.android.diploma.filter.settings.presentation.model.FilterParametersUi
+package ru.practicum.android.diploma.filter.settings.presentation.model
 
 sealed interface FilterSettingsState {
 

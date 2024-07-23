@@ -5,5 +5,5 @@ data class FilterParametersUi(
     val regionName: String = "",
     val industryName: String = "",
     val expectedSalary: String = "",
-    val flagShowWithoutSalary: Boolean = true
+    val flagOnlyWithSalary: Boolean = true
 )
