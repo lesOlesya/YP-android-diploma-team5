@@ -1,6 +1,8 @@
 package ru.practicum.android.diploma.filter.industry.ui
 
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,6 +17,7 @@ import ru.practicum.android.diploma.filter.industry.domain.model.Industry
 import ru.practicum.android.diploma.filter.industry.presentation.ChoosingIndustryState
 import ru.practicum.android.diploma.filter.industry.presentation.ChoosingIndustryViewModel
 import ru.practicum.android.diploma.filter.industry.ui.adapter.IndustryAdapter
+import java.util.Locale
 
 class ChoosingIndustryFragment : Fragment(), IndustryAdapter.OnItemClickListener {
     private var _binding: ChoosingWithRvFragmentBinding? = null
@@ -22,6 +25,7 @@ class ChoosingIndustryFragment : Fragment(), IndustryAdapter.OnItemClickListener
 
     private val viewModel by viewModel<ChoosingIndustryViewModel>()
     private val adapter = IndustryAdapter(this)
+    private var industries = arrayListOf<Industry>()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = ChoosingWithRvFragmentBinding.inflate(inflater, container, false)
@@ -33,6 +37,7 @@ class ChoosingIndustryFragment : Fragment(), IndustryAdapter.OnItemClickListener
 
         binding.toolbar.title = requireContext().getString(R.string.industry_headline)
         binding.editTextFilter.hint = requireContext().getString(R.string.enter_industry_hint)
+        binding.tvNotFoundPlaceholder.text = requireContext().getString(R.string.industry_list_empty_error)
 
         binding.recyclerView.adapter = adapter
 
@@ -52,6 +57,8 @@ class ChoosingIndustryFragment : Fragment(), IndustryAdapter.OnItemClickListener
         viewModel.observeChoosingIndustryState().observe(viewLifecycleOwner) {
             render(it)
         }
+
+        setUpSearch()
     }
 
     override fun onDestroyView() {
@@ -59,12 +66,47 @@ class ChoosingIndustryFragment : Fragment(), IndustryAdapter.OnItemClickListener
         _binding = null
     }
 
+    fun setUpSearch() {
+        binding.editTextFilter.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+            }
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                filter(s.toString())
+            }
+        })
+    }
+
+
+    private fun filter(text: String) {
+        val filteredList: ArrayList<Industry> = arrayListOf()
+
+        for (item in industries) {
+            if (item.industryName.lowercase(Locale.ROOT).contains(text.lowercase(Locale.ROOT))) {
+                filteredList.add(item)
+            }
+        }
+        if (filteredList.isEmpty()) {
+            adapter.submitList(null)
+            binding.tvNotFoundPlaceholder.isVisible = true
+        } else {
+            binding.tvNotFoundPlaceholder.isVisible = false
+            adapter.submitList(filteredList)
+        }
+    }
+
     private fun render(state: ChoosingIndustryState) {
         hideAll()
         when (state) {
             is ChoosingIndustryState.Loading -> binding.progressBar.isVisible = true
             is ChoosingIndustryState.Error -> binding.tvFailedRequestPlaceholder.isVisible = false
-            is ChoosingIndustryState.Success -> showIndustries(state.industries)
+            is ChoosingIndustryState.Success -> {
+                industries = state.industries
+                showIndustries(industries)
+            }
         }
     }
 
