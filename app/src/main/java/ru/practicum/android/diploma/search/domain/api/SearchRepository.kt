@@ -5,5 +5,5 @@ import ru.practicum.android.diploma.search.domain.models.VacancyPagination
 import ru.practicum.android.diploma.util.Resource
 
 interface SearchRepository {
-    fun search(text: String, perPage: Int): Flow<Resource<VacancyPagination>>
+    fun search(text: String, perPage: Int, filters: HashMap<String, String>): Flow<Resource<VacancyPagination>>
 }
