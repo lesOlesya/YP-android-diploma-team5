@@ -9,7 +9,6 @@ import ru.practicum.android.diploma.filter.area.domain.api.RegionInteractor
 import ru.practicum.android.diploma.filter.area.domain.model.Area
 import ru.practicum.android.diploma.filter.area.ui.RegionFragmentState
 import ru.practicum.android.diploma.util.Resource
-import java.util.Locale
 
 class ChoosingRegionViewModel(private val interactor: RegionInteractor) : ViewModel() {
 
