@@ -32,20 +32,22 @@ class IndustryAdapter(private val clickListener: OnItemClickListener) :
                 clickAtPosition(adapterPosition)
             }
         }
+
         fun bind(industry: Industry) {
             binding.apply {
                 tvIndustry.text = industry.industryName
+                tvIndustry.isChecked = industry.isChosen
             }
         }
     }
 
     class IndustryDiffCallback : DiffUtil.ItemCallback<Industry>() {
         override fun areItemsTheSame(oldItem: Industry, newItem: Industry): Boolean {
-            return oldItem == newItem
+            return oldItem.industryId == newItem.industryId
         }
 
         override fun areContentsTheSame(oldItem: Industry, newItem: Industry): Boolean {
-            return oldItem == newItem
+            return oldItem.isChosen == newItem.isChosen
         }
     }
 

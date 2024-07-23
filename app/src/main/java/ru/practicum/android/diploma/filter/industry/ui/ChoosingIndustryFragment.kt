@@ -39,6 +39,15 @@ class ChoosingIndustryFragment : Fragment(), IndustryAdapter.OnItemClickListener
         binding.editTextFilter.hint = requireContext().getString(R.string.enter_industry_hint)
         binding.tvNotFoundPlaceholder.text = requireContext().getString(R.string.industry_list_empty_error)
 
+        binding.chooseIndustryButton.setOnClickListener {
+            var chosenIndustry: Industry? = null
+            industries.forEach { if (it.isChosen) chosenIndustry = it }
+            if (chosenIndustry != null) {
+                viewModel.saveIndustryParameters(chosenIndustry!!)
+                requireActivity().onBackPressedDispatcher.onBackPressed()
+            }
+        }
+
         binding.recyclerView.adapter = adapter
 
         requireActivity().onBackPressedDispatcher.addCallback(
@@ -123,6 +132,12 @@ class ChoosingIndustryFragment : Fragment(), IndustryAdapter.OnItemClickListener
     }
 
     override fun click(industry: Industry) {
-        TODO("Not yet implemented")
+        var needToShow = false
+        industries.forEach {
+            it.isChosen = it.industryId == industry.industryId
+            if (it.isChosen) needToShow = true
+        }
+        adapter.notifyDataSetChanged()
+        binding.chooseIndustryButton.isVisible = needToShow
     }
 }
