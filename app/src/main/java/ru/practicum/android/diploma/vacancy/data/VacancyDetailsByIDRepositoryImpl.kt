@@ -46,6 +46,10 @@ class VacancyDetailsByIDRepositoryImpl(
                 }
             }
 
+            ErrorMessageConstants.REQUEST_ERROR -> {
+                emit(Resource.Error(ErrorMessageConstants.REQUEST_ERROR))
+            }
+
             else -> {
                 emit(Resource.Error(ErrorMessageConstants.SERVER_ERROR))
             }

@@ -99,12 +99,17 @@ class VacancyFragment : Fragment() {
         showProgressBar(false)
         when (state) {
             is Resource.Error -> {
-                vacancyID?.let { viewModel.getVacancyFromDB(it) }
-                viewModel.observeVacancyDBState().observe(viewLifecycleOwner) { vacancy ->
-                    if (vacancy != null) {
-                        showVacancy(vacancy)
-                    } else {
-                        showError(state.message!!)
+                if (state.message == ErrorMessageConstants.REQUEST_ERROR) {
+                    showError(ErrorMessageConstants.REQUEST_ERROR)
+                    viewModel.deleteVacancy()
+                } else {
+                    vacancyID?.let { viewModel.getVacancyFromDB(it) }
+                    viewModel.observeVacancyDBState().observe(viewLifecycleOwner) { vacancy ->
+                        if (vacancy != null) {
+                            showVacancy(vacancy)
+                        } else {
+                            showError(state.message!!)
+                        }
                     }
                 }
             }
@@ -128,7 +133,7 @@ class VacancyFragment : Fragment() {
         with(binding) {
             when (error) {
                 ErrorMessageConstants.SERVER_ERROR -> tvServerErrorVacancyPlaceholder.isVisible = true
-                else -> tvVacancyDetailsErrorPlaceholderVacancy.isVisible = true
+                else -> tvNotFoundPlaceholder.isVisible = true
             }
             mainContainer.isVisible = false
         }
@@ -138,8 +143,7 @@ class VacancyFragment : Fragment() {
     private fun showVacancy(vacancy: Vacancy) {
         with(binding) {
             mainContainer.isVisible = true
-            tvVacancyDetailsErrorPlaceholderVacancy.isVisible = false
-            tvVacancyDetailsErrorPlaceholderVacancy.isVisible = false
+            tvNotFoundPlaceholder.isVisible = false
             tvVacancyName.text = vacancy.vacancyName
             tvTypeOfEmploymentAndSchedule.text = requireContext()
                 .getString(R.string.employment_with_schedule, vacancy.employment, vacancy.schedule)
