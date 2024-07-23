@@ -85,6 +85,4 @@ class FilterSettingsFragment : Fragment() {
         super.onDestroyView()
         _binding = null
     }
-
-
 }
