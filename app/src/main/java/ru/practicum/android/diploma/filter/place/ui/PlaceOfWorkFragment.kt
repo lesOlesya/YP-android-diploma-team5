@@ -4,16 +4,40 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.ItemFilterBinding
 import ru.practicum.android.diploma.databinding.PlaceOfWorkFragmentBinding
+import ru.practicum.android.diploma.filter.place.presentation.PlaceOfWorkViewModel
+import ru.practicum.android.diploma.filter.settings.domain.models.FilterParameters
+import ru.practicum.android.diploma.filter.settings.presentation.FilterSettingsState
 
 class PlaceOfWorkFragment : Fragment() {
     private var _binding: PlaceOfWorkFragmentBinding? = null
     private val binding get() = _binding!!
+
+    private val viewModel by viewModel<PlaceOfWorkViewModel>()
+
+    private var newCountryId: String? = null
+    private var newCountryName: String? = null
+
+    private var newRegionId: String? = null
+    private var newRegionName: String? = null
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        arguments?.let {
+            newCountryId = it.getString(ARGS_COUNTRY_ID)
+            newCountryName = it.getString(ARGS_COUNTRY_NAME)
+
+            newRegionId = it.getString(ARGS_REGION_ID)
+            newRegionName = it.getString(ARGS_REGION_NAME)
+        }
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = PlaceOfWorkFragmentBinding.inflate(layoutInflater, container, false)
@@ -35,31 +59,63 @@ class PlaceOfWorkFragment : Fragment() {
         }
         // <<-- country
 
-        // area -->>
-        setHint(binding.area, requireContext().getString(R.string.area_hint))
+        // region -->>
+        setHint(binding.region, requireContext().getString(R.string.area_hint))
 
-        binding.area.textField.setOnClickListener {
+        binding.region.textField.setOnClickListener {
             findNavController().navigate(R.id.action_choosingPlaceFragment_to_choosingAreaFragment)
         }
 
-        binding.area.ivClear.setOnClickListener {
-            setVisualItems(binding.area)
+        binding.region.ivClear.setOnClickListener {
+            setVisualItems(binding.region)
         }
-        // <<-- area
+        // <<-- region
+
+        viewModel.setFilterParameters()
+
+        viewModel.observeStateLiveData().observe(viewLifecycleOwner) {
+            renderState(it)
+        }
     }
 
-    override fun onResume() {
-        super.onResume()
+    private fun renderState(state: FilterSettingsState) {
+        when (state) {
+            is FilterSettingsState.Loading -> viewVisibility(progressBarVisible = true)
+            is FilterSettingsState.Success -> showContent(state.filterParameters)
+        }
+    }
 
-//         Здесь должен быть вызван метод viewModel по получению значений из SharedPrefs
-//         val textCountry = viewModel.getTextCountry
-//         val textArea = viewModel.getTextArea
+    private fun showContent(filterParameters: FilterParameters) {
+        viewVisibility(contentVisible = true)
 
-//        если текст пустой, то просто:
-        setVisualItems(binding.country)
+        val countryName = newCountryName ?: filterParameters.country?.areaName ?: ""
+        setVisualItems(
+            binding.country,
+            countryName.isEmpty(),
+            countryName
+        )
 
-//        если НЕ пустой, то:
-        setVisualItems(binding.area, editTextIsEmpty = false, text = "TEXT") // text = textArea
+        val regionName = newRegionName ?: filterParameters.region?.areaName ?: ""
+        setVisualItems(
+            binding.region,
+            regionName.isEmpty(),
+            regionName
+        )
+
+        if (countryName.isEmpty() && regionName.isEmpty()) {
+            binding.chooseButton.isVisible = false
+        }
+
+    }
+
+    private fun viewVisibility(progressBarVisible: Boolean = false, contentVisible: Boolean = false) {
+        with(binding) {
+            progressBar.isVisible = progressBarVisible
+
+            country.filterField.isVisible = contentVisible
+            region.filterField.isVisible = contentVisible
+            chooseButton.isVisible = contentVisible
+        }
     }
 
     private fun setVisualItems(itemBinding: ItemFilterBinding, editTextIsEmpty: Boolean = true, text: String = "") {
@@ -79,5 +135,21 @@ class PlaceOfWorkFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    companion object {
+        private const val ARGS_COUNTRY_ID = "NewCountryId"
+        private const val ARGS_COUNTRY_NAME = "NewCountryName"
+
+        private const val ARGS_REGION_ID = "NewRegionId"
+        private const val ARGS_REGION_NAME = "NewRegionName"
+
+        fun createArgs(
+            countryId: String? = null, countryName: String? = null,
+            regionId: String? = null, regionName: String? = null
+        ): Bundle = bundleOf(
+            ARGS_COUNTRY_ID to countryId, ARGS_COUNTRY_NAME to countryName,
+            ARGS_REGION_ID to regionId, ARGS_REGION_NAME to regionName
+        )
     }
 }

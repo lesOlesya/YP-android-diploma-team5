@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/filter_field"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:minHeight="@dimen/dp_60"
@@ -26,6 +27,7 @@
         android:focusable="false"
         android:clickable="false"
         android:longClickable="false"
+        app:cursorColor="?attr/colorPrimary"
         android:textColorHint="?attr/colorOnPrimary"
         app:hintEnabled="false"
         android:hint="верхний hint настроить в фрагменте">
@@ -37,6 +39,7 @@
             android:paddingEnd="@dimen/dp_48"
             android:focusable="false"
             android:longClickable="false"
+            android:inputType="textNoSuggestions"
             android:hint="hint настроить в фрагменте"/>
     </com.google.android.material.textfield.TextInputLayout>
 
