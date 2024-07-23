@@ -79,12 +79,13 @@ class ChoosingRegionFragment : Fragment(), AreaAdapter.AreaClickListener {
                 }
 
                 override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                    if (s.isNullOrEmpty()) {
+                    val input = s.toString().trim()
+                    if (input.isNullOrEmpty()) {
                         changeIcons(true)
                         viewModel.reloadRegions()
                     } else {
                         changeIcons(false)
-                        viewModel.filterRegions(s.toString())
+                        viewModel.filterRegions(input)
                     }
                 }
             })
