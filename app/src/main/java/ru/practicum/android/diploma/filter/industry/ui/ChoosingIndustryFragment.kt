@@ -23,7 +23,7 @@ class ChoosingIndustryFragment : Fragment(), IndustryAdapter.OnItemClickListener
     private val viewModel by viewModel<ChoosingIndustryViewModel>()
     private val adapter = IndustryAdapter(this)
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = ChoosingWithRvFragmentBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -48,8 +48,6 @@ class ChoosingIndustryFragment : Fragment(), IndustryAdapter.OnItemClickListener
         binding.toolbar.setNavigationOnClickListener {
             requireActivity().onBackPressedDispatcher.onBackPressed()
         }
-
-        viewModel.getIndustries()
 
         viewModel.observeChoosingIndustryState().observe(viewLifecycleOwner) {
             render(it)
