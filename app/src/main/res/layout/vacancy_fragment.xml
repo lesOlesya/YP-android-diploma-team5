@@ -226,7 +226,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/tvVacancyDetailsErrorPlaceholderVacancy"
+            android:id="@+id/tvNotFoundPlaceholder"
             style="@style/PlaceholderMessage"
             android:text="@string/vacancy_error"
             android:visibility="gone"
