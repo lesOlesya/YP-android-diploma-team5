@@ -34,7 +34,7 @@ class PlaceOfWorkFragment : Fragment() {
         parentFragmentManager.setFragmentResultListener("filterKey", this) { _: String?, result: Bundle ->
             // country
             result.getString(ARGS_COUNTRY_ID)?.let {
-                viewModel.setCountry(
+                viewModel.loadCountry(
                     Area(
                         areaId = it,
                         parentId = null,
@@ -44,7 +44,7 @@ class PlaceOfWorkFragment : Fragment() {
             }
             // region
             result.getString(ARGS_REGION_ID)?.let {
-                viewModel.setRegion(
+                viewModel.loadRegion(
                     Area(
                         areaId = it,
                         parentId = result.getString(ARGS_REGION_PARENT_ID)!!,
@@ -53,7 +53,6 @@ class PlaceOfWorkFragment : Fragment() {
                 )
             }
 
-            viewModel.setFilterParameters()
         }
 
         // country -->>
@@ -75,8 +74,7 @@ class PlaceOfWorkFragment : Fragment() {
         binding.region.textField.setOnClickListener {
             findNavController().navigate(
                 R.id.action_choosingPlaceFragment_to_choosingAreaFragment,
-                // тут использовать ф-ию createArgs choosingAreaFragment,
-                // чтобы передать id страны, если она выбрана. Перед сдачей сделаю это
+//                ChoosingRegionFragment.setArguments(viewModel.country?.areaId)
             )
         }
 

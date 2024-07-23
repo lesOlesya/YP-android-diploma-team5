@@ -13,11 +13,11 @@ interface FilterParametersInteractor {
     fun resetParameters()
 
     fun buildFilterParameters(
-        country: Area? = null,
-        region: Area? = null,
-        industry: Industry? = null,
-        expectedSalary: Int? = null,
-        flagShowWithoutSalary: Boolean? = null
+        country: Area?,
+        region: Area?,
+        industry: Industry?,
+        expectedSalary: Int?,
+        flagOnlyWithSalary: Boolean?
     ): FilterParameters
 
 }

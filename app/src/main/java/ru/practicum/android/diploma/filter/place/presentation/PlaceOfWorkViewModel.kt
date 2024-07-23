@@ -20,7 +20,7 @@ class PlaceOfWorkViewModel(
 
     private var filterParameters: FilterParameters? = null
 
-    private var country: Area? = null
+    var country: Area? = null
     private var region: Area? = null
 
     private val stateLiveData = MutableLiveData<FilterSettingsState>()
@@ -31,32 +31,33 @@ class PlaceOfWorkViewModel(
         setFilterParameters()
     }
 
-    fun setCountry(newCountry: Area) {
+    fun loadCountry(newCountry: Area) {
         country = newCountry
         region?.parentId?.let { parentId ->
             if (newCountry.areaId != parentId) {
                 region = null
             }
         }
+        setFilterParameters()
     }
 
-    fun setRegion(newRegion: Area) {
+    fun loadRegion(newRegion: Area) {
+        renderState(FilterSettingsState.Loading)
         viewModelScope.launch {
             region = newRegion
 
             region?.parentId?.let { parentId ->
-                country?.let {
-                    if (parentId != it.areaId) {
-                        countryInteractor.getCountryById(parentId).collect { resource ->
-                            country = resource.data
-                        }
+                if (country == null) {
+                    countryInteractor.getCountryById(parentId).collect { resource ->
+                        country = resource.data
                     }
-                } ?: countryInteractor.getCountryById(parentId)
+                }
             }
+            setFilterParameters()
         }
     }
 
-    fun setFilterParameters() {
+    private fun setFilterParameters() {
         renderState(
             FilterSettingsState.Success(
                 FilterParametersUi(
@@ -70,7 +71,13 @@ class PlaceOfWorkViewModel(
     fun saveAreaParameters() {
         viewModelScope.launch(Dispatchers.IO) {
             filterInteractor.saveParameters(
-                filterInteractor.buildFilterParameters(country = country, region = region)
+                filterInteractor.buildFilterParameters(
+                    country = country,
+                    region = region,
+                    industry = filterParameters?.industry,
+                    expectedSalary = filterParameters?.expectedSalary,
+                    flagOnlyWithSalary = filterParameters?.flagOnlyWithSalary
+                )
             )
         }
     }

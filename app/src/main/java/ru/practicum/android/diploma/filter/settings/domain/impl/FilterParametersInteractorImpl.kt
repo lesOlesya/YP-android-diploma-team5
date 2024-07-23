@@ -25,16 +25,14 @@ class FilterParametersInteractorImpl(private val repository: FilterParametersRep
         region: Area?,
         industry: Industry?,
         expectedSalary: Int?,
-        flagShowWithoutSalary: Boolean?
+        flagOnlyWithSalary: Boolean?
     ): FilterParameters {
-        val parameters = repository.getParameters()
-
         return FilterParameters(
-            country ?: parameters.country,
-            region ?: parameters.region,
-            industry ?: parameters.industry,
-            expectedSalary ?: parameters.expectedSalary,
-            flagShowWithoutSalary ?: parameters.flagOnlyWithSalary
+            country,
+            region,
+            industry,
+            expectedSalary,
+            flagOnlyWithSalary ?: false
         )
     }
 
