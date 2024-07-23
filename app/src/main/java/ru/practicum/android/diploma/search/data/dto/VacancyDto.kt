@@ -7,17 +7,11 @@ data class VacancyDto(
     val name: String, // Название вакансии
     val salary: SalaryResponse?, // ЗП
     val employer: EmployerResponse, // Работодатель
-    val address: AddressResponse?, // Адрес
     val area: AreaResponse, // Регион
 )
 
 class AreaResponse(
     val name: String
-)
-
-class AddressResponse(
-    val city: String?,
-    @SerializedName("raw") val fullAddress: String?,
 )
 
 class SalaryResponse(

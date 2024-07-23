@@ -14,6 +14,8 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.FilterSettingsFragmentBinding
 import ru.practicum.android.diploma.databinding.ItemFilterBinding
+import ru.practicum.android.diploma.filter.area.domain.model.Area
+import ru.practicum.android.diploma.filter.industry.domain.model.Industry
 import ru.practicum.android.diploma.filter.settings.presentation.FilterSettingsViewModel
 import ru.practicum.android.diploma.search.ui.SearchFragment
 
@@ -100,49 +102,65 @@ class FilterSettingsFragment : Fragment() {
         }
 
         binding.resetSettingsButton.setOnClickListener {
-            with(viewModel) {
-                clearPlaceOfWork()
-                clearIndustry()
-                updateFlagSalary(false)
-            }
-            editText?.setText("")
+            resetFilterSettings()
         }
 
-        viewModel.getPlaceOfWorkLiveData().observe(viewLifecycleOwner) { countryAndRegion ->
-            val textPlaceOfWork = buildString {
-                countryAndRegion.first?.let { this.append(it.areaName) }
-                countryAndRegion.second?.let {
-                    this.append(", ")
-                    this.append(it.areaName)
-                }
-            }
-            setVisualItems(
-                binding.placeOfWork,
-                textPlaceOfWork.isEmpty(),
-                textPlaceOfWork
-            )
-            buttonsVisible()
+        viewModel.getPlaceOfWorkLiveData().observe(viewLifecycleOwner) {
+            showCountryAndRegion(it)
         }
 
         viewModel.getIndustryLiveData().observe(viewLifecycleOwner) {
-            val industryName = it?.industryName ?: ""
-            setVisualItems(
-                binding.industry,
-                industryName.isEmpty(),
-                industryName
-            )
-            buttonsVisible()
+            showIndustry(it)
         }
 
-        viewModel.getExpectedSalaryLiveData().observe(viewLifecycleOwner) { salary ->
-            salary?.let { editText?.setText(salary) }
-            editText?.let { it.setSelection(it.length()) }
+        viewModel.getExpectedSalaryLiveData().observe(viewLifecycleOwner) {
+            showExpectedSalary(it)
         }
 
         viewModel.getFlagOnlyWithSalaryLiveData().observe(viewLifecycleOwner) {
             binding.checkboxSalary.isChecked = it
             buttonsVisible()
         }
+    }
+
+    private fun showCountryAndRegion(countryAndRegion: Pair<Area?, Area?>) {
+        val textPlaceOfWork = buildString {
+            countryAndRegion.first?.let { this.append(it.areaName) }
+            countryAndRegion.second?.let {
+                this.append(", ")
+                this.append(it.areaName)
+            }
+        }
+        setVisualItems(
+            binding.placeOfWork,
+            textPlaceOfWork.isEmpty(),
+            textPlaceOfWork
+        )
+        buttonsVisible()
+    }
+
+    private fun showIndustry(industry: Industry?) {
+        val industryName = industry?.industryName ?: ""
+        setVisualItems(
+            binding.industry,
+            industryName.isEmpty(),
+            industryName
+        )
+        buttonsVisible()
+    }
+
+    private fun showExpectedSalary(salary: String?) {
+        salary?.let { editText?.setText(salary) }
+        editText?.let { it.setSelection(it.length()) }
+    }
+
+    private fun resetFilterSettings() {
+        with(viewModel) {
+            clearPlaceOfWork()
+            clearIndustry()
+            updateFlagSalary(false)
+        }
+        editText?.setText("")
     }
 
     private fun setVisualItems(itemBinding: ItemFilterBinding, editTextIsEmpty: Boolean = true, text: String = "") {

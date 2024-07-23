@@ -39,7 +39,11 @@
             android:paddingEnd="@dimen/dp_48"
             android:focusable="false"
             android:longClickable="false"
-            android:inputType="textNoSuggestions"
+            android:editable="false"
+            android:singleLine="true"
+            android:ellipsize="end"
+            android:textColor="?attr/colorOnPrimary"
+            android:textColorHint="@color/gray"
             android:hint="hint настроить в фрагменте"/>
     </com.google.android.material.textfield.TextInputLayout>
 
