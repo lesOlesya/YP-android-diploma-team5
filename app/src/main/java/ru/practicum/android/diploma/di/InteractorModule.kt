@@ -21,7 +21,7 @@ val interactorModule = module {
     }
 
     factory<SearchInteractor> {
-        SearchInteractorImpl(get())
+        SearchInteractorImpl(get(), get())
     }
 
     factory<IndustryInteractor> {
