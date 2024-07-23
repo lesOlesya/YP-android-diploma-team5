@@ -15,8 +15,8 @@ import ru.practicum.android.diploma.databinding.PlaceOfWorkFragmentBinding
 import ru.practicum.android.diploma.filter.area.domain.model.Area
 import ru.practicum.android.diploma.filter.area.ui.ChoosingRegionFragment
 import ru.practicum.android.diploma.filter.place.presentation.PlaceOfWorkViewModel
-import ru.practicum.android.diploma.filter.settings.presentation.model.FilterSettingsState
 import ru.practicum.android.diploma.filter.settings.presentation.model.FilterParametersUi
+import ru.practicum.android.diploma.filter.settings.presentation.model.FilterSettingsState
 
 class PlaceOfWorkFragment : Fragment() {
     private var _binding: PlaceOfWorkFragmentBinding? = null
@@ -25,13 +25,6 @@ class PlaceOfWorkFragment : Fragment() {
     private val viewModel by viewModel<PlaceOfWorkViewModel>()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        _binding = PlaceOfWorkFragmentBinding.inflate(layoutInflater, container, false)
-        return binding.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
         parentFragmentManager.setFragmentResultListener("filterKey", this) { _: String?, result: Bundle ->
             // country
             result.getString(ARGS_COUNTRY_ID)?.let {
@@ -53,9 +46,14 @@ class PlaceOfWorkFragment : Fragment() {
                     )
                 )
             }
-
         }
 
+        _binding = PlaceOfWorkFragmentBinding.inflate(layoutInflater, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         // country -->>
         setHint(binding.country, requireContext().getString(R.string.country_hint))
 

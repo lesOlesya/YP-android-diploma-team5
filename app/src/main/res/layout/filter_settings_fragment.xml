@@ -49,6 +49,7 @@
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/salary_edit_text"
             style="@style/TextInputEditTextStyle"
+            android:layout_marginEnd="@dimen/dp_48"
             android:inputType="number"
             android:singleLine="true"
             android:hint="@string/enter_amount_hint"/>

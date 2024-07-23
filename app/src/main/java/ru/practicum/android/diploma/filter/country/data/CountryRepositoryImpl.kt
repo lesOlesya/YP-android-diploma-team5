@@ -29,17 +29,7 @@ class CountryRepositoryImpl(
 
             ErrorMessageConstants.SUCCESS -> {
                 with(response as AreaResponse) {
-                    val data = ArrayList<Area>()
-                    var otherCountry: Area? = null
-                    items.forEach { // it.parentId == null
-                        if (it.id == "1001" || it.name == "Другие регионы") {
-                            otherCountry = areaDtoConverter.map(it)
-                        } else {
-                            data.add(areaDtoConverter.map(it))
-                        }
-                    }
-                    otherCountry?.let { data.add(it) }
-                    emit(Resource.Success(data.toList()))
+                    emit(Resource.Success(getCountriesData(items)))
                 }
             }
 
@@ -63,7 +53,7 @@ class CountryRepositoryImpl(
 
             ErrorMessageConstants.SUCCESS -> {
                 with(response as AreaResponse) {
-                    emit(getCountryResource(items, countryId))
+                    emit(getCountryByIdResource(items, countryId))
                 }
             }
 
@@ -77,7 +67,22 @@ class CountryRepositoryImpl(
         }
     }.flowOn(Dispatchers.IO)
 
-    private fun getCountryResource(items: ArrayList<AreaDto>, countryId: String?): Resource<Area> {
+    private fun getCountriesData(items: ArrayList<AreaDto>): List<Area> {
+        val data = ArrayList<Area>()
+        var otherCountry: Area? = null
+        items.forEach { // it.parentId == null
+            if (it.id == "1001" || it.name == "Другие регионы") {
+                otherCountry = areaDtoConverter.map(it)
+            } else {
+                data.add(areaDtoConverter.map(it))
+            }
+        }
+        otherCountry?.let { data.add(it) }
+
+        return data.toList()
+    }
+
+    private fun getCountryByIdResource(items: ArrayList<AreaDto>, countryId: String?): Resource<Area> {
         items.forEach {
             if (it.id == countryId) {
                 val country = areaDtoConverter.map(it) // it.parentId == null

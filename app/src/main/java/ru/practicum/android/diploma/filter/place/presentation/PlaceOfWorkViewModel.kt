@@ -10,8 +10,8 @@ import ru.practicum.android.diploma.filter.area.domain.model.Area
 import ru.practicum.android.diploma.filter.country.domain.api.CountryInteractor
 import ru.practicum.android.diploma.filter.settings.domain.api.FilterParametersInteractor
 import ru.practicum.android.diploma.filter.settings.domain.models.FilterParameters
-import ru.practicum.android.diploma.filter.settings.presentation.model.FilterSettingsState
 import ru.practicum.android.diploma.filter.settings.presentation.model.FilterParametersUi
+import ru.practicum.android.diploma.filter.settings.presentation.model.FilterSettingsState
 
 class PlaceOfWorkViewModel(
     private val filterInteractor: FilterParametersInteractor,
