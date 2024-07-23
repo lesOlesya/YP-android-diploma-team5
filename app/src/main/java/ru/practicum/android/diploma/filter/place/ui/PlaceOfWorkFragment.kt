@@ -13,6 +13,7 @@ import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.ItemFilterBinding
 import ru.practicum.android.diploma.databinding.PlaceOfWorkFragmentBinding
 import ru.practicum.android.diploma.filter.area.domain.model.Area
+import ru.practicum.android.diploma.filter.area.ui.ChoosingRegionFragment
 import ru.practicum.android.diploma.filter.place.presentation.PlaceOfWorkViewModel
 import ru.practicum.android.diploma.filter.settings.presentation.FilterSettingsState
 import ru.practicum.android.diploma.filter.settings.presentation.model.FilterParametersUi
@@ -75,6 +76,7 @@ class PlaceOfWorkFragment : Fragment() {
         binding.region.textField.setOnClickListener {
             findNavController().navigate(
                 R.id.action_choosingPlaceFragment_to_choosingAreaFragment,
+                ChoosingRegionFragment.setArguments(arguments?.getString(ARGS_COUNTRY_ID))
                 // тут использовать ф-ию createArgs choosingAreaFragment,
                 // чтобы передать id страны, если она выбрана. Перед сдачей сделаю это
             )

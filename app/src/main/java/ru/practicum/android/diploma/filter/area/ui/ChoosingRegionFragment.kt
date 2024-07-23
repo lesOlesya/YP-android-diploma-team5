@@ -6,8 +6,8 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
+import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -18,6 +18,7 @@ import ru.practicum.android.diploma.databinding.ChoosingWithRvFragmentBinding
 import ru.practicum.android.diploma.filter.area.domain.model.Area
 import ru.practicum.android.diploma.filter.area.presentation.ChoosingRegionViewModel
 import ru.practicum.android.diploma.filter.area.ui.adapter.AreaAdapter
+import ru.practicum.android.diploma.filter.place.ui.PlaceOfWorkFragment
 
 class ChoosingRegionFragment : Fragment(), AreaAdapter.AreaClickListener {
     private var _binding: ChoosingWithRvFragmentBinding? = null
@@ -101,7 +102,11 @@ class ChoosingRegionFragment : Fragment(), AreaAdapter.AreaClickListener {
             }
         }
 
-        requestAreas(null)
+        if (arguments == null) {
+            requestAreas(null)
+        } else {
+            requestAreas(arguments?.getString(COUNTRY_NAME))
+        }
     }
 
     private fun changeIcons(isTextEmpty: Boolean) {
@@ -151,6 +156,20 @@ class ChoosingRegionFragment : Fragment(), AreaAdapter.AreaClickListener {
     }
 
     override fun onAreaClick(area: Area) {
-        Toast.makeText(requireContext(), area.parentId, Toast.LENGTH_SHORT).show()
+        getParentFragmentManager().setFragmentResult(
+            "filterKey",
+            PlaceOfWorkFragment.createArgs(
+                regionId = area.areaId,
+                regionName = area.areaName,
+                regionParentId = area.parentId
+            )
+        )
+        requireActivity().onBackPressedDispatcher.onBackPressed()
+    }
+
+    companion object {
+        private const val COUNTRY_NAME = "Country name"
+
+        fun setArguments(countryID: String?): Bundle = bundleOf(COUNTRY_NAME to countryID)
     }
 }
