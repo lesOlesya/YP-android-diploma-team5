@@ -12,13 +12,16 @@ import ru.practicum.android.diploma.search.domain.models.VacancyPagination
 import ru.practicum.android.diploma.util.debounce
 
 class SearchViewModel(
-    private val searchInteractor: SearchInteractor,
+    private val searchInteractor: SearchInteractor
 ) : ViewModel() {
 
     private val vacancies = ArrayList<Vacancy>()
+
     private var currentPage = 0
     private var maxPages = 1
     private var isNextPageLoading = false
+
+    private var filters = searchInteractor.getSearchFilters()
 
     private var latestSearchText: String? = null
     private val vacancySearchDebounce =
@@ -48,12 +51,16 @@ class SearchViewModel(
     }
 
     fun searchVacancies(query: String, isNewSearchText: Boolean = true) {
+        if (isNewSearchText) {
+            filters = searchInteractor.getSearchFilters()
+        }
+
         if (!isNextPageLoading && query.isNotEmpty() && currentPage != maxPages) {
             renderState(VacanciesState.Loading(isNewSearchText))
             isNextPageLoading = true
             viewModelScope.launch {
                 searchInteractor
-                    .search(query, currentPage)
+                    .search(query, currentPage, filters)
                     .collect { pair ->
                         processResult(pair.first, pair.second, isNewSearchText)
                     }
