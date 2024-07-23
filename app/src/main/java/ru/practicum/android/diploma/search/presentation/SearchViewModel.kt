@@ -36,6 +36,12 @@ class SearchViewModel(
     private val stateLiveData = MutableLiveData<VacanciesState>()
     fun getStateLiveData(): LiveData<VacanciesState> = stateLiveData
 
+    fun applyFiltersLastSearch() {
+        filters = searchInteractor.getSearchFilters()
+        vacancies.clear()
+        latestSearchText?.let { searchVacancies(it) }
+    }
+
     fun setDefaultState() {
         if (latestSearchText == "") {
             renderState(VacanciesState.Default)
@@ -51,10 +57,6 @@ class SearchViewModel(
     }
 
     fun searchVacancies(query: String, isNewSearchText: Boolean = true) {
-        if (isNewSearchText) {
-            filters = searchInteractor.getSearchFilters()
-        }
-
         if (!isNextPageLoading && query.isNotEmpty() && currentPage != maxPages) {
             renderState(VacanciesState.Loading(isNewSearchText))
             isNextPageLoading = true
@@ -91,6 +93,11 @@ class SearchViewModel(
                 renderState(VacanciesState.Content(vacancies, vacancyPagination?.foundVacancies ?: 0))
             }
         }
+    }
+
+    fun getSearchFilters(): Boolean {
+        filters = searchInteractor.getSearchFilters()
+        return filters.isNotEmpty()
     }
 
     private fun renderState(state: VacanciesState) {

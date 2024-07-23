@@ -15,6 +15,7 @@ import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.FilterSettingsFragmentBinding
 import ru.practicum.android.diploma.databinding.ItemFilterBinding
 import ru.practicum.android.diploma.filter.settings.presentation.FilterSettingsViewModel
+import ru.practicum.android.diploma.search.ui.SearchFragment
 
 class FilterSettingsFragment : Fragment() {
     private var _binding: FilterSettingsFragmentBinding? = null
@@ -93,7 +94,8 @@ class FilterSettingsFragment : Fragment() {
         }
 
         binding.applySettingsButton.setOnClickListener {
-//            тут применить фильтры на действующий поиск
+            getParentFragmentManager()
+                .setFragmentResult("filterKey", SearchFragment.createArgs(filtersApply = true))
             findNavController().navigateUp()
         }
 
