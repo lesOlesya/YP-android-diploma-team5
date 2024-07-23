@@ -37,7 +37,7 @@ class SearchRepositoryImpl(
                             vacancyName = it.name,
                             salary = Salary(it.salary?.from, it.salary?.to, it.salary?.currency),
                             employerName = it.employer.name,
-                            area = it.address?.city ?: it.area.name,
+                            area = it.area.name,
                             artworkUrl = it.employer.logoUrls?.logo240
                         )
                     }

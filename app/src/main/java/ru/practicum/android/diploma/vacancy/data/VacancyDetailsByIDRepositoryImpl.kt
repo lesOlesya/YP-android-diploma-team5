@@ -33,7 +33,7 @@ class VacancyDetailsByIDRepositoryImpl(
                             vacancyName = name,
                             salary = Salary(salary?.from, salary?.to, salary?.currency),
                             employerName = employer.name,
-                            area = area.name,
+                            area = address?.city ?: area.name,
                             artworkUrl = employer.logoUrls?.logo240,
                             experience = experience?.name,
                             employment = employment?.name,
