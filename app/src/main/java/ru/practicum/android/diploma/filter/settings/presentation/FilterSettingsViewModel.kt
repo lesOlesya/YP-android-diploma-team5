@@ -18,12 +18,12 @@ class FilterSettingsViewModel(
 
     private val placeOfWorkLiveData = MutableLiveData<Pair<Area?, Area?>>()
     private val industryLiveData = MutableLiveData<Industry?>()
-    private val expectedSalaryLiveData = MutableLiveData<Int?>()
+    private val expectedSalaryLiveData = MutableLiveData<String?>()
     private val flagOnlyWithSalaryLiveData = MutableLiveData<Boolean>()
 
     fun getPlaceOfWorkLiveData(): LiveData<Pair<Area?, Area?>> = placeOfWorkLiveData
     fun getIndustryLiveData(): LiveData<Industry?> = industryLiveData
-    fun getExpectedSalaryLiveData(): LiveData<Int?> = expectedSalaryLiveData
+    fun getExpectedSalaryLiveData(): LiveData<String?> = expectedSalaryLiveData
     fun getFlagOnlyWithSalaryLiveData(): LiveData<Boolean> = flagOnlyWithSalaryLiveData
 
 
@@ -58,11 +58,19 @@ class FilterSettingsViewModel(
         saveParameters()
     }
 
-    fun updateSalary(text: String) {
-        debounce<String>(UPDATE_DEBOUNCE_DELAY, viewModelScope, true) { changedText ->
-            expectedSalaryLiveData.value = changedText.toInt()
+    private var latestSalary: String? = null
+    private val updateSalaryDebounce =
+        debounce<String?>(UPDATE_DEBOUNCE_DELAY, viewModelScope, true) { changedText ->
+            expectedSalaryLiveData.value = changedText
             saveParameters()
-        }(text)
+        }
+
+    fun updateSalary(changedText: String?) {
+        if (latestSalary != changedText) {
+            latestSalary = changedText
+
+            updateSalaryDebounce(changedText)
+        }
     }
 
     fun updateFlagSalary(check: Boolean) {

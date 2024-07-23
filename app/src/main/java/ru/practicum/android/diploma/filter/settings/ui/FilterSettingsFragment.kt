@@ -35,6 +35,10 @@ class FilterSettingsFragment : Fragment() {
 
         viewModel.setFilterParameters()
 
+        binding.toolbar.setNavigationOnClickListener {
+            findNavController().navigateUp()
+        }
+
         // placeOfWork -->>
         setHint(binding.placeOfWork, requireContext().getString(R.string.place_of_work_hint))
 
@@ -59,8 +63,33 @@ class FilterSettingsFragment : Fragment() {
         }
         // <<-- industry
 
-        binding.toolbar.setNavigationOnClickListener {
-            findNavController().navigateUp()
+        // input Salary -->>
+        editText = binding.salaryEditText
+
+        binding.ivClearEt.setOnClickListener {
+            editText?.setText("")
+        }
+
+        textWatcher = object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                buttonsVisible()
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                binding.ivClearEt.isVisible = !s.isNullOrEmpty()
+                viewModel.updateSalary(s?.toString())
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+                buttonsVisible()
+            }
+        }
+
+        textWatcher?.let { editText?.addTextChangedListener(it) }
+        // <<-- input Salary
+
+        binding.checkboxSalary.setOnClickListener {
+            viewModel.updateFlagSalary(!binding.checkboxSalary.isChecked)
         }
 
         binding.applySettingsButton.setOnClickListener {
@@ -77,37 +106,13 @@ class FilterSettingsFragment : Fragment() {
             editText?.setText("")
         }
 
-        binding.checkboxSalary.setOnClickListener {
-            viewModel.updateFlagSalary(!binding.checkboxSalary.isChecked)
-        }
-
-        // input Salary -->>
-        editText = binding.salaryEditText
-
-        textWatcher = object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-                // detekt
-            }
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                binding.ivClearEt.isVisible = !s.isNullOrEmpty()
-//                viewModel.updateSalary(s?.toString() ?: "")
-            }
-
-            override fun afterTextChanged(s: Editable?) {
-                buttonsVisible()
-            }
-        }
-        textWatcher?.let { editText?.addTextChangedListener(it) }
-        // <<-- input Salary
-
         viewModel.getPlaceOfWorkLiveData().observe(viewLifecycleOwner) { countryAndRegion ->
             val textPlaceOfWork = buildString {
-                countryAndRegion.first?.let {
-                    this.append(it.areaName)
+                countryAndRegion.first?.let { this.append(it.areaName) }
+                countryAndRegion.second?.let {
                     this.append(", ")
+                    this.append(it.areaName)
                 }
-                countryAndRegion.second?.let { this.append(it.areaName) }
             }
             setVisualItems(
                 binding.placeOfWork,
@@ -127,18 +132,15 @@ class FilterSettingsFragment : Fragment() {
             buttonsVisible()
         }
 
-        viewModel.getExpectedSalaryLiveData().observe(viewLifecycleOwner) {
-            it?.let { editText?.setText(it.toString()) }
-            buttonsVisible()
+        viewModel.getExpectedSalaryLiveData().observe(viewLifecycleOwner) { salary ->
+            salary?.let { editText?.setText(salary) }
+            editText?.let { it.setSelection(it.length()) }
         }
 
         viewModel.getFlagOnlyWithSalaryLiveData().observe(viewLifecycleOwner) {
             binding.checkboxSalary.isChecked = it
             buttonsVisible()
         }
-
-        buttonsVisible()
-
     }
 
     private fun setVisualItems(itemBinding: ItemFilterBinding, editTextIsEmpty: Boolean = true, text: String = "") {
@@ -158,10 +160,10 @@ class FilterSettingsFragment : Fragment() {
     private fun buttonsVisible() {
         with(binding) {
             resetSettingsButton.isVisible =
-                !(placeOfWork.textField.text.isNullOrEmpty()
-                    || industry.textField.text.isNullOrEmpty()
-                    || editText?.text.isNullOrEmpty()
-                    || !checkboxSalary.isChecked)
+                (placeOfWork.textField.text?.isNotEmpty() == true
+                    || industry.textField.text?.isNotEmpty() == true
+                    || editText?.text?.isNotEmpty() == true
+                    || checkboxSalary.isChecked)
             applySettingsButton.isVisible = resetSettingsButton.isVisible
         }
     }
