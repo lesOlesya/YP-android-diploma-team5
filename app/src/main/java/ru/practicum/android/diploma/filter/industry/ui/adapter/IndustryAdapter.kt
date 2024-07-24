@@ -55,6 +55,6 @@ class IndustryAdapter(
     }
 
     fun interface OnItemClickListener {
-        fun click(industry: Industry)
+        fun click(clickedIndustry: Industry)
     }
 }

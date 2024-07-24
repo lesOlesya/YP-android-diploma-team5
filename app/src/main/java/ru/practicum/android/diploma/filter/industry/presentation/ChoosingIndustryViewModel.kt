@@ -97,10 +97,10 @@ class ChoosingIndustryViewModel(
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    override fun click(industry: Industry) {
-        industries.forEach {
-            if (it.industryId == industry.industryId) {
-                chosenIndustry = it
+    override fun click(clickedIndustry: Industry) {
+        adapter.currentList.forEach {
+            if (it.industryId == clickedIndustry.industryId) {
+                chosenIndustry = if (chosenIndustry != it) it else null
             }
         }
         adapter.checkedIndustry = chosenIndustry
