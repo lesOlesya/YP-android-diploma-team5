@@ -6,10 +6,13 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import androidx.activity.OnBackPressedCallback
 import androidx.core.view.isVisible
+import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.ChoosingWithRvFragmentBinding
@@ -17,15 +20,14 @@ import ru.practicum.android.diploma.filter.industry.domain.model.Industry
 import ru.practicum.android.diploma.filter.industry.presentation.ChoosingIndustryState
 import ru.practicum.android.diploma.filter.industry.presentation.ChoosingIndustryViewModel
 import ru.practicum.android.diploma.filter.industry.ui.adapter.IndustryAdapter
+import ru.practicum.android.diploma.filter.settings.domain.impl.FilterParametersInteractorImpl
 import java.util.Locale
 
-class ChoosingIndustryFragment : Fragment(), IndustryAdapter.OnItemClickListener {
+class ChoosingIndustryFragment : Fragment() {
     private var _binding: ChoosingWithRvFragmentBinding? = null
     private val binding get() = _binding!!
 
     private val viewModel by viewModel<ChoosingIndustryViewModel>()
-    private val adapter = IndustryAdapter(this)
-    private var industries = arrayListOf<Industry>()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = ChoosingWithRvFragmentBinding.inflate(inflater, container, false)
@@ -39,16 +41,13 @@ class ChoosingIndustryFragment : Fragment(), IndustryAdapter.OnItemClickListener
         binding.editTextFilter.hint = requireContext().getString(R.string.enter_industry_hint)
         binding.tvNotFoundPlaceholder.text = requireContext().getString(R.string.industry_list_empty_error)
 
-        binding.chooseIndustryButton.setOnClickListener {
-            var chosenIndustry: Industry? = null
-            industries.forEach { if (it.isChosen) chosenIndustry = it }
-            if (chosenIndustry != null) {
-                viewModel.saveIndustryParameters(chosenIndustry!!)
-                requireActivity().onBackPressedDispatcher.onBackPressed()
-            }
-        }
-
+        val adapter = viewModel.adapter
         binding.recyclerView.adapter = adapter
+
+        binding.chooseIndustryButton.setOnClickListener {
+            viewModel.saveIndustryParameters()
+            requireActivity().onBackPressedDispatcher.onBackPressed()
+        }
 
         requireActivity().onBackPressedDispatcher.addCallback(
             viewLifecycleOwner,
@@ -63,11 +62,17 @@ class ChoosingIndustryFragment : Fragment(), IndustryAdapter.OnItemClickListener
             requireActivity().onBackPressedDispatcher.onBackPressed()
         }
 
+        binding.editTextFilter.doOnTextChanged { text, _, _, _ ->
+            viewModel.filter(text.toString())
+        }
+
+        viewModel.observeAdapterLiveData().observe(viewLifecycleOwner) {
+            adapter.submitList(it.currentList)
+        }
+
         viewModel.observeChoosingIndustryState().observe(viewLifecycleOwner) {
             render(it)
         }
-
-        setUpSearch()
     }
 
     override fun onDestroyView() {
@@ -75,53 +80,18 @@ class ChoosingIndustryFragment : Fragment(), IndustryAdapter.OnItemClickListener
         _binding = null
     }
 
-    @Suppress("detekt.EmptyFunctionBlock")
-    private fun setUpSearch() {
-        binding.editTextFilter.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(s: Editable?) {
-            }
-
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-            }
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                filter(s.toString())
-            }
-        })
-    }
-
-    private fun filter(text: String) {
-        val filteredList: ArrayList<Industry> = arrayListOf()
-
-        for (item in industries) {
-            if (item.industryName.lowercase(Locale.ROOT).contains(text.lowercase(Locale.ROOT))) {
-                filteredList.add(item)
-            }
-        }
-        if (filteredList.isEmpty()) {
-            adapter.submitList(null)
-            binding.tvNotFoundPlaceholder.isVisible = true
-        } else {
-            binding.tvNotFoundPlaceholder.isVisible = false
-            adapter.submitList(filteredList)
-        }
-    }
-
     private fun render(state: ChoosingIndustryState) {
         hideAll()
         when (state) {
             is ChoosingIndustryState.Loading -> binding.progressBar.isVisible = true
             is ChoosingIndustryState.Error -> binding.tvFailedRequestPlaceholder.isVisible = false
-            is ChoosingIndustryState.Success -> {
-                industries = state.industries
-                showIndustries(industries)
-            }
+            is ChoosingIndustryState.Success -> showIndustries(state.chooseButtonVisible)
         }
     }
 
-    private fun showIndustries(industries: ArrayList<Industry>) {
-        adapter.submitList(industries)
+    private fun showIndustries(buttonIsVisible: Boolean) {
         binding.recyclerView.isVisible = true
+        binding.chooseIndustryButton.isVisible = buttonIsVisible
     }
 
     private fun hideAll() {
@@ -129,15 +99,5 @@ class ChoosingIndustryFragment : Fragment(), IndustryAdapter.OnItemClickListener
         binding.tvFailedRequestPlaceholder.isVisible = false
         binding.progressBar.isVisible = false
         binding.recyclerView.isVisible = false
-    }
-
-    override fun click(industry: Industry) {
-        var needToShow = false
-        industries.forEach {
-            it.isChosen = it.industryId == industry.industryId
-            if (it.isChosen) needToShow = true
-        }
-        adapter.notifyDataSetChanged()
-        binding.chooseIndustryButton.isVisible = needToShow
     }
 }

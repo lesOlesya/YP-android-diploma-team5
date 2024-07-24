@@ -8,7 +8,10 @@ import androidx.recyclerview.widget.RecyclerView
 import ru.practicum.android.diploma.databinding.IndustryListItemBinding
 import ru.practicum.android.diploma.filter.industry.domain.model.Industry
 
-class IndustryAdapter(private val clickListener: OnItemClickListener) :
+class IndustryAdapter(
+    private val clickListener: OnItemClickListener,
+    var checkedIndustry: Industry?
+) :
     ListAdapter<Industry, IndustryAdapter.IndustryViewHolder>(IndustryDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): IndustryViewHolder {
@@ -34,6 +37,9 @@ class IndustryAdapter(private val clickListener: OnItemClickListener) :
         }
 
         fun bind(industry: Industry) {
+            if (checkedIndustry?.industryId == industry.industryId) {
+                industry.isChosen = true
+            }
             binding.apply {
                 tvIndustry.text = industry.industryName
                 tvIndustry.isChecked = industry.isChosen
