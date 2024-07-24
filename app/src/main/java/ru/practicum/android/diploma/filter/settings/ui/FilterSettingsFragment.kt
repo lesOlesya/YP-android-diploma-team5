@@ -42,48 +42,22 @@ class FilterSettingsFragment : Fragment() {
             findNavController().navigateUp()
         }
 
-        // placeOfWork -->>
-        setHint(binding.placeOfWork, requireContext().getString(R.string.place_of_work_hint))
+        inflatePlaceOfWork()
+        inflateIndustry()
 
-        binding.placeOfWork.textField.setOnClickListener {
-            findNavController().navigate(R.id.action_filterFragment_to_choosingPlaceFragment)
-        }
-
-        binding.placeOfWork.ivClear.setOnClickListener {
-            viewModel.clearPlaceOfWork()
-        }
-        // <<-- placeOfWork
-
-        // industry -->>
-        setHint(binding.industry, requireContext().getString(R.string.industry_hint))
-
-        binding.industry.textField.setOnClickListener {
-            findNavController().navigate(R.id.action_filterFragment_to_choosingIndustryFragment)
-        }
-
-        binding.industry.ivClear.setOnClickListener {
-            viewModel.clearIndustry()
-        }
-        // <<-- industry
-
-        // input Salary -->>
         editText = binding.salaryEditText
+        setTextWatcher()
 
         binding.ivClearEt.setOnClickListener {
             editText?.setText("")
         }
-
-        setTextWatcher()
-        // <<-- input Salary
 
         binding.checkboxSalary.setOnClickListener {
             viewModel.updateFlagSalary(!binding.checkboxSalary.isChecked)
         }
 
         binding.applySettingsButton.setOnClickListener {
-            getParentFragmentManager()
-                .setFragmentResult("filterKey", SearchFragment.createArgs(filtersApply = true))
-            findNavController().navigateUp()
+            transferArgs()
         }
 
         binding.resetSettingsButton.setOnClickListener {
@@ -179,6 +153,36 @@ class FilterSettingsFragment : Fragment() {
     private fun setHint(itemBinding: ItemFilterBinding, hintText: String) {
         itemBinding.hintField.hint = hintText
         itemBinding.textField.hint = hintText
+    }
+
+    private fun inflatePlaceOfWork() {
+        setHint(binding.placeOfWork, requireContext().getString(R.string.place_of_work_hint))
+
+        binding.placeOfWork.textField.setOnClickListener {
+            findNavController().navigate(R.id.action_filterFragment_to_choosingPlaceFragment)
+        }
+
+        binding.placeOfWork.ivClear.setOnClickListener {
+            viewModel.clearPlaceOfWork()
+        }
+    }
+
+    private fun inflateIndustry() {
+        setHint(binding.industry, requireContext().getString(R.string.industry_hint))
+
+        binding.industry.textField.setOnClickListener {
+            findNavController().navigate(R.id.action_filterFragment_to_choosingIndustryFragment)
+        }
+
+        binding.industry.ivClear.setOnClickListener {
+            viewModel.clearIndustry()
+        }
+    }
+
+    private fun transferArgs() {
+        getParentFragmentManager()
+            .setFragmentResult("filterKey", SearchFragment.createArgs(filtersApply = true))
+        findNavController().navigateUp()
     }
 
     private fun buttonsVisible() {
