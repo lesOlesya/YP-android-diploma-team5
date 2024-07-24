@@ -73,22 +73,7 @@ class FilterSettingsFragment : Fragment() {
             editText?.setText("")
         }
 
-        textWatcher = object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-                buttonsVisible()
-            }
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                binding.ivClearEt.isVisible = !s.isNullOrEmpty()
-                viewModel.updateSalary(s?.toString())
-            }
-
-            override fun afterTextChanged(s: Editable?) {
-                buttonsVisible()
-            }
-        }
-
-        textWatcher?.let { editText?.addTextChangedListener(it) }
+        setTextWatcher()
         // <<-- input Salary
 
         binding.checkboxSalary.setOnClickListener {
@@ -147,6 +132,25 @@ class FilterSettingsFragment : Fragment() {
             industryName
         )
         buttonsVisible()
+    }
+
+    private fun setTextWatcher() {
+        textWatcher = object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                buttonsVisible()
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                binding.ivClearEt.isVisible = !s.isNullOrEmpty()
+                viewModel.updateSalary(s?.toString())
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+                buttonsVisible()
+            }
+        }
+
+        textWatcher?.let { editText?.addTextChangedListener(it) }
     }
 
     private fun showExpectedSalary(salary: String?) {
