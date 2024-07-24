@@ -37,12 +37,9 @@ class IndustryAdapter(
         }
 
         fun bind(industry: Industry) {
-            if (checkedIndustry?.industryId == industry.industryId) {
-                industry.isChosen = true
-            }
             binding.apply {
                 tvIndustry.text = industry.industryName
-                tvIndustry.isChecked = industry.isChosen
+                tvIndustry.isChecked = checkedIndustry?.industryId == industry.industryId
             }
         }
     }
@@ -53,7 +50,7 @@ class IndustryAdapter(
         }
 
         override fun areContentsTheSame(oldItem: Industry, newItem: Industry): Boolean {
-            return oldItem.isChosen == newItem.isChosen
+            return oldItem.industryId == newItem.industryId
         }
     }
 

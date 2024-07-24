@@ -98,14 +98,12 @@ class ChoosingIndustryViewModel(
 
     @SuppressLint("NotifyDataSetChanged")
     override fun click(industry: Industry) {
-        adapter.checkedIndustry = null
         industries.forEach {
-            it.isChosen = it.industryId == industry.industryId
-            if (it.isChosen) {
+            if (it.industryId == industry.industryId) {
                 chosenIndustry = it
-                adapter.checkedIndustry = it
             }
         }
+        adapter.checkedIndustry = chosenIndustry
         adapter.notifyDataSetChanged()
         _choosingIndustryStateLiveData.postValue(
             ChoosingIndustryState.Success(chooseButtonVisible = chosenIndustry != null)
