@@ -74,6 +74,7 @@ class PlaceOfWorkViewModel(
     fun clearArea(needClearCountry: Boolean = false, needClearRegion: Boolean = false) {
         if (needClearCountry) {
             country = null
+            region = null
         }
         if (needClearRegion) {
             region = null
