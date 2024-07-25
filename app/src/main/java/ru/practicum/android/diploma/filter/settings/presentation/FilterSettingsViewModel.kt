@@ -48,15 +48,17 @@ class FilterSettingsViewModel(
     }
 
     fun saveParameters() {
-        filterInteractor.saveParameters(
-            filterInteractor.buildFilterParameters(
-                country = placeOfWorkLiveData.value?.first,
-                region = placeOfWorkLiveData.value?.second,
-                industry = industryLiveData.value,
-                expectedSalary = expectedSalaryLiveData.value,
-                flagOnlyWithSalary = flagOnlyWithSalaryLiveData.value
+        if (checkFilterUpdates()) {
+            filterInteractor.saveParameters(
+                filterInteractor.buildFilterParameters(
+                    country = placeOfWorkLiveData.value?.first,
+                    region = placeOfWorkLiveData.value?.second,
+                    industry = industryLiveData.value,
+                    expectedSalary = expectedSalaryLiveData.value,
+                    flagOnlyWithSalary = flagOnlyWithSalaryLiveData.value
+                )
             )
-        )
+        }
     }
 
     fun setPlaceOfWork(country: Area?, region: Area?) {

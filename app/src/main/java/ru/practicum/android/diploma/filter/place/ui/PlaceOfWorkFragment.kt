@@ -27,17 +27,17 @@ class PlaceOfWorkFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         parentFragmentManager.setFragmentResultListener("placeOfWorkKey", this) { _: String?, result: Bundle ->
-            (result.getParcelable(ARGS_COUNTRY) as Area?)?.let {
+            (result.getParcelable(ARGS_COUNTRY) as? Area)?.let {
                 viewModel.loadCountry(it)
             }
-            (result.getParcelable(ARGS_REGION) as Area?)?.let {
+            (result.getParcelable(ARGS_REGION) as? Area)?.let {
                 viewModel.loadRegion(it)
             }
         }
 
         arguments?.let {
-            viewModel.setUpCountry(it.getParcelable(ARGS_COUNTRY) as Area?)
-            viewModel.setUpRegion(it.getParcelable(ARGS_REGION) as Area?)
+            viewModel.setUpCountry(it.getParcelable(ARGS_COUNTRY) as? Area)
+            viewModel.setUpRegion(it.getParcelable(ARGS_REGION) as? Area)
         }
 
         _binding = PlaceOfWorkFragmentBinding.inflate(layoutInflater, container, false)

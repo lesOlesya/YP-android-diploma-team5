@@ -34,14 +34,14 @@ class FilterSettingsFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         parentFragmentManager.setFragmentResultListener("filterKey", this) { _: String?, result: Bundle ->
-            (result.getParcelable(ARGS_COUNTRY) as Area?)?.let { country ->
+            (result.getParcelable(ARGS_COUNTRY) as? Area)?.let { country ->
                 viewModel.setPlaceOfWork(
                     country,
-                    result.getParcelable(ARGS_REGION) as Area?
+                    result.getParcelable(ARGS_REGION) as? Area
                 )
             }
 
-            (result.getParcelable(ARGS_INDUSTRY) as Industry?)?.let {
+            (result.getParcelable(ARGS_INDUSTRY) as? Industry)?.let {
                 viewModel.setIndustry(it)
             }
         }
@@ -222,7 +222,7 @@ class FilterSettingsFragment : Fragment() {
 
     private fun transferArgs() {
         getParentFragmentManager()
-            .setFragmentResult("filterKey", SearchFragment.createArgs(filtersApply = true))
+            .setFragmentResult("filterApplyKey", SearchFragment.createArgs(filtersApply = true))
         requireActivity().onBackPressedDispatcher.onBackPressed()
     }
 

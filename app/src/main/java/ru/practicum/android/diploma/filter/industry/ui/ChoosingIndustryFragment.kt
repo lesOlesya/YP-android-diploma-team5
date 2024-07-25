@@ -27,7 +27,7 @@ class ChoosingIndustryFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         arguments?.let {
-            viewModel.setIndustry(it.getParcelable(ARGS_INDUSTRY) as Industry?)
+            viewModel.setIndustry(it.getParcelable(ARGS_INDUSTRY) as? Industry)
         }
 
         _binding = ChoosingWithRvFragmentBinding.inflate(inflater, container, false)
