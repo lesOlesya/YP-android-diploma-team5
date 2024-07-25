@@ -8,7 +8,10 @@ import androidx.recyclerview.widget.RecyclerView
 import ru.practicum.android.diploma.databinding.IndustryListItemBinding
 import ru.practicum.android.diploma.filter.industry.domain.model.Industry
 
-class IndustryAdapter(private val clickListener: OnItemClickListener) :
+class IndustryAdapter(
+    private val clickListener: OnItemClickListener,
+    var checkedIndustry: Industry?
+) :
     ListAdapter<Industry, IndustryAdapter.IndustryViewHolder>(IndustryDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): IndustryViewHolder {
@@ -36,7 +39,7 @@ class IndustryAdapter(private val clickListener: OnItemClickListener) :
         fun bind(industry: Industry) {
             binding.apply {
                 tvIndustry.text = industry.industryName
-                tvIndustry.isChecked = industry.isChosen
+                tvIndustry.isChecked = checkedIndustry?.industryId == industry.industryId
             }
         }
     }
@@ -47,11 +50,11 @@ class IndustryAdapter(private val clickListener: OnItemClickListener) :
         }
 
         override fun areContentsTheSame(oldItem: Industry, newItem: Industry): Boolean {
-            return oldItem.isChosen == newItem.isChosen
+            return oldItem.industryId == newItem.industryId
         }
     }
 
     fun interface OnItemClickListener {
-        fun click(industry: Industry)
+        fun click(clickedIndustry: Industry)
     }
 }
