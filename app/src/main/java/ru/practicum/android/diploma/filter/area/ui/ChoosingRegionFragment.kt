@@ -61,15 +61,7 @@ class ChoosingRegionFragment : Fragment(), AreaAdapter.AreaClickListener {
                 requireActivity().onBackPressedDispatcher.onBackPressed()
             }
 
-            editTextFilter.doOnTextChanged { text, _, _, _ ->
-                val filterText = text.toString().trim()
-                if (filterText.isEmpty()) {
-                    changeIcons(true)
-                } else {
-                    changeIcons(false)
-                }
-                viewModel.filterRegions(filterText)
-            }
+            setOnTextChanged()
         }
 
         viewModel.observeRegionState().observe(viewLifecycleOwner) { state ->
@@ -134,6 +126,18 @@ class ChoosingRegionFragment : Fragment(), AreaAdapter.AreaClickListener {
             tvFailedRequestPlaceholder.isVisible = false
             tvNotFoundPlaceholder.isVisible = false
             progressBar.isVisible = false
+        }
+    }
+
+    private fun setOnTextChanged() {
+        binding.editTextFilter.doOnTextChanged { text, _, _, _ ->
+            val filterText = text.toString().trim()
+            if (filterText.isEmpty()) {
+                changeIcons(true)
+            } else {
+                changeIcons(false)
+            }
+            viewModel.filterRegions(filterText)
         }
     }
 
