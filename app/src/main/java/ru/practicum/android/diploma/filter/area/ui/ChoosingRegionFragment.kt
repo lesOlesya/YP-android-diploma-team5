@@ -45,14 +45,7 @@ class ChoosingRegionFragment : Fragment(), AreaAdapter.AreaClickListener {
     ) {
         super.onViewCreated(view, savedInstanceState)
 
-        requireActivity().onBackPressedDispatcher.addCallback(
-            viewLifecycleOwner,
-            object : OnBackPressedCallback(true) {
-                override fun handleOnBackPressed() {
-                    findNavController().navigateUp()
-                }
-            }
-        )
+        setBackPressedDispatcher()
 
         with(binding) {
             recyclerView.layoutManager = LinearLayoutManager(requireContext())
@@ -70,13 +63,11 @@ class ChoosingRegionFragment : Fragment(), AreaAdapter.AreaClickListener {
 
             editTextFilter.doOnTextChanged { text, _, _, _ ->
                 val filterText = text.toString().trim()
-
                 if (filterText.isEmpty()) {
                     changeIcons(true)
                 } else {
                     changeIcons(false)
                 }
-
                 viewModel.filterRegions(filterText)
             }
         }
@@ -144,6 +135,17 @@ class ChoosingRegionFragment : Fragment(), AreaAdapter.AreaClickListener {
             tvNotFoundPlaceholder.isVisible = false
             progressBar.isVisible = false
         }
+    }
+
+    private fun setBackPressedDispatcher() {
+        requireActivity().onBackPressedDispatcher.addCallback(
+            viewLifecycleOwner,
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    findNavController().navigateUp()
+                }
+            }
+        )
     }
 
     override fun onAreaClick(area: Area) {
