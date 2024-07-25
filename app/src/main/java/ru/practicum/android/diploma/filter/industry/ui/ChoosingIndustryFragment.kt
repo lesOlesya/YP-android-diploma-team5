@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
+import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
@@ -13,8 +14,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.ChoosingWithRvFragmentBinding
+import ru.practicum.android.diploma.filter.industry.domain.model.Industry
 import ru.practicum.android.diploma.filter.industry.presentation.ChoosingIndustryState
 import ru.practicum.android.diploma.filter.industry.presentation.ChoosingIndustryViewModel
+import ru.practicum.android.diploma.filter.settings.ui.FilterSettingsFragment
 
 class ChoosingIndustryFragment : Fragment() {
     private var _binding: ChoosingWithRvFragmentBinding? = null
@@ -23,6 +26,10 @@ class ChoosingIndustryFragment : Fragment() {
     private val viewModel by viewModel<ChoosingIndustryViewModel>()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+        arguments?.let {
+            viewModel.setIndustry(it.getParcelable(ARGS_INDUSTRY) as Industry?)
+        }
+
         _binding = ChoosingWithRvFragmentBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -41,7 +48,10 @@ class ChoosingIndustryFragment : Fragment() {
         binding.recyclerView.adapter = adapter
 
         binding.chooseIndustryButton.setOnClickListener {
-            viewModel.saveIndustryParameters()
+            getParentFragmentManager().setFragmentResult(
+                "filterKey",
+                FilterSettingsFragment.createArgsIndustry(viewModel.chosenIndustry)
+            )
             requireActivity().onBackPressedDispatcher.onBackPressed()
         }
 
@@ -59,7 +69,7 @@ class ChoosingIndustryFragment : Fragment() {
         }
 
         viewModel.observeAdapterLiveData().observe(viewLifecycleOwner) {
-            adapter.submitList(it.currentList)
+            adapter!!.submitList(it.currentList)
         }
 
         viewModel.observeChoosingIndustryState().observe(viewLifecycleOwner) {
@@ -114,5 +124,11 @@ class ChoosingIndustryFragment : Fragment() {
         binding.tvFailedRequestPlaceholder.isVisible = false
         binding.progressBar.isVisible = false
         binding.recyclerView.isVisible = false
+    }
+
+    companion object {
+        private const val ARGS_INDUSTRY = "Industry"
+
+        fun createArgs(industry: Industry?): Bundle = bundleOf(ARGS_INDUSTRY to industry)
     }
 }

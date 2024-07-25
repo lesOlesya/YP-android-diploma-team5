@@ -7,6 +7,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
+import androidx.activity.OnBackPressedCallback
+import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -16,6 +18,8 @@ import ru.practicum.android.diploma.databinding.FilterSettingsFragmentBinding
 import ru.practicum.android.diploma.databinding.ItemFilterBinding
 import ru.practicum.android.diploma.filter.area.domain.model.Area
 import ru.practicum.android.diploma.filter.industry.domain.model.Industry
+import ru.practicum.android.diploma.filter.industry.ui.ChoosingIndustryFragment
+import ru.practicum.android.diploma.filter.place.ui.PlaceOfWorkFragment
 import ru.practicum.android.diploma.filter.settings.presentation.FilterSettingsViewModel
 import ru.practicum.android.diploma.search.ui.SearchFragment
 
@@ -29,6 +33,19 @@ class FilterSettingsFragment : Fragment() {
     private var editText: EditText? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+        parentFragmentManager.setFragmentResultListener("filterKey", this) { _: String?, result: Bundle ->
+            (result.getParcelable(ARGS_COUNTRY) as Area?)?.let { country ->
+                viewModel.setPlaceOfWork(
+                    country,
+                    result.getParcelable(ARGS_REGION) as Area?
+                )
+            }
+
+            (result.getParcelable(ARGS_INDUSTRY) as Industry?)?.let {
+                viewModel.setIndustry(it)
+            }
+        }
+
         _binding = FilterSettingsFragmentBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -36,10 +53,9 @@ class FilterSettingsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.setFilterParameters()
-
+        setBackPressed()
         binding.toolbar.setNavigationOnClickListener {
-            findNavController().navigateUp()
+            requireActivity().onBackPressedDispatcher.onBackPressed()
         }
 
         inflatePlaceOfWork()
@@ -62,6 +78,10 @@ class FilterSettingsFragment : Fragment() {
 
         binding.resetSettingsButton.setOnClickListener {
             resetFilterSettings()
+        }
+
+        viewModel.observeFilterIsUpdateLiveData().observe(viewLifecycleOwner) {
+            binding.applySettingsButton.isVisible = it
         }
 
         viewModel.getPlaceOfWorkLiveData().observe(viewLifecycleOwner) {
@@ -159,7 +179,13 @@ class FilterSettingsFragment : Fragment() {
         setHint(binding.placeOfWork, requireContext().getString(R.string.place_of_work_hint))
 
         binding.placeOfWork.textField.setOnClickListener {
-            findNavController().navigate(R.id.action_filterFragment_to_choosingPlaceFragment)
+            findNavController().navigate(
+                R.id.action_filterFragment_to_choosingPlaceFragment,
+                PlaceOfWorkFragment.createArgs(
+                    viewModel.getPlaceOfWorkLiveData().value?.first,
+                    viewModel.getPlaceOfWorkLiveData().value?.second
+                )
+            )
         }
 
         binding.placeOfWork.ivClear.setOnClickListener {
@@ -171,7 +197,10 @@ class FilterSettingsFragment : Fragment() {
         setHint(binding.industry, requireContext().getString(R.string.industry_hint))
 
         binding.industry.textField.setOnClickListener {
-            findNavController().navigate(R.id.action_filterFragment_to_choosingIndustryFragment)
+            findNavController().navigate(
+                R.id.action_filterFragment_to_choosingIndustryFragment,
+                ChoosingIndustryFragment.createArgs(viewModel.getIndustryLiveData().value)
+            )
         }
 
         binding.industry.ivClear.setOnClickListener {
@@ -179,10 +208,22 @@ class FilterSettingsFragment : Fragment() {
         }
     }
 
+    private fun setBackPressed() {
+        requireActivity().onBackPressedDispatcher.addCallback(
+            viewLifecycleOwner,
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    viewModel.saveParameters()
+                    findNavController().navigateUp()
+                }
+            }
+        )
+    }
+
     private fun transferArgs() {
         getParentFragmentManager()
             .setFragmentResult("filterKey", SearchFragment.createArgs(filtersApply = true))
-        findNavController().navigateUp()
+        requireActivity().onBackPressedDispatcher.onBackPressed()
     }
 
     private fun buttonsVisible() {
@@ -192,7 +233,6 @@ class FilterSettingsFragment : Fragment() {
                     || industry.textField.text?.isNotEmpty() == true
                     || editText?.text?.isNotEmpty() == true
                     || checkboxSalary.isChecked)
-            applySettingsButton.isVisible = resetSettingsButton.isVisible
         }
     }
 
@@ -204,5 +244,22 @@ class FilterSettingsFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    companion object {
+        private const val ARGS_COUNTRY = "NewCountry"
+        private const val ARGS_REGION = "NewRegion"
+
+        private const val ARGS_INDUSTRY = "NewIndustry"
+
+        fun createArgsPlaceOfWork(
+            country: Area?,
+            region: Area?
+        ): Bundle = bundleOf(
+            ARGS_COUNTRY to country,
+            ARGS_REGION to region
+        )
+
+        fun createArgsIndustry(industry: Industry?): Bundle = bundleOf(ARGS_INDUSTRY to industry)
     }
 }

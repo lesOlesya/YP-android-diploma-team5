@@ -82,8 +82,8 @@ class ChoosingCountryFragment : Fragment(), AreaAdapter.AreaClickListener {
 
     override fun onAreaClick(area: Area) {
         getParentFragmentManager().setFragmentResult(
-            "filterKey",
-            PlaceOfWorkFragment.createArgs(countryId = area.areaId, countryName = area.areaName)
+            "placeOfWorkKey",
+            PlaceOfWorkFragment.createArgs(country = area)
         )
         requireActivity().onBackPressedDispatcher.onBackPressed()
     }

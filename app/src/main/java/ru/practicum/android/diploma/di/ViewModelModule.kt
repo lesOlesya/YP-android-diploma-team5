@@ -30,11 +30,11 @@ val viewModelModule = module {
     }
 
     viewModel {
-        PlaceOfWorkViewModel(get(), get())
+        PlaceOfWorkViewModel(get())
     }
 
     viewModel {
-        ChoosingIndustryViewModel(get(), get())
+        ChoosingIndustryViewModel(get())
     }
 
     viewModel {
