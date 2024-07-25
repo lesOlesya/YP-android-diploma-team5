@@ -57,7 +57,7 @@ class SearchFragment : Fragment(), VacancyAdapter.VacancyClickListener {
         rvVacancies?.adapter = adapter
 
         editText = binding.editTextSearch
-        val clearButton = binding.ivIconClear
+        setEditText(editText!!)
 
         binding.ivFilter.setOnClickListener {
             findNavController().navigate(R.id.action_searchFragment_to_filterFragment)
@@ -69,8 +69,30 @@ class SearchFragment : Fragment(), VacancyAdapter.VacancyClickListener {
             binding.ivFilter.setImageResource(R.drawable.ic_filter_off)
         }
 
+        rvVacancies?.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+
+                if (dy > 0) {
+                    val pos = (rvVacancies?.layoutManager as LinearLayoutManager).findLastVisibleItemPosition()
+                    val itemsCount = adapter.itemCount
+                    if (pos >= itemsCount - 1) {
+                        viewModel.searchVacancies(editText?.text.toString(), false)
+                    }
+                }
+            }
+        })
+
+        viewModel.getStateLiveData().observe(viewLifecycleOwner) {
+            render(it)
+        }
+    }
+
+    private fun setEditText(editText: EditText) {
+        val clearButton = binding.ivIconClear
+
         clearButton.setOnClickListener {
-            editText?.setText("")
+            editText.setText("")
         }
 
         textWatcher = object : TextWatcher {
@@ -95,45 +117,17 @@ class SearchFragment : Fragment(), VacancyAdapter.VacancyClickListener {
                 // detekt
             }
         }
-        textWatcher?.let { editText?.addTextChangedListener(it) }
+        textWatcher?.let { editText.addTextChangedListener(it) }
 
-        editText?.setOnEditorActionListener { _, actionId, _ -> // enter на клаве
+        editText.setOnEditorActionListener { _, actionId, _ -> // enter на клаве
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 viewModel.searchDebounce(
-                    changedText = editText?.text.toString()
+                    changedText = editText.text.toString()
                 )
                 true
             }
             false
         }
-
-        rvVacancies?.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                super.onScrolled(recyclerView, dx, dy)
-
-                if (dy > 0) {
-                    val pos = (rvVacancies?.layoutManager as LinearLayoutManager).findLastVisibleItemPosition()
-                    val itemsCount = adapter.itemCount
-                    if (pos >= itemsCount - 1) {
-                        viewModel.searchVacancies(editText?.text.toString(), false)
-                    }
-                }
-            }
-        })
-
-        viewModel.getStateLiveData().observe(viewLifecycleOwner) {
-            render(it)
-        }
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        textWatcher?.let { editText?.removeTextChangedListener(it) }
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 
     private fun render(state: VacanciesState) {
@@ -217,6 +211,16 @@ class SearchFragment : Fragment(), VacancyAdapter.VacancyClickListener {
             R.id.action_searchFragment_to_vacancyFragment,
             VacancyFragment.createArgs(vacancy.vacancyId)
         )
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        textWatcher?.let { editText?.removeTextChangedListener(it) }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     companion object {
