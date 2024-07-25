@@ -9,6 +9,7 @@ import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.ChoosingWithRvFragmentBinding
@@ -32,6 +33,9 @@ class ChoosingIndustryFragment : Fragment() {
         binding.toolbar.title = requireContext().getString(R.string.industry_headline)
         binding.editTextFilter.hint = requireContext().getString(R.string.enter_industry_hint)
         binding.tvNotFoundPlaceholder.text = requireContext().getString(R.string.industry_list_empty_error)
+        binding.ivIconClear.setOnClickListener {
+            binding.editTextFilter.setText("")
+        }
 
         val adapter = viewModel.adapter
         binding.recyclerView.adapter = adapter
@@ -54,10 +58,6 @@ class ChoosingIndustryFragment : Fragment() {
             requireActivity().onBackPressedDispatcher.onBackPressed()
         }
 
-        binding.editTextFilter.doOnTextChanged { text, _, _, _ ->
-            viewModel.filter(text.toString())
-        }
-
         viewModel.observeAdapterLiveData().observe(viewLifecycleOwner) {
             adapter.submitList(it.currentList)
         }
@@ -65,6 +65,8 @@ class ChoosingIndustryFragment : Fragment() {
         viewModel.observeChoosingIndustryState().observe(viewLifecycleOwner) {
             render(it)
         }
+
+        setUpSearch()
     }
 
     override fun onDestroyView() {
@@ -76,14 +78,36 @@ class ChoosingIndustryFragment : Fragment() {
         hideAll()
         when (state) {
             is ChoosingIndustryState.Loading -> binding.progressBar.isVisible = true
-            is ChoosingIndustryState.Error -> binding.tvFailedRequestPlaceholder.isVisible = false
+            is ChoosingIndustryState.Error -> binding.tvFailedRequestPlaceholder.isVisible = true
             is ChoosingIndustryState.Success -> showIndustries(state.chooseButtonVisible)
+            is ChoosingIndustryState.Empty -> binding.tvNotFoundPlaceholder.isVisible = true
         }
     }
 
     private fun showIndustries(buttonIsVisible: Boolean) {
         binding.recyclerView.isVisible = true
         binding.chooseIndustryButton.isVisible = buttonIsVisible
+    }
+
+    private fun setUpSearch() {
+        binding.editTextFilter.doOnTextChanged { text, _, _, _ ->
+            val filterText = text.toString().trim()
+
+            if (filterText.isEmpty()) {
+                changeIcons(true)
+                (binding.recyclerView.layoutManager as LinearLayoutManager).scrollToPositionWithOffset(0, 0)
+            } else {
+                changeIcons(false)
+            }
+
+            viewModel.filter(filterText)
+        }
+    }
+
+
+    private fun changeIcons(isTextEmpty: Boolean) {
+        binding.ivIconSearch.isVisible = isTextEmpty
+        binding.ivIconClear.isVisible = !isTextEmpty
     }
 
     private fun hideAll() {

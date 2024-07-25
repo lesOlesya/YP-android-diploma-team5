@@ -54,10 +54,7 @@ class ChoosingIndustryViewModel(
     private fun processResult(resource: Resource<List<Industry>>) {
         resource.data?.let {
             industries.addAll(it)
-            adapter.submitList(it)
-            _choosingIndustryStateLiveData.postValue(
-                ChoosingIndustryState.Success(chooseButtonVisible = chosenIndustry != null)
-            )
+            renderSuccessState(it)
         } ?: _choosingIndustryStateLiveData.postValue(ChoosingIndustryState.Error)
     }
 
@@ -76,24 +73,27 @@ class ChoosingIndustryViewModel(
     }
 
     fun filter(text: String) {
-        val filteredList: ArrayList<Industry> = arrayListOf()
+        val filteredList = ArrayList<Industry>()
 
         for (item in industries) {
             if (item.industryName.lowercase(Locale.ROOT).contains(text.lowercase(Locale.ROOT))) {
                 filteredList.add(item)
             }
         }
+
         if (filteredList.isEmpty()) {
             adapter.submitList(null)
-            _choosingIndustryStateLiveData.postValue(
-                ChoosingIndustryState.Success(chooseButtonVisible = chosenIndustry != null)
-            )
+            _choosingIndustryStateLiveData.postValue(ChoosingIndustryState.Empty)
         } else {
-            _choosingIndustryStateLiveData.postValue(
-                ChoosingIndustryState.Success(chooseButtonVisible = chosenIndustry != null)
-            )
-            adapter.submitList(filteredList)
+            renderSuccessState(filteredList)
         }
+    }
+
+    private fun renderSuccessState(industries: List<Industry>) {
+        adapter.submitList(industries)
+        _choosingIndustryStateLiveData.postValue(
+            ChoosingIndustryState.Success(chooseButtonVisible = chosenIndustry != null)
+        )
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -105,8 +105,6 @@ class ChoosingIndustryViewModel(
         }
         adapter.checkedIndustry = chosenIndustry
         adapter.notifyDataSetChanged()
-        _choosingIndustryStateLiveData.postValue(
-            ChoosingIndustryState.Success(chooseButtonVisible = chosenIndustry != null)
-        )
+        renderSuccessState(adapter.currentList)
     }
 }
