@@ -1,6 +1,5 @@
 package ru.practicum.android.diploma.filter.industry.presentation
 
-
 sealed interface ChoosingIndustryState {
 
     data object Loading : ChoosingIndustryState
