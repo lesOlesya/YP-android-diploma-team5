@@ -21,26 +21,16 @@ class SearchViewModel(
     private var maxPages = 1
     private var isNextPageLoading = false
 
-    private var filters = searchInteractor.getSearchFilters()
+    private var filters: HashMap<String, String>? = null
+
+    private val stateLiveData = MutableLiveData<VacanciesState>()
+    fun getStateLiveData(): LiveData<VacanciesState> = stateLiveData
 
     private var latestSearchText: String? = null
     private val vacancySearchDebounce =
         debounce<String>(SEARCH_DEBOUNCE_DELAY, viewModelScope, true) { changedText ->
             searchVacancies(changedText)
-            currentPage = 0
-            maxPages = 1
-            isNextPageLoading = false
-            vacancies.clear()
         }
-
-    private val stateLiveData = MutableLiveData<VacanciesState>()
-    fun getStateLiveData(): LiveData<VacanciesState> = stateLiveData
-
-    fun applyFiltersLastSearch() {
-        filters = searchInteractor.getSearchFilters()
-        vacancies.clear()
-        latestSearchText?.let { searchVacancies(it) }
-    }
 
     fun setDefaultState() {
         if (latestSearchText == "") {
@@ -48,9 +38,18 @@ class SearchViewModel(
         }
     }
 
+    fun applyFiltersLastSearch() {
+        setFilterAndDefaultVarForSearch()
+        latestSearchText?.let { searchVacancies(it) }
+    }
+
+    fun filtersIsOn() = searchInteractor.getSearchFilters().isNotEmpty()
+
     fun searchDebounce(changedText: String) {
         if (latestSearchText != changedText) {
             latestSearchText = changedText
+
+            setFilterAndDefaultVarForSearch()
 
             vacancySearchDebounce(changedText)
         }
@@ -62,7 +61,7 @@ class SearchViewModel(
             isNextPageLoading = true
             viewModelScope.launch {
                 searchInteractor
-                    .search(query, currentPage, filters)
+                    .search(query, currentPage, filters!!)
                     .collect { pair ->
                         processResult(pair.first, pair.second, isNewSearchText)
                     }
@@ -75,7 +74,6 @@ class SearchViewModel(
     private fun processResult(vacancyPagination: VacancyPagination?, errorCode: Int?, isNewSearchText: Boolean) {
         if (vacancyPagination != null) {
             vacancies.addAll(vacancyPagination.vacancyList)
-            currentPage = vacancyPagination.page
             currentPage++
             maxPages = vacancyPagination.pages
             isNextPageLoading = false
@@ -95,9 +93,12 @@ class SearchViewModel(
         }
     }
 
-    fun getSearchFilters(): Boolean {
+    private fun setFilterAndDefaultVarForSearch() {
         filters = searchInteractor.getSearchFilters()
-        return filters.isNotEmpty()
+        currentPage = 0
+        maxPages = 1
+        isNextPageLoading = false
+        vacancies.clear()
     }
 
     private fun renderState(state: VacanciesState) {

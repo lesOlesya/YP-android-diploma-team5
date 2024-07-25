@@ -1,14 +1,13 @@
 package ru.practicum.android.diploma.filter.area.ui
 
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
+import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -69,26 +68,17 @@ class ChoosingRegionFragment : Fragment(), AreaAdapter.AreaClickListener {
                 requireActivity().onBackPressedDispatcher.onBackPressed()
             }
 
-            editTextFilter.addTextChangedListener(object : TextWatcher {
-                override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-                    // detect
+            editTextFilter.doOnTextChanged { text, _, _, _ ->
+                val filterText = text.toString().trim()
+
+                if (filterText.isEmpty()) {
+                    changeIcons(true)
+                } else {
+                    changeIcons(false)
                 }
 
-                override fun afterTextChanged(s: Editable?) {
-                    // detect
-                }
-
-                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                    val input = s.toString().trim()
-                    if (input.isNullOrEmpty()) {
-                        changeIcons(true)
-                        viewModel.reloadRegions()
-                    } else {
-                        changeIcons(false)
-                        viewModel.filterRegions(input)
-                    }
-                }
-            })
+                viewModel.filterRegions(filterText)
+            }
         }
 
         viewModel.observeRegionState().observe(viewLifecycleOwner) { state ->
@@ -106,7 +96,7 @@ class ChoosingRegionFragment : Fragment(), AreaAdapter.AreaClickListener {
         if (arguments == null) {
             requestAreas(null)
         } else {
-            requestAreas(arguments?.getString(COUNTRY_NAME))
+            requestAreas(arguments?.getString(COUNTRY_ID))
         }
     }
 
@@ -158,19 +148,15 @@ class ChoosingRegionFragment : Fragment(), AreaAdapter.AreaClickListener {
 
     override fun onAreaClick(area: Area) {
         getParentFragmentManager().setFragmentResult(
-            "filterKey",
-            PlaceOfWorkFragment.createArgs(
-                regionId = area.areaId,
-                regionName = area.areaName,
-                regionParentId = area.parentId
-            )
+            "placeOfWorkKey",
+            PlaceOfWorkFragment.createArgs(region = area)
         )
         requireActivity().onBackPressedDispatcher.onBackPressed()
     }
 
     companion object {
-        private const val COUNTRY_NAME = "Country name"
+        private const val COUNTRY_ID = "CountryID"
 
-        fun setArguments(countryID: String?): Bundle = bundleOf(COUNTRY_NAME to countryID)
+        fun setArguments(countryID: String?): Bundle = bundleOf(COUNTRY_ID to countryID)
     }
 }
