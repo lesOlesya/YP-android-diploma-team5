@@ -8,5 +8,5 @@ data class FilterParameters(
     val region: Area? = null,
     val industry: Industry? = null,
     val expectedSalary: String? = null,
-    val flagOnlyWithSalary: Boolean = true
+    val flagOnlyWithSalary: Boolean = false
 )
