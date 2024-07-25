@@ -63,7 +63,7 @@ class SearchFragment : Fragment(), VacancyAdapter.VacancyClickListener {
             findNavController().navigate(R.id.action_searchFragment_to_filterFragment)
         }
 
-        if (viewModel.getSearchFilters()) {
+        if (viewModel.filtersIsOn()) {
             binding.ivFilter.setImageResource(R.drawable.ic_filter_on)
         } else {
             binding.ivFilter.setImageResource(R.drawable.ic_filter_off)
