@@ -104,7 +104,6 @@ class ChoosingIndustryFragment : Fragment() {
         }
     }
 
-
     private fun changeIcons(isTextEmpty: Boolean) {
         binding.ivIconSearch.isVisible = isTextEmpty
         binding.ivIconClear.isVisible = !isTextEmpty
