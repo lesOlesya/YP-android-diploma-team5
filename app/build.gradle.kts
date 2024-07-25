@@ -47,20 +47,20 @@ android {
 }
 
 dependencies {
-    implementation(libs.androidX.core)
-    implementation(libs.androidX.appCompat)
+    implementation(libs.core.ktx)
+    implementation(libs.appcompat)
 
     // UI layer libraries
-    implementation(libs.ui.material)
-    implementation(libs.ui.constraintLayout)
+    implementation(libs.material.v190)
+    implementation(libs.constraintlayout)
 
     // region Unit tests
-    testImplementation(libs.unitTests.junit)
+    testImplementation(libs.junit)
     // endregion
 
     // region UI tests
-    androidTestImplementation(libs.uiTests.junitExt)
-    androidTestImplementation(libs.uiTests.espressoCore)
+    androidTestImplementation(libs.ext.junit)
+    androidTestImplementation(libs.espresso.core)
     // endregion
     // Retrofit
     implementation(libs.retrofit)
@@ -68,6 +68,7 @@ dependencies {
 
     // Room
     implementation(libs.room.runtime)
+    //noinspection KaptUsageInsteadOfKsp
     kapt(libs.room.compiler)
     implementation(libs.room.ktx)
 

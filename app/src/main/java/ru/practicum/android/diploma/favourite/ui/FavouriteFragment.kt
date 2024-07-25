@@ -7,9 +7,9 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import ru.practicum.android.diploma.databinding.FavouriteFragmentBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
+import ru.practicum.android.diploma.databinding.FavouriteFragmentBinding
 import ru.practicum.android.diploma.favourite.presentation.FavoritesState
 import ru.practicum.android.diploma.favourite.presentation.FavoritesViewModel
 import ru.practicum.android.diploma.search.domain.models.Vacancy
@@ -48,7 +48,7 @@ class FavouriteFragment : Fragment(), VacancyAdapter.VacancyClickListener {
     private fun setupObserver() {
         viewModel.stateLiveData.observe(viewLifecycleOwner) { stateLiveData ->
             when (stateLiveData) {
-                is FavoritesState.Ready -> {
+                is FavoritesState.Success -> {
                     vacancyAdapter.vacancies = stateLiveData.favoritesList as ArrayList<Vacancy>
                     if (vacancyAdapter.vacancies.isEmpty()) {
                         binding.elPlaceholder.visibility = View.VISIBLE

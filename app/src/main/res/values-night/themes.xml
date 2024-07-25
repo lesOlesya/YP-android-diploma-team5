@@ -6,5 +6,7 @@
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/gray</item>
         <item name="colorOnSecondary">@color/white_universal</item>
+        <!-- Цвет иконок в строке состояния. -->
+        <item name="android:windowLightStatusBar">false</item>
     </style>
 </resources>

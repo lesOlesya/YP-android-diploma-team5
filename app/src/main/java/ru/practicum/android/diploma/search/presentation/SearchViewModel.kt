@@ -12,30 +12,44 @@ import ru.practicum.android.diploma.search.domain.models.VacancyPagination
 import ru.practicum.android.diploma.util.debounce
 
 class SearchViewModel(
-    private val searchInteractor: SearchInteractor,
+    private val searchInteractor: SearchInteractor
 ) : ViewModel() {
 
     private val vacancies = ArrayList<Vacancy>()
+
     private var currentPage = 0
     private var maxPages = 1
     private var isNextPageLoading = false
+
+    private var filters: HashMap<String, String>? = null
+
+    private val stateLiveData = MutableLiveData<VacanciesState>()
+    fun getStateLiveData(): LiveData<VacanciesState> = stateLiveData
 
     private var latestSearchText: String? = null
     private val vacancySearchDebounce =
         debounce<String>(SEARCH_DEBOUNCE_DELAY, viewModelScope, true) { changedText ->
             searchVacancies(changedText)
-            currentPage = 0
-            maxPages = 1
-            isNextPageLoading = false
-            vacancies.clear()
         }
 
-    private val stateLiveData = MutableLiveData<VacanciesState>()
-    fun getStateLiveData(): LiveData<VacanciesState> = stateLiveData
+    fun setDefaultState() {
+        if (latestSearchText == "") {
+            renderState(VacanciesState.Default)
+        }
+    }
+
+    fun applyFiltersLastSearch() {
+        setFilterAndDefaultVarForSearch()
+        latestSearchText?.let { searchVacancies(it) }
+    }
+
+    fun filtersIsOn() = searchInteractor.getSearchFilters().isNotEmpty()
 
     fun searchDebounce(changedText: String) {
         if (latestSearchText != changedText) {
             latestSearchText = changedText
+
+            setFilterAndDefaultVarForSearch()
 
             vacancySearchDebounce(changedText)
         }
@@ -47,25 +61,26 @@ class SearchViewModel(
             isNextPageLoading = true
             viewModelScope.launch {
                 searchInteractor
-                    .search(query, currentPage)
+                    .search(query, currentPage, filters!!)
                     .collect { pair ->
-                        processResult(pair.first, pair.second)
+                        processResult(pair.first, pair.second, isNewSearchText)
                     }
             }
+        } else if (query.isEmpty()) {
+            renderState(VacanciesState.Default)
         }
     }
 
-    private fun processResult(vacancyPagination: VacancyPagination?, errorCode: Int?) {
+    private fun processResult(vacancyPagination: VacancyPagination?, errorCode: Int?, isNewSearchText: Boolean) {
         if (vacancyPagination != null) {
             vacancies.addAll(vacancyPagination.vacancyList)
-            currentPage = vacancyPagination.page
             currentPage++
             maxPages = vacancyPagination.pages
             isNextPageLoading = false
         }
         when {
             errorCode != null -> {
-                renderState(VacanciesState.Error(errorCode))
+                renderState(VacanciesState.Error(errorCode, !isNewSearchText))
             }
 
             vacancies.isEmpty() -> {
@@ -76,6 +91,14 @@ class SearchViewModel(
                 renderState(VacanciesState.Content(vacancies, vacancyPagination?.foundVacancies ?: 0))
             }
         }
+    }
+
+    private fun setFilterAndDefaultVarForSearch() {
+        filters = searchInteractor.getSearchFilters()
+        currentPage = 0
+        maxPages = 1
+        isNextPageLoading = false
+        vacancies.clear()
     }
 
     private fun renderState(state: VacanciesState) {

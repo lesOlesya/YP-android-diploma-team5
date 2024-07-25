@@ -33,7 +33,7 @@ class VacancyDetailsByIDRepositoryImpl(
                             vacancyName = name,
                             salary = Salary(salary?.from, salary?.to, salary?.currency),
                             employerName = employer.name,
-                            area = area.name,
+                            area = address?.city ?: area.name,
                             artworkUrl = employer.logoUrls?.logo240,
                             experience = experience?.name,
                             employment = employment?.name,
@@ -44,6 +44,10 @@ class VacancyDetailsByIDRepositoryImpl(
                         )
                     emit(Resource.Success(data))
                 }
+            }
+
+            ErrorMessageConstants.REQUEST_ERROR -> {
+                emit(Resource.Error(ErrorMessageConstants.REQUEST_ERROR))
             }
 
             else -> {

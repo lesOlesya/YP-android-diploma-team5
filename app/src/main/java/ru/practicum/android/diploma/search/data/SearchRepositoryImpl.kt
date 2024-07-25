@@ -17,8 +17,12 @@ class SearchRepositoryImpl(
     private val networkClient: NetworkClient
 ) : SearchRepository {
 
-    override fun search(text: String, perPage: Int): Flow<Resource<VacancyPagination>> = flow {
-        val response = networkClient.doRequest(VacancySearchRequest(text, perPage))
+    override fun search(
+        text: String,
+        perPage: Int,
+        filters: HashMap<String, String>
+    ): Flow<Resource<VacancyPagination>> = flow {
+        val response = networkClient.doRequest(VacancySearchRequest(text, perPage, filters))
 
         when (response.resultCode) {
             ErrorMessageConstants.NETWORK_ERROR -> {

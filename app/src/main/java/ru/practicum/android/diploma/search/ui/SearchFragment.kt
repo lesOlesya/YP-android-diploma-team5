@@ -9,8 +9,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.widget.EditText
-import android.widget.ProgressBar
-import androidx.constraintlayout.widget.Group
+import android.widget.Toast
+import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -38,8 +38,6 @@ class SearchFragment : Fragment(), VacancyAdapter.VacancyClickListener {
     private var textWatcher: TextWatcher? = null
 
     private var editText: EditText? = null
-    private var progressBar: ProgressBar? = null
-    private var rvWithChip: Group? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = SearchFragmentBinding.inflate(layoutInflater, container, false)
@@ -49,60 +47,26 @@ class SearchFragment : Fragment(), VacancyAdapter.VacancyClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        parentFragmentManager.setFragmentResultListener("filterApplyKey", this) { _: String?, result: Bundle ->
+            if (result.getBoolean(FILTERS_APPLY)) {
+                viewModel.applyFiltersLastSearch()
+            }
+        }
+
         rvVacancies = binding.rvVacancyList
         rvVacancies?.adapter = adapter
 
         editText = binding.editTextSearch
-        progressBar = binding.progressBarSearch
-        rvWithChip = binding.groupRvAndChip
-        val clearButton = binding.ivIconClear
+        setEditText(editText!!)
 
         binding.ivFilter.setOnClickListener {
             findNavController().navigate(R.id.action_searchFragment_to_filterFragment)
         }
 
-        clearButton.setOnClickListener {
-            editText?.setText("")
-            with(binding) {
-                tvFailedRequestPlaceholder.isVisible = false
-                tvServerErrorPlaceholder.isVisible = false
-                tvNoInternetPlaceholder.isVisible = false
-                rvWithChip?.isVisible = false
-                progressBar?.isVisible = false
-            }
-        }
-
-        textWatcher = object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-                // detekt
-            }
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                clearButton.isVisible = !s.isNullOrEmpty()
-                binding.ivIconSearch.isVisible = s.isNullOrEmpty()
-                if (editText?.text?.isEmpty() == true) {
-                    rvWithChip?.isVisible = false
-                    binding.ivSearchPlaceholder.isVisible = true
-                }
-                viewModel.searchDebounce(
-                    changedText = s?.toString() ?: ""
-                )
-            }
-
-            override fun afterTextChanged(s: Editable?) {
-                // detekt
-            }
-        }
-        textWatcher?.let { editText?.addTextChangedListener(it) }
-
-        editText?.setOnEditorActionListener { _, actionId, _ -> // enter на клаве
-            if (actionId == EditorInfo.IME_ACTION_DONE) {
-                viewModel.searchDebounce(
-                    changedText = editText?.text.toString()
-                )
-                true
-            }
-            false
+        if (viewModel.filtersIsOn()) {
+            binding.ivFilter.setImageResource(R.drawable.ic_filter_on)
+        } else {
+            binding.ivFilter.setImageResource(R.drawable.ic_filter_off)
         }
 
         rvVacancies?.addOnScrollListener(object : RecyclerView.OnScrollListener() {
@@ -124,73 +88,122 @@ class SearchFragment : Fragment(), VacancyAdapter.VacancyClickListener {
         }
     }
 
-    override fun onResume() {
-        super.onResume()
-        if (editText?.text?.isEmpty() == true) {
-            rvWithChip?.isVisible = false
-            binding.ivSearchPlaceholder.isVisible = true
-        }
-    }
+    private fun setEditText(editText: EditText) {
+        val clearButton = binding.ivIconClear
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-        textWatcher?.let { editText?.removeTextChangedListener(it) }
+        clearButton.setOnClickListener {
+            editText.setText("")
+        }
+
+        textWatcher = object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                if (s?.isEmpty() == true) {
+                    viewModel.setDefaultState()
+                }
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                clearButton.isVisible = !s.isNullOrEmpty()
+                binding.ivIconSearch.isVisible = s.isNullOrEmpty()
+                if (s?.isEmpty() == true) {
+                    viewVisibility(searchDefaultPlaceholder = true)
+                }
+                viewModel.searchDebounce(
+                    changedText = s?.toString() ?: ""
+                )
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+                // detekt
+            }
+        }
+        textWatcher?.let { editText.addTextChangedListener(it) }
+
+        editText.setOnEditorActionListener { _, actionId, _ -> // enter на клаве
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                viewModel.searchDebounce(
+                    changedText = editText.text.toString()
+                )
+                true
+            }
+            false
+        }
     }
 
     private fun render(state: VacanciesState) {
         when (state) {
-            is VacanciesState.Loading -> showLoading(state.isNewSearchText)
+            is VacanciesState.Loading -> viewVisibility(progressBar = true, rvWithChip = !state.isNewSearchText)
             is VacanciesState.Content -> showContent(state.vacancies, state.count)
-            is VacanciesState.Error -> showError(state.errorCode)
-            is VacanciesState.Empty -> showError(state.code)
+            is VacanciesState.Error -> showError(state.errorCode, state.errorDuringPagination)
+            is VacanciesState.Empty -> showError(state.code, false)
+            is VacanciesState.Default -> viewVisibility(searchDefaultPlaceholder = true)
         }
     }
 
-    private fun showLoading(rvVisible: Boolean) {
-        progressBar?.isVisible = true
-        rvWithChip?.isVisible = !rvVisible
-        binding.tvNoInternetPlaceholder.isVisible = false
-        binding.tvServerErrorPlaceholder.isVisible = false
-        binding.tvServerErrorPlaceholder.isVisible = false
-        binding.ivSearchPlaceholder.isVisible = false
-    }
-
-    private fun showError(code: Int) {
-        progressBar?.isVisible = false
-        rvWithChip?.isVisible = false
-        with(binding) {
+    private fun showError(code: Int, errorDuringPagination: Boolean) {
+        if (!errorDuringPagination) {
             when (code) {
-                ErrorMessageConstants.NETWORK_ERROR -> tvNoInternetPlaceholder.isVisible = true
-                ErrorMessageConstants.NOTHING_FOUND -> {
-                    tvFailedRequestPlaceholder.isVisible = true
-                    rvWithChip?.isVisible = true
-                    rvVacancies?.isVisible = false
-                    chipVacancies.isVisible = true
-                    chipVacancies.text = requireContext().getString(R.string.vacancy_list_empty_label)
+                ErrorMessageConstants.NETWORK_ERROR -> viewVisibility(noInternetPlaceholder = true)
+                ErrorMessageConstants.NOTHING_FOUND -> viewVisibility(failedRequestPlaceholder = true)
+                ErrorMessageConstants.SERVER_ERROR -> viewVisibility(serverErrorPlaceholder = true)
+                else -> viewVisibility(serverErrorPlaceholder = true)
+            }
+        } else {
+            viewVisibility(rvWithChip = true)
+            val toast = Toast.makeText(
+                requireContext(),
+                getString(R.string.toast_no_internet_error),
+                Toast.LENGTH_LONG
+            )
+            when (code) {
+                ErrorMessageConstants.NETWORK_ERROR -> toast.show()
+                else -> {
+                    toast.setText(getString(R.string.toast_error))
+                    toast.show()
                 }
-
-                ErrorMessageConstants.SERVER_ERROR -> tvServerErrorPlaceholder.isVisible = true
-                else -> tvServerErrorPlaceholder.isVisible = true
             }
         }
     }
 
     @SuppressLint("NotifyDataSetChanged")
     private fun showContent(vacancies: List<Vacancy>, count: Int) {
-        progressBar?.isVisible = false
-        binding.tvNoInternetPlaceholder.isVisible = false
-        binding.tvServerErrorPlaceholder.isVisible = false
-        binding.tvServerErrorPlaceholder.isVisible = false
-        rvWithChip?.isVisible = true
-        binding.ivSearchPlaceholder.isVisible = false
+        viewVisibility(rvWithChip = true)
         binding.chipVacancies.text = requireContext().resources.getQuantityString(
             R.plurals.vacancyCount,
             count, count
         )
+
         adapter.vacancies.clear()
         adapter.vacancies.addAll(vacancies)
         adapter.notifyDataSetChanged()
+    }
+
+    private fun viewVisibility(
+        progressBar: Boolean = false,
+        rvWithChip: Boolean = false,
+        noInternetPlaceholder: Boolean = false,
+        serverErrorPlaceholder: Boolean = false,
+        searchDefaultPlaceholder: Boolean = false,
+        failedRequestPlaceholder: Boolean = false,
+    ) {
+        with(binding) {
+            progressBarSearch.isVisible = progressBar
+            // rv with chip
+            groupRvAndChip.isVisible = rvWithChip
+            rvVacancyList.isVisible = rvWithChip
+            chipVacancies.isVisible = rvWithChip
+            // placeholders
+            tvNoInternetPlaceholder.isVisible = noInternetPlaceholder
+            tvServerErrorPlaceholder.isVisible = serverErrorPlaceholder
+            ivSearchPlaceholder.isVisible = searchDefaultPlaceholder
+            // nothingFound placeholder and chip
+            tvFailedRequestPlaceholder.isVisible = failedRequestPlaceholder
+            if (failedRequestPlaceholder) {
+                groupRvAndChip.isVisible = true
+                rvVacancyList.isVisible = false
+                chipVacancies.text = requireContext().getString(R.string.vacancy_list_empty_label)
+            }
+        }
     }
 
     override fun onVacancyClick(vacancy: Vacancy) {
@@ -198,5 +211,22 @@ class SearchFragment : Fragment(), VacancyAdapter.VacancyClickListener {
             R.id.action_searchFragment_to_vacancyFragment,
             VacancyFragment.createArgs(vacancy.vacancyId)
         )
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        textWatcher?.let { editText?.removeTextChangedListener(it) }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
+    companion object {
+        private const val FILTERS_APPLY = "Filters"
+
+        fun createArgs(filtersApply: Boolean? = false): Bundle =
+            bundleOf(FILTERS_APPLY to filtersApply)
     }
 }

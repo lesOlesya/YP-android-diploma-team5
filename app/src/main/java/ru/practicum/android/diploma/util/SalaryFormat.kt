@@ -7,19 +7,23 @@ import java.text.DecimalFormat
 import java.util.Currency
 
 fun Salary.salaryFormat(context: Context): String? {
-    var salaryString = ""
 
-    if (this.from != null) salaryString += context.getString(R.string.from, this.from.sumFormat())
-    if (this.to != null) salaryString += context.getString(R.string.to, this.to.sumFormat())
+    val from = this.from
+    val to = this.to
+    val salaryCurrency = this.currency
+    val salaryString = buildString {
 
-    val currency: Currency = when (this.currency) {
-        null -> return null
-        "RUR" -> Currency.getInstance("RUB")
-        else -> Currency.getInstance(this.currency)
+        from?.let { this.append(context.getString(R.string.from, it.sumFormat())) }
+
+        to?.let { this.append(context.getString(R.string.to, it.sumFormat())) }
+
+        val currency: Currency = when (salaryCurrency) {
+            null -> return null
+            "RUR" -> Currency.getInstance("RUB")
+            else -> Currency.getInstance(salaryCurrency)
+        }
+        this.append(currency.symbol)
     }
-
-    salaryString += currency.symbol
-
     return salaryString
 }
 

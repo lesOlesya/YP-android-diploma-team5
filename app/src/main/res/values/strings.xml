@@ -5,20 +5,23 @@
     <string name="filter_headline">Настройки фильтрации</string>
     <string name="place_of_work_headline">Выбор места работы</string>
     <string name="country_headline">Выбор страны</string>
-    <string name="region_headline">Выбор региона</string>
+    <string name="area_headline">Выбор региона</string>
     <string name="industry_headline">Выбор отрасли</string>
     <string name="vacancy_headline">Вакансия</string>
     <string name="favourite_headline">Избранное</string>
     <string name="team_headline">Команда</string>
     <string name="main_headline_bottom_menu">Главная</string>
     <!-- Error texts. -->
+    <string name="toast_error">Произошла ошибка</string>
     <string name="no_internet_error">Нет интернета</string>
+    <string name="toast_no_internet_error">Проверьте подключение к интернету</string>
     <string name="server_error">Ошибка сервера</string>
     <string name="vacancy_error">Вакансия не найдена или удалена</string>
     <string name="vacancy_list_error">Не удалось получить список вакансий</string>
     <string name="list_error">Не удалось получить список</string>
     <!-- Empty texts. -->
     <string name="region_list_empty_error">Такого региона нет</string>
+    <string name="industry_list_empty_error">Такой отрасли нет</string>
     <string name="list_empty">Список пуст</string>
     <!-- Search texts. -->
     <string name="enter_request_hint">Введите запрос</string>
@@ -26,7 +29,7 @@
     <!-- Filter texts. -->
     <string name="place_of_work_hint">Место работы</string>
     <string name="country_hint">Страна</string>
-    <string name="region_hint">Регион</string>
+    <string name="area_hint">Регион</string>
     <string name="enter_region_hint">Введите регион</string>
     <string name="industry_hint">Отрасль</string>
     <string name="enter_industry_hint">Введите отрасль</string>
@@ -34,6 +37,7 @@
     <string name="enter_amount_hint">Введите сумму</string>
     <string name="hide_without_salary_switch_text">Не показывать без зарплаты</string>
     <string name="choose_button_label">Выбрать</string>
+    <string name="apply_button_label">Применить</string>
     <string name="reset_button_label">Сбросить</string>
     <!-- Vacancy title texts. -->
     <string name="experience_vacancy_title">Требуемый опыт</string>
