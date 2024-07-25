@@ -47,7 +47,7 @@ class SearchFragment : Fragment(), VacancyAdapter.VacancyClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        parentFragmentManager.setFragmentResultListener("filterKey", this) { _: String?, result: Bundle ->
+        parentFragmentManager.setFragmentResultListener("filterApplyKey", this) { _: String?, result: Bundle ->
             if (result.getBoolean(FILTERS_APPLY)) {
                 viewModel.applyFiltersLastSearch()
             }

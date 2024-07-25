@@ -96,7 +96,7 @@ class ChoosingRegionFragment : Fragment(), AreaAdapter.AreaClickListener {
         if (arguments == null) {
             requestAreas(null)
         } else {
-            requestAreas(arguments?.getString(COUNTRY_NAME))
+            requestAreas(arguments?.getString(COUNTRY_ID))
         }
     }
 
@@ -148,19 +148,15 @@ class ChoosingRegionFragment : Fragment(), AreaAdapter.AreaClickListener {
 
     override fun onAreaClick(area: Area) {
         getParentFragmentManager().setFragmentResult(
-            "filterKey",
-            PlaceOfWorkFragment.createArgs(
-                regionId = area.areaId,
-                regionName = area.areaName,
-                regionParentId = area.parentId
-            )
+            "placeOfWorkKey",
+            PlaceOfWorkFragment.createArgs(region = area)
         )
         requireActivity().onBackPressedDispatcher.onBackPressed()
     }
 
     companion object {
-        private const val COUNTRY_NAME = "Country name"
+        private const val COUNTRY_ID = "CountryID"
 
-        fun setArguments(countryID: String?): Bundle = bundleOf(COUNTRY_NAME to countryID)
+        fun setArguments(countryID: String?): Bundle = bundleOf(COUNTRY_ID to countryID)
     }
 }
