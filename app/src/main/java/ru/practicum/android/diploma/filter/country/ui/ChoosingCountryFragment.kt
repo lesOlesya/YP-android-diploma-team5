@@ -64,7 +64,7 @@ class ChoosingCountryFragment : Fragment(), AreaAdapter.AreaClickListener {
         hideAll()
         when (state) {
             is ChoosingCountryState.Loading -> binding.progressBar.isVisible = true
-            is ChoosingCountryState.Error -> binding.tvFailedRequestPlaceholder.isVisible = false
+            is ChoosingCountryState.Error -> binding.tvFailedRequestPlaceholder.isVisible = true
             is ChoosingCountryState.Success -> showIndustries(state.countries)
         }
     }
