@@ -34,10 +34,13 @@ class PlaceOfWorkFragment : Fragment() {
                 viewModel.loadRegion(it)
             }
         }
-
-        arguments?.let {
-            viewModel.setUpCountry(it.getParcelable(ARGS_COUNTRY) as? Area)
-            viewModel.setUpRegion(it.getParcelable(ARGS_REGION) as? Area)
+        parentFragmentManager.setFragmentResultListener("fromFilterToPlaceKey", this) { _: String?, result: Bundle ->
+            (result.getParcelable(ARGS_COUNTRY) as? Area)?.let {
+                viewModel.setUpCountry(it)
+            }
+            (result.getParcelable(ARGS_REGION) as? Area)?.let {
+                viewModel.setUpRegion(it)
+            }
         }
 
         _binding = PlaceOfWorkFragmentBinding.inflate(layoutInflater, container, false)
