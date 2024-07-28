@@ -179,12 +179,15 @@ class FilterSettingsFragment : Fragment() {
         setHint(binding.placeOfWork, requireContext().getString(R.string.place_of_work_hint))
 
         binding.placeOfWork.textField.setOnClickListener {
-            findNavController().navigate(
-                R.id.action_filterFragment_to_choosingPlaceFragment,
+            parentFragmentManager.setFragmentResult(
+                "fromFilterToPlaceKey",
                 PlaceOfWorkFragment.createArgs(
                     viewModel.getPlaceOfWorkLiveData().value?.first,
                     viewModel.getPlaceOfWorkLiveData().value?.second
                 )
+            )
+            findNavController().navigate(
+                R.id.action_filterFragment_to_choosingPlaceFragment
             )
         }
 

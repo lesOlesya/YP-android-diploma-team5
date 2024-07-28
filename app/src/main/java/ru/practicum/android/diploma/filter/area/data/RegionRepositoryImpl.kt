@@ -55,7 +55,11 @@ class RegionRepositoryImpl(
             }
         } else {
             items.flatMap { areaDto ->
-                areaDtoConverter.areaFlatMap(areaDto) ?: emptyList()
+                if (areaDto.id != "1001" && areaDto.name != "Другие регионы") {
+                    areaDtoConverter.areaFlatMap(areaDto) ?: emptyList()
+                } else {
+                    emptyList()
+                }
             }
         }
 
